@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black &amp; Scholes Calculator</title>
+  <!-- Inclusione del font Rubik da Google Fonts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 3;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Rubik', sans-serif;
+      color: #000;
+      background-color: #fff;
+    }
+    
+    /* -------------------------- */
+    /*         NAVBAR           */
+    /* -------------------------- */
+    .navbar {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #F8FAFC;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .navbar-left,
+    .navbar-center,
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    /* Il brand ora punta a homepage.html */
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #000;
+      text-decoration: none;
+    }
+    
+    .navbar-left .brand:hover {
+      text-decoration: underline;
+    }
+    
+    /* Nei link della navbar: Calculators e Theory */
+    .nav-link {
+      font-weight: 500;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    .nav-link:hover {
+      color: #01796F;
+    }
+    
+    
+    /* -------------------------- */
+    /*       HERO SECTION       */
+    /* -------------------------- */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Testo in alto */
+      padding: 3rem 2rem;
+    }
+    
+    .hero-text {
+      max-width: 600px;
+    }
+    
+    .hero-subheading {
+      font-size: 1.25rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #01796F;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Titolo e testo originali */
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      color: #555;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem; /* Spazio extra sotto i bottoni */
+    }
+    
+    .cta-button,
+    .outline-button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 50px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cta-button {
+      background-color: #01796F;
+      color: #fff;
+      border: none;
+    }
+    
+    .cta-button:hover {
+      background-color: #01665E;
+    }
+    
+    .outline-button {
+      background-color: transparent;
+      color: #01796F;
+      border: 2px solid #01796F;
+    }
+    
+    .outline-button:hover {
+      background-color: #E0F2F1;
+    }
+    
+    .hero-image img {
+      max-width: 5000px;
+      width: 109%;
+      height: auto;
+    }
+
+    
+    /* -------------------------- */
+    /*  WHAT WE OFFER SECTION    */
+    /* -------------------------- */
+    .offer-section {
+      padding: 4rem 2rem;
+      background-color: #F8FAFC;
+      text-align: center;
+    }
+    
+    .offer-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+    
+    .offer-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    
+    .offer-item {
+      flex: 0 0 250px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    .offer-item-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #333;
+      min-height: 3rem;
+    }
+    
+    .offer-item-text {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .foto12 {
+      width: 80px; 
+      height: auto; 
+    }
+
+    .foto13 {
+      width: 109px; 
+      height: auto; 
+    }
+
+    .foto14 {
+      width: 85px; 
+      height: auto; 
+    }
+
+    .foto15 {
+      width: 110px; 
+      height: auto; 
+    }
+
+    .registrazione1 {
+      width: 500px; 
+      height: auto; 
+    }
+
+    
+    /* -------------------------- */
+    /*  CALCULATORS SECTION      */
+    /* -------------------------- */
+    .calculators-section {
+      padding: 4rem 2rem;
+      background-color: #fff;
+    }
+    
+    .calculators-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .calculators-text {
+      flex: 1;
+      max-width: 600px;
+    }
+    
+    .calculators-subheading {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #01796F;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .calculators-title {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    .calculators-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    
+    .calculators-btn {
+      background-color: #01796F;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
+    
+    .calculators-btn:hover {
+      background-color: #01665E;
+    }
+    
+    .calculators-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .calculators-image img {
+      max-width: 400px;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* -------------------------- */
+    /*     THEORY SECTION        */
+    /* -------------------------- */
+    .theory-section {
+      padding: 4rem 2rem;
+      background-color: #F8FAFC;
+    }
+    
+    .theory-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Immagine a sinistra, testo a destra */
+    .theory-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .theory-image img {
+      max-width: 400px;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .theory-text {
+      flex: 1;
+      max-width: 600px;
+    }
+    
+    .theory-subheading {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #01796F;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .theory-title {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    .theory-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    
+    .theory-btn {
+      background-color: #01796F;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
+    
+    .theory-btn:hover {
+      background-color: #01665E;
+    }
+    
+    /* -------------------------- */
+    /*         FOOTER            */
+    /* -------------------------- */
+    .site-footer {
+      background-color: #fff;
+      border-top: 1px solid #eaeaea;
+      padding: 2rem;
+    }
+    
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .footer-left,
+    .footer-right {
+      flex: 1;
+    }
+    
+    .footer-brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
+    
+    .footer-text {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-right ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-right a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    
+    .footer-right a:hover {
+      color: #01796F;
+    }
+    
+    /* -------------------------- */
+    /*        RESPONSIVITÀ       */
+    /* -------------------------- */
+    @media (max-width: 768px) {
+      .hero-subheading {
+        font-size: 1.15rem; /* invece di 1.25rem */
+      }
+      .hero-title {
+        font-size: 3.2rem;  /* invece di 3.5rem */
+      }
+      .hero-subtitle {
+        font-size: 1.3rem;  /* invece di 1.5rem */
+      }
+      
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .hero-image {
+        margin-top: 2rem;
+      }
+      
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .navbar-center {
+        width: 100%;
+      }
+      
+      .offer-container,
+      .calculators-container,
+      .theory-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .offer-item,
+      .calculators-text,
+      .theory-text {
+        width: 100%;
+        max-width: 350px;
+      }
+      
+      .calculators-image,
+      .theory-image {
+        margin-top: 2rem;
+      }
+      
+      .calculators-image img,
+      .theory-image img {
+        max-width: 100%;
+      }
+      
+      .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .foto-resize {
+        width: 15000px;
+        height: auto;
+      }
+
+    }
+
+    
+    @media (min-width: 992px) {
+      .hero {
+        min-height: 100vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <!-- Brand (sinistra) -->
+    <div class="navbar-left">
+      <a href="homepage.html" class="brand">Black &amp; Scholes Calculator</a>
+    </div>
+    
+    
+    <!-- Nav link (destra) -->
+    <div class="navbar-right">
+      <a href="calculators.html" class="nav-link">Calculators</a>
+      <a href="theory.html" class="nav-link">Theory</a>
+    </div>
+  </nav>
+  
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-subheading">Derivatives Securities Pricing</div>
+      <h1 class="hero-title">Learn &amp; Teach Derivatives in a Smarter Way</h1>
+      <p class="hero-subtitle">
+        Black &amp; Scholes Calculator empowers you with an integrated suite designed for both students and professors. This platform combines practical tools with clear theoretical insights to simplify complex pricing models and boost your financial knowledge.
+      </p>
+      <div class="button-group">
+        <a href="calculators.html" class="cta-button">Launch Calculator</a>
+        <a href="theory.html" class="outline-button">Read the Theory</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="images/Foto11.png" alt="Screenshot of the calculator interface" class="foto-resize">
+    </div>
+  </section>
+  
+  <!-- WHAT WE OFFER SECTION -->
+  <section class="offer-section">
+    <h2 class="offer-title">What You Can Find</h2>
+    <div class="offer-container">
+      <!-- Card 1 -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="images/foto12.PNG" alt="Step-by-step Calculations Icon" class="foto12">
+        </div>
+        <h3 class="offer-item-title">Step-by-step Calculations</h3>
+        <p class="offer-item-text">
+          Instantly see each stage of the formula, helping you understand every derivative calculation.
+        </p>
+      </div>
+      
+      <!-- Card 2 -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="images/Foto13.png" alt="Greek Calculations Icon" class="foto13">
+        </div>
+        <h3 class="offer-item-title">Greeks Calculations</h3>
+        <p class="offer-item-text">
+          Calculate Delta, Gamma, Vega, Theta, and Rho with detailed math steps behind every result.
+        </p>
+      </div>
+      
+      <!-- Card 3 -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="images/Foto14.png" alt="Interactive Graphs Icon" class="foto14">
+        </div>
+        <h3 class="offer-item-title">Interactive Graphs</h3>
+        <p class="offer-item-text">
+          Explore dynamic plots of option payoffs, risk profiles, and more for deeper insights into derivative strategies.
+        </p>
+      </div>
+      
+      <!-- Card 4: Theory & Learning -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="images/Foto15.png" alt="Theory & Learning Icon" class="foto15">
+        </div>
+        <h3 class="offer-item-title">Theory &amp; Learning</h3>
+        <p class="offer-item-text">
+          Discover our concise derivative theory pages that explain key concepts and payoff structures, complementing our calculators.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CALCULATORS SECTION -->
+  <section class="calculators-section">
+    <div class="calculators-container">
+      <div class="calculators-text">
+        <div class="calculators-subheading">Engineered for Market Precision</div>
+        <h2 class="calculators-title">Derivatives Calculators Become Interactive</h2>
+        <p class="calculators-description">
+          Explore our growing collection of derivative calculators, ranging from simpler instruments like 
+          <strong>Futures</strong> and <strong>Vanilla Options</strong> to more specialized tools such as 
+          <strong>American Options</strong>, <strong>Index Options</strong>, <strong>Currency Options</strong>, 
+          <strong>Interest Rate Swaps</strong>, and even <strong>Exotic Options</strong>. 
+          Each tool offers step-by-step explanations to help you learn while you calculate.
+        </p>
+        <a href="calculators.html" class="cta-button calculators-btn">Explore the Calculators</a>
+      </div>
+      <video class="registrazione1" autoplay loop muted playsinline style="pointer-events: none;">
+        <source src="images/Registrazione1.mp4" type="video/mp4">
+      </video>      
+    </div>
+  </section>
+  
+  <!-- THEORY SECTION -->
+  <section class="theory-section">
+    <div class="theory-container">
+      <div class="theory-image">
+        <img src="images/theory-example.png" alt="Screenshot or illustration of derivative theory resources">
+      </div>
+      <div class="theory-text">
+        <div class="theory-subheading">Built for Clear Financial Insight</div>
+        <h2 class="theory-title">Clear, Accessible Derivative Theory</h2>
+        <p class="theory-description">
+          The theory pages deliver straightforward, in-depth explanations of derivative instruments. From 
+          <strong>Futures</strong> and <strong>Vanilla Options</strong> to advanced <strong>Exotic Options</strong>, 
+          we break down the core concepts, payoff dynamics, and practical applications so that you can master the art of pricing.
+        </p>
+        <a href="theory.html" class="theory-btn">Discover the Theory</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h3 class="footer-brand">Black &amp; Scholes Calculator</h3>
+        <p class="footer-text">
+          © 2025 Black &amp; Scholes Calculator. All rights reserved.
+        </p>
+      </div>
+      <div class="footer-right">
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="license.html">License</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
