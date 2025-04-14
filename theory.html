@@ -184,6 +184,36 @@
     .footer-right a:hover {
       color: #01796F;
     }
+
+    /* Imposta un layout mobile-first per il container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+    }
+    
+    /* Esempio di grid responsiva */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 600px) {
+      /* Su schermi molto piccoli, usa una sola colonna */
+      .input-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Navbar responsiva */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap; /* Permette di andare a capo se necessario */
+      justify-content: space-between;
+      padding: 1rem;
+    }
   </style>
   <script>
     // Object mapping derivative types to their detailed theory content.
