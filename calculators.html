@@ -553,12 +553,72 @@
 
   
 
-    @media only screen and (max-width: 800px) {
-      html,
-      body,
+    /* Imposta un layout mobile-first per il container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+    }
+
+    /* Esempio di grid responsiva */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      /* Adatta il container generale */
       .container {
-        min-width: 800px;
+        width: 90%;
+        max-width: 100%;
+        padding: 20px;
       }
+
+      /* Riporta la griglia degli input a una singola colonna */
+      .input-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem; /* Aumenta lo spazio tra le celle */
+      }
+
+      /* Adatta ogni gruppo di input */
+      .input-group {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .input-group label,
+      .input-group input,
+      .input-group select {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Eventuali altri pulsanti vengono adattati per mantenere coerenza */
+      .toggle-buttons-2,
+      .toggle-buttons-3 {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      
+      .toggle-btn,
+      button.calculate-btn {
+        font-size: 14px;
+        padding: 12px 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+
+
+    /* Navbar responsiva */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap; /* Permette di andare a capo se necessario */
+      justify-content: space-between;
+      padding: 1rem;
     }
     /* Rimuovo eventuali interazioni indesiderate (tooltip/legenda) */
     canvas { cursor: default; }
