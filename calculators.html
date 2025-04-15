@@ -5973,5 +5973,35 @@
         </div>
       </div>
     </footer>
+
+  <script>
+  // Funzione che cammina ricorsivamente nell'albero dei nodi per modificare solo i nodi di testo
+  function replaceSubscripts(node) {
+    // Se il nodo è un nodo di testo
+    if (node.nodeType === Node.TEXT_NODE) {
+      // Sostituire pattern come "d1", "T2", "x3" ecc.
+      // Puoi aggiungere altre sostituzioni se necessario
+      let replaced = node.nodeValue
+        .replace(/d(\d+)/g, "d<sub>$1</sub>")
+        .replace(/T(\d+)/g, "T<sub>$1</sub>")
+        .replace(/x(\d+)/g, "x<sub>$1</sub>");
+      // Se è stata fatta una sostituzione, sostituisci il nodo con un nodo HTML
+      if (replaced !== node.nodeValue) {
+        const span = document.createElement("span");
+        span.innerHTML = replaced;
+        node.parentNode.replaceChild(span, node);
+      }
+    } else {
+      // Se il nodo non è di testo, ricorsivamente controlla i suoi figli
+      node.childNodes.forEach(child => replaceSubscripts(child));
+    }
+  }
+  
+  // Esegui la sostituzione al caricamento della pagina
+  document.addEventListener("DOMContentLoaded", function() {
+    replaceSubscripts(document.body);
+  });
+  </script>
+
     </body>
     </html>
