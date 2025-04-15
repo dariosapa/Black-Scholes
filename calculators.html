@@ -433,18 +433,6 @@
       height: 400px;
     }
 
-
-    /* Mantieni la responsività */
-    @media (max-width: 768px) {
-      .greeks-row {
-        grid-template-columns: 1fr;
-      }
-      
-      .greeks-category {
-        padding: 1rem;
-      }
-    }
-
     .chart-title {
         color: var(--secondary);
         text-align: center;
@@ -569,25 +557,20 @@
     }
 
     @media (max-width: 600px) {
-      /* Adatta il container generale */
+      /* Contenitore principale: adattabile e con padding */
       .container {
         width: 90%;
         max-width: 100%;
         padding: 20px;
-      }
-
-      /* Riporta la griglia degli input a una singola colonna */
-      .input-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem; /* Aumenta lo spazio tra le celle */
-      }
-
-      /* Adatta ogni gruppo di input */
-      .input-group {
-        width: 100%;
         box-sizing: border-box;
       }
 
+      /* Griglia degli input: disposizione in una singola colonna */
+      .input-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .input-group,
       .input-group label,
       .input-group input,
       .input-group select {
@@ -595,13 +578,13 @@
         box-sizing: border-box;
       }
 
-      /* Eventuali altri pulsanti vengono adattati per mantenere coerenza */
+      /* Bottoni e gruppi di bottoni: disposizione verticale */
       .toggle-buttons-2,
       .toggle-buttons-3 {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 0.5rem;
       }
-      
       .toggle-btn,
       button.calculate-btn {
         font-size: 14px;
@@ -609,9 +592,122 @@
         width: 100%;
         box-sizing: border-box;
       }
+
+      /* Impostazioni generali per le sezioni delle Greche (per altri calcolatori) */
+      .greeks-grid,
+      .greeks-columns {
+        display: block;
+        width: 100%;
+      }
+      .greeks-grid > * {
+        margin-bottom: 0.5rem;
+      }
+      .greeks-column h3,
+      .greeks-column p {
+        font-size: 14px;
+        margin: 0.25rem 0;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+
+      /* --- Specifiche per il Calcolatore delle Binary Options --- */
+      /* Forza la sezione delle greche in modalità verticale, ottenendo 4 card separate */
+      #binary-calculator .greeks-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100%;
+        gap: 1rem;
+      }
+      /* Ogni elemento figlio interno a .greeks-category diventa una card separata */
+      #binary-calculator .greeks-category {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin-bottom: 1rem;
+        border: none;
+      }
+      #binary-calculator .greeks-category > * {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        font-size: 14px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+      #binary-calculator .greeks-category > *:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Riduzione delle dimensioni delle card dei payoff (Cash Or Nothing, Asset Or Nothing) */
+      #binary-calculator .result-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 14px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+
+      /* Grafici delle Binary Options: griglia a colonna singola con altezza fissa */
+      #binary-calculator .charts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+      }
+      #binary-calculator .chart-wrapper {
+        width: 100%;
+        padding: 0.5rem;
+        height: 350px; /* Altezza fissa per evitare espansioni indesiderate */
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+      #binary-calculator .chart-wrapper canvas {
+        width: 100% !important;
+        height: 350px !important;
+        display: block;
+      }
+
+      /* Altri grafici generici: altezza minima per evitare compressioni eccessive */
+      .chart-wrapper {
+        width: 100%;
+        height: auto;
+        padding: 0.5rem;
+        min-height: 300px;
+        box-sizing: border-box;
+      }
+      .chart-wrapper canvas {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 300px;
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      /* Regole per le tabelle: rendi le tabelle scrollabili se necessario */
+      table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      #cds-pd-table {
+        font-size: 14px;
+      }
+
+      /* Regole per i calcoli in generale (sezione "calcoli" e calcoli delle greche) */
+      .calculations, 
+      .calculations * {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
     }
-
-
 
     /* Navbar responsiva */
     .navbar {
