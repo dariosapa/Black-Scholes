@@ -3235,7 +3235,7 @@
           <input type="number" class="dividend-amount" step="0.01">
         </div>
         <div class="input-group">
-          <label>Time to Dividend (years)</label>
+          <label>Years to Dividend</label>
           <input type="number" class="dividend-time" step="0.01">
         </div>
         <button class="remove-dividend" onclick="removeDividendRow(this)">×</button>
@@ -4185,7 +4185,7 @@
 
             // Show calculations
             const steps = `
-                <p><strong>Futures Price (F₀)</strong> = S × e<sup>rT</sup> = ${S.toFixed(4)} × e<sup>${(r*T).toFixed(4)}</sup> = ${F.toFixed(4)}</p>
+                <p><strong>Futures Price (F)</strong> = S × e<sup>rT</sup> = ${S.toFixed(4)} × e<sup>${(r*T).toFixed(4)}</sup> = ${F.toFixed(4)}</p>
                 <p><strong>d1</strong> = [ln(${F.toFixed(4)}/${K.toFixed(4)}) + (0.5 × ${sigma.toFixed(4)}²) × ${T.toFixed(4)}] / (${sigma.toFixed(4)} × √${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
                 <p><strong>d₂</strong> = ${d1.toFixed(4)} - ${sigma.toFixed(4)} × √${T.toFixed(4)} = ${d2.toFixed(4)}</p>
                 <p><strong>Call Price</strong> = e<sup>-${(r*T).toFixed(4)}</sup> × [${F.toFixed(4)} × N(${d1.toFixed(4)}) - ${K.toFixed(4)} × N(${d2.toFixed(4)})] = ${call.toFixed(4)}</p>
