@@ -186,34 +186,200 @@
     }
 
     /* Imposta un layout mobile-first per il container */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+  }
+
+  /* Esempio di grid responsiva */
+  .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    /* Contenitore principale per sezioni comuni */
     .container {
-      max-width: 800px;
+      width: 90%;
+      max-width: 100%;
       margin: 0 auto;
       padding: 20px;
-      width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+      box-sizing: border-box;
     }
     
-    /* Esempio di grid responsiva */
+    /* Navbar: disposizione a blocchi verticali, centrata e con margin-bottom per separarla dal main */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 100;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .navbar-left,
+    .navbar-center,
+    .navbar-right {
+      width: 100%;
+      text-align: center;
+      margin: 0.5rem 0;
+    }
+    .brand {
+      font-size: 1.25rem;
+    }
+    .nav-link {
+      font-size: 1rem;
+      margin: 0.25rem 0;
+    }
+    .calculator-selector {
+      width: 100%;
+      max-width: 300px;
+      margin: 0.5rem auto;
+    }
+    #derivativeType {
+      width: 100%;
+      font-size: 16px;
+    }
+    
+    /* Main (card della teoria):
+      Aumentato il margine superiore a 7rem per garantire una separazione netta dalla navbar */
+    main {
+      width: 90%;
+      max-width: 100%;
+      margin: 7rem auto 1.5rem auto;
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+    }
+    main h1 {
+      font-size: 1.75rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      word-break: break-word;
+    }
+    main h2 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+      word-break: break-word;
+    }
+    main h3 {
+      font-size: 1.25rem;
+      margin-top: 1rem;
+      word-break: break-word;
+    }
+    main p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 1rem;
+      text-align: justify;
+      word-break: break-word;
+    }
+    main ul {
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+    main ul li {
+      font-size: 14px;
+      margin-bottom: 0.5rem;
+      word-break: break-word;
+    }
+    #theory-content {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      box-sizing: border-box;
+    }
+    main section {
+      margin-bottom: 1rem;
+      padding: 0 0.5rem;
+      box-sizing: border-box;
+    }
+    main section p,
+    main section ul,
+    main section li {
+      font-size: 14px;
+      word-break: break-word;
+    }
+    
+    /* Regole per eventuali blocchi di calcoli */
+    .calculations,
+    .calculations * {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    
+    /* Footer: disposizione verticale e centrata */
+    .site-footer {
+      padding: 1.5rem;
+    }
+    .footer-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
+    }
+    .footer-left,
+    .footer-right {
+      width: 100%;
+    }
+    .footer-brand {
+      font-size: 1.25rem;
+    }
+    .footer-text {
+      font-size: 0.9rem;
+    }
+    .footer-right ul {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    /* Regole generali per form, input e bottoni */
     .input-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
-    
-    @media (max-width: 600px) {
-      /* Su schermi molto piccoli, usa una sola colonna */
-      .input-grid {
-        grid-template-columns: 1fr;
-      }
+    .input-group,
+    .input-group label,
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      box-sizing: border-box;
     }
-    
-    /* Navbar responsiva */
-    .navbar {
+    .toggle-buttons-2,
+    .toggle-buttons-3 {
       display: flex;
-      flex-wrap: wrap; /* Permette di andare a capo se necessario */
-      justify-content: space-between;
-      padding: 1rem;
+      flex-direction: column;
+      gap: 0.5rem;
     }
+    .toggle-btn,
+    button.calculate-btn {
+      font-size: 14px;
+      padding: 12px 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    /* Su schermi molto piccoli, forza la griglia degli input a una colonna */
+    .input-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+
+  /* Navbar responsiva */
+  .navbar {
+    display: flex;
+    flex-wrap: wrap; /* Permette di andare a capo se necessario */
+    justify-content: space-between;
+    padding: 1rem;
+  }
   </style>
   <script>
     // Object mapping derivative types to their detailed theory content.
