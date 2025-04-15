@@ -1175,7 +1175,7 @@
                 <input type="number" class="dividend-amount" step="0.01">
               </div>
               <div class="input-group">
-                <label>Time to Dividend (years)</label>
+                <label>Years to Dividend</label>
                 <input type="number" class="dividend-time" step="0.01">
               </div>
               <button class="remove-dividend" onclick="removeDividendRow(this)">×</button>
@@ -1427,7 +1427,7 @@
     <div id="swap-calculator" class="calculator">
       <div class="input-grid">
         <div class="input-group">
-          <label>Notional Amount ($)</label>
+          <label>Notional Amount</label>
           <input type="number" id="notional" value="1000000" step="0.0001">
         </div>
         <div class="input-group">
@@ -1448,7 +1448,7 @@
       <div id="variableRatesContainer">
         <div class="variable-rate-row">
           <div class="input-group">
-            <label>Time (years)</label>
+            <label>Years</label>
             <input type="number" class="variable-rate-time" value="1" step="0.01">
           </div>
           <div class="input-group">
@@ -1481,11 +1481,11 @@
     <div id="swaption-calculator" class="calculator">
       <div class="input-grid">
         <div class="input-group">
-          <label>Principal Amount ($)</label>
+          <label>Principal Amount</label>
           <input type="number" id="swaption-L" value="10000000" step="0.0001">
         </div>
         <div class="input-group">
-          <label>Fixed Rate (Sk, %)</label>
+          <label>Fixed Rate (%)</label>
           <input type="number" id="swaption-Sk" value="5" step="0.0001">
         </div>
         <div class="input-group">
@@ -1572,7 +1572,7 @@
     <div id="cds-calculator" class="calculator">
       <div class="input-grid">
         <div class="input-group">
-          <label>Notional Amount ($)</label>
+          <label>Notional Amount</label>
           <input type="number" id="cds-notional" step="0.0001" value="">
         </div>
         <div class="input-group">
@@ -1608,7 +1608,7 @@
       <div id="cds-default-mode">
         <!-- Modalità Flat (default): -->
         <div id="cds-flat-mode">
-          <h3 style="color: var(--secondary);">Default Probability (Flat, %)</h3>
+          <h3 style="color: var(--secondary);">Default Probability (Flat)</h3>
           <div class="input-group">
             <input type="number" id="cds-flat-dp" step="0.01" placeholder="" value="">
           </div>
@@ -1676,15 +1676,15 @@
           <input type="number" id="gap-x2" step="0.0001" value="">
         </div>
         <div class="input-group">
-          <label>Interest Rate (%) (r)</label>
+          <label>Interest Rate (%)</label>
           <input type="number" id="gap-r" step="0.01" value="">
         </div>
         <div class="input-group">
-          <label>Dividend Yield (%) (q)</label>
+          <label>Dividend Yield (%)</label>
           <input type="number" id="gap-q" step="0.01" value="">
         </div>
         <div class="input-group">
-          <label>Maturity (T years)</label>
+          <label>Maturity (years)</label>
           <input type="number" id="gap-T" step="0.01" value="">
         </div>
         <div class="input-group">
@@ -1777,11 +1777,11 @@
           <input type="number" id="binary-Q" step="0.01" value="">
         </div>
         <div class="input-group">
-          <label>Risk-Free Rate (%) (r)</label>
+          <label>Risk-Free Rate (%)</label>
           <input type="number" id="binary-r" step="0.01" value="">
         </div>
         <div class="input-group">
-          <label>Maturity (T years)</label>
+          <label>Maturity (years)</label>
           <input type="number" id="binary-T" step="0.01" value="">
         </div>
         <div class="input-group">
@@ -1925,11 +1925,11 @@
             <input type="number" id="chooser-strike" step="0.0001" value="">
           </div>
           <div class="input-group">
-            <label>Option Maturity (T₂, years)</label>
+            <label>Option Maturity (T₂)</label>
             <input type="number" id="chooser-T2" step="0.01" value="">
           </div>
           <div class="input-group">
-            <label>Choice Time (T₁, years)</label>
+            <label>Choice Time (T₁)</label>
             <input type="number" id="chooser-T1" step="0.01" value="">
           </div>
           <div class="input-group">
@@ -2003,23 +2003,23 @@
         <h2>Straddle Calculator</h2>
         <div class="input-grid">
           <div class="input-group">
-            <label>Spot Price (S)</label>
+            <label>Spot Price</label>
             <input type="number" id="straddle-spot" step="0.0001" value="">
           </div>
           <div class="input-group">
-            <label>Strike Price (X)</label>
+            <label>Strike Price</label>
             <input type="number" id="straddle-strike" step="0.0001" value="">
           </div>
           <div class="input-group">
-            <label>Maturity (years) (T)</label>
+            <label>Maturity (years)</label>
             <input type="number" id="straddle-time" step="0.01" value="">
           </div>
           <div class="input-group">
-            <label>Risk-Free Rate (%) (r)</label>
+            <label>Risk-Free Rate (%)</label>
             <input type="number" id="straddle-rate" step="0.01" value="">
           </div>
           <div class="input-group">
-            <label>Volatility (%) (σ)</label>
+            <label>Volatility (%)</label>
             <input type="number" id="straddle-vol" step="0.01" value="">
           </div>
         </div>
@@ -2084,15 +2084,15 @@
       <div id="forward-start-options-calculator" class="calculator">
         <div class="input-grid">
           <div class="input-group">
-            <label>Spot Price (S)</label>
+            <label>Spot Price</label>
             <input type="number" id="fsS" step="0.0001" value="10">
           </div>
           <div class="input-group">
-            <label>Strike Price (X)</label>
+            <label>Strike Price</label>
             <input type="number" id="fsX" step="0.0001" value="10">
           </div>
           <div class="input-group">
-            <label>Maturity (T₂-T₁) (years)</label>
+            <label>Maturity (T₂-T₁)</label>
             <input type="number" id="fsTime" step="0.01" value="0.5">
           </div>
           <div class="input-group">
