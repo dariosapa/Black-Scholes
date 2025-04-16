@@ -716,6 +716,7 @@
       }
     }
 
+
     /* Navbar responsiva */
     .navbar {
       display: flex;
@@ -849,6 +850,7 @@
   <main class="container">
     <!-- Futures/Forwards Calculator -->
     <div id="futures-calculator" class="calculator">
+      <h2>Futures Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Spot Price</label>
@@ -889,6 +891,7 @@
     
     <!-- Vanilla Options Calculator -->
     <div id="vanilla-calculator" class="calculator active">
+      <h2>Vanilla Options Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Spot Price</label>
@@ -977,6 +980,7 @@
     
     <!-- Index Options Calculator (identico alle Vanilla Options, con id univoci) -->
     <div id="index-calculator" class="calculator">
+      <h2>Index Options Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Spot Price</label>
@@ -1065,6 +1069,7 @@
     
     <!-- Currency Options Calculator -->
     <div id="currency-calculator" class="calculator">
+      <h2>Currency Options Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Spot Price</label>
@@ -1153,6 +1158,7 @@
     
         <!-- Discrete Dividend Options Calculator -->
         <div id="discrete-div-calculator" class="calculator">
+          <h2>Options with Discrete Dividends Calculator</h2>
           <div class="input-grid">
             <div class="input-group">
               <label>Spot Price</label>
@@ -1250,6 +1256,7 @@
         <!-- American Options Calculator -->
 
         <div id="american-calculator" class="calculator">
+          <h2>American Options Calculator</h2>
           <div class="input-grid">
             <div class="input-group">
               <label>Spot Price</label>
@@ -1346,6 +1353,7 @@
 
     <!-- Calcolatore Futures/Forward Options -->
     <div id="futures-options-calculator" class="calculator">
+      <h2>Futures/Forward Options Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Spot Price</label>
@@ -1432,6 +1440,7 @@
 
     <!-- Swap Calculator -->
     <div id="swap-calculator" class="calculator">
+      <h2>Swap Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Notional Amount</label>
@@ -1486,6 +1495,7 @@
 
     <!-- Calcolatore Swaptions -->
     <div id="swaption-calculator" class="calculator">
+      <h2>Swaption Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Principal Amount</label>
@@ -1577,6 +1587,7 @@
     
     <!-- CDS Calculator -->
     <div id="cds-calculator" class="calculator">
+      <h2>Credit Default Swap Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Notional Amount</label>
@@ -1668,7 +1679,7 @@
 
     <!-- Gap Option Calculator -->
     <div id="gap options-calculator" class="calculator">
-      <h2>Gap Option Calculator</h2>
+      <h2>Gap Options Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Underlying Price (S)</label>
@@ -1769,7 +1780,7 @@
 
     <!-- Binary Option Calculator -->
     <div id="binary-calculator" class="calculator active">
-      <h2>Binary Option Calculator</h2>
+      <h2>Binary Options Calculator</h2>
       <div class="input-grid">
         <div class="input-group">
           <label>Underlying Price (S)</label>
@@ -1921,7 +1932,7 @@
 
       <!-- Chooser Option Calculator -->
       <div id="chooser-options-calculator" class="calculator">
-        <h2>Chooser Option Calculator</h2>
+        <h2>Chooser Options Calculator</h2>
         <div class="input-grid">
           <div class="input-group">
             <label>Spot Price (S)</label>
@@ -2089,6 +2100,7 @@
 
       <!-- Forward Start Options Calculator -->
       <div id="forward-start-options-calculator" class="calculator">
+        <h2>Forward Start Options Calculator</h2>
         <div class="input-grid">
           <div class="input-group">
             <label>Spot Price</label>
@@ -2474,82 +2486,121 @@
 
     function calculateSwap() {
       try {
-        const maturity = parseFloat(document.getElementById('maturity').value);
-        const frequency = parseInt(document.getElementById('frequency').value);
+        // Retrieve inputs from DOM and check if they exist
+        const maturityEl = document.getElementById('maturity');
+        const frequencyEl = document.getElementById('frequency');
+        if (!maturityEl || !frequencyEl) {
+          throw new Error("One or more required elements (maturity or frequency) are missing.");
+        }
+        const maturity = parseFloat(maturityEl.value);
+        const frequency = parseInt(frequencyEl.value);
+        if (isNaN(maturity) || isNaN(frequency))
+          throw new Error("Invalid maturity or frequency.");
+
+        // Calculate total periods and time fraction (delta)
         const periods = Math.ceil(maturity * frequency);
-        
-        let yieldCurve = [];
-        document.querySelectorAll('.variable-rate-row').forEach(row => {
-          const time = parseFloat(row.querySelector('.variable-rate-time').value);
-          const rate = parseFloat(row.querySelector('.variable-rate').value) / 100;
-          if (!isNaN(time) && !isNaN(rate)) {
-            yieldCurve.push({ time, rate });
+        const delta = 1 / frequency; // Accrual time fraction
+
+        // Build yield curve from each row with class 'variable-rate-row'
+        const yieldCurve = Array.from(document.querySelectorAll('.variable-rate-row'))
+          .map(row => {
+            const timeInput = row.querySelector('.variable-rate-time');
+            const rateInput = row.querySelector('.variable-rate');
+            if (!timeInput || !rateInput) {
+              throw new Error("Missing input(s) in a variable-rate-row.");
+            }
+            const time = parseFloat(timeInput.value);
+            const rate = parseFloat(rateInput.value) / 100;
+            return { time, rate };
+          })
+          .filter(item => !isNaN(item.time) && !isNaN(item.rate))
+          .sort((a, b) => a.time - b.time);
+
+        if (yieldCurve.length === 0)
+          throw new Error("No valid rates provided for the yield curve.");
+
+        // Function to perform linear interpolation on the yield curve
+        const interpolateRate = (time) => {
+          if (time <= yieldCurve[0].time) return yieldCurve[0].rate;
+          if (time >= yieldCurve[yieldCurve.length - 1].time)
+            return yieldCurve[yieldCurve.length - 1].rate;
+          for (let i = 0; i < yieldCurve.length - 1; i++) {
+            const current = yieldCurve[i];
+            const next = yieldCurve[i + 1];
+            if (time >= current.time && time <= next.time) {
+              const slope = (next.rate - current.rate) / (next.time - current.time);
+              return current.rate + slope * (time - current.time);
+            }
           }
-        });
-        
-        yieldCurve.sort((a, b) => a.time - b.time);
-        
+          // Fallback
+          return yieldCurve[yieldCurve.length - 1].rate;
+        };
+
         let sumDF = 0;
         let sumForwardDF = 0;
         let calcSteps = "<h4>Step 1: Calculate Discount Factors and Forward Rates</h4>";
-        
-        // Calculate for each period
+
         for (let t = 1; t <= periods; t++) {
-          const currentTime = t / frequency;
-          const yc = yieldCurve.find(item => Math.abs(item.time - currentTime) < 1e-6);
-          if (!yc) throw new Error("Missing rate for " + currentTime.toFixed(2) + " years");
-          
-          // Discount Factor calculation
-          const df = 1 / Math.pow(1 + yc.rate, currentTime);
-          
-          // Forward Rate calculation
+          const currentTime = t * delta;
+          const currentRate = interpolateRate(currentTime);
+          const df = 1 / Math.pow(1 + currentRate, currentTime); // Annual compounding DF
+
           let forwardRate;
           if (t === 1) {
-            forwardRate = yc.rate;
+            forwardRate = currentRate;
+            calcSteps += `
+              <div class="calculation-step">
+                <strong>Period 1 (${currentTime.toFixed(2)} years):</strong><br>
+                DF<sub>1</sub> = 1 / (1 + ${currentRate.toFixed(4)})<sup>${currentTime.toFixed(2)}</sup> = ${df.toFixed(6)}<br>
+                Forward Rate F<sub>1</sub> = ${forwardRate.toFixed(6)}
+              </div>
+            `;
           } else {
-            const prevTime = (t - 1) / frequency;
-            const ycPrev = yieldCurve.find(item => Math.abs(item.time - prevTime) < 1e-6);
-            if (!ycPrev) throw new Error("Missing rate for " + prevTime.toFixed(2) + " years");
-            forwardRate = (Math.pow(1 + yc.rate, currentTime)) / 
-                        Math.pow(1 + ycPrev.rate, prevTime) - 1;
+            const prevTime = (t - 1) * delta;
+            const prevRate = interpolateRate(prevTime);
+            forwardRate = (Math.pow(1 + currentRate, currentTime) / Math.pow(1 + prevRate, prevTime) - 1) / delta;
+            calcSteps += `
+              <div class="calculation-step">
+                <strong>Period ${t} (${currentTime.toFixed(2)} years):</strong><br>
+                DF<sub>${t}</sub> = 1 / (1 + ${currentRate.toFixed(4)})<sup>${currentTime.toFixed(2)}</sup> = ${df.toFixed(6)}<br>
+                Previous period at ${prevTime.toFixed(2)} years with rate ${prevRate.toFixed(4)}<br>
+                Forward Rate F<sub>${t}</sub> = [ (1 + ${currentRate.toFixed(4)})<sup>${currentTime.toFixed(2)}</sup> / 
+                (1 + ${prevRate.toFixed(4)})<sup>${prevTime.toFixed(2)}</sup> ] - 1 = ${forwardRate.toFixed(6)}
+              </div>
+            `;
           }
-          
-          calcSteps += `
-            <div class="calculation-step">
-              <strong>Period ${t} (${currentTime.toFixed(2)} years):</strong>
-              <p>Discount Factor DF<sub>${t}</sub> = 1 / (1 + r<sub>${t}</sub>)<sup>t</sup></p>
-              <p>= 1 / (1 + ${yc.rate.toFixed(4)})<sup>${currentTime.toFixed(2)}</sup> = ${df.toFixed(6)}</p>
-              
-              <p>Forward Rate F<sub>${t}</sub> = [(1 + r<sub>${t}</sub>)<sup>t</sup> / 
-              (1 + r<sub>${t-1}</sub>)<sup>t-1</sup>] - 1 = ${forwardRate.toFixed(6)}</p>
-            </div>
-          `;
-          
-          sumDF += df;
-          sumForwardDF += forwardRate * df;
+
+          // Multiply by delta (time fraction) for weighting
+          sumDF += delta * df;
+          sumForwardDF += forwardRate * delta * df;
         }
-        
+
         calcSteps += `
-          <h4>Step 2: Sum Discount Factors and Forward Rate × DF Products</h4>
-          <p>Σ(DF<sub>i</sub>) = ${sumDF.toFixed(6)}</p>
-          <p>Σ(F<sub>i</sub> × DF<sub>i</sub>) = ${sumForwardDF.toFixed(6)}</p>
+          <h4>Step 2: Sum the Discount Factors and the Products (F × DF × Δ)</h4>
+          <p>Sum DF = ${sumDF.toFixed(6)}</p>
+          <p>Sum (Forward × DF × Δ) = ${sumForwardDF.toFixed(6)}</p>
         `;
-        
-        // Final swap rate calculation
+
+        // Calculate the fixed swap rate
         const fixedRate = sumForwardDF / sumDF;
         calcSteps += `
-          <h4>Step 3: Calculate Fixed Rate</h4>
-          <p>Swap Rate = Σ(F<sub>i</sub> × DF<sub>i</sub>) / Σ(DF<sub>i</sub>)</p>
+          <h4>Step 3: Calculate Fixed Swap Rate</h4>
+          <p>Fixed Rate = (Sum (F × DF × Δ)) / (Sum (DF × Δ))</p>
           <p>= ${sumForwardDF.toFixed(6)} / ${sumDF.toFixed(6)} = ${(fixedRate * 100).toFixed(4)}%</p>
         `;
-        
+
+        // Update the DOM
         document.getElementById('fixed-rate').textContent = (fixedRate * 100).toFixed(4) + "%";
         document.getElementById('swapCalculationsContent').innerHTML = calcSteps;
-        
       } catch (error) {
         alert("Error: " + error.message);
       }
     }
+
+
+
+
+
 
 
     // Funzioni per gestire la curva dei tassi Swaption
