@@ -1947,7 +1947,7 @@
             <input type="number" id="chooser-T2" step="0.01" value="">
           </div>
           <div class="input-group">
-            <label>Choice Time (T₁)</label>
+            <label>Choice Time (T1)</label>
             <input type="number" id="chooser-T1" step="0.01" value="">
           </div>
           <div class="input-group">
@@ -2111,7 +2111,7 @@
             <input type="number" id="fsX" step="0.0001" value="10">
           </div>
           <div class="input-group">
-            <label>Maturity (T₂-T₁)</label>
+            <label>Maturity (T₂-T1)</label>
             <input type="number" id="fsTime" step="0.01" value="0.5">
           </div>
           <div class="input-group">
@@ -2857,7 +2857,7 @@
         var interval = parseInt(document.getElementById('cds-interval').value); // 1: annual, 2: semiannual, 4: quarterly
         var compounding = document.getElementById('cds-compounding').value; // "discrete" oppure "continuous"
 
-        // Il periodo base T₁: ad es. per annual T₁ = 1, per semiannual T₁ = 0.5, ecc.
+        // Il periodo base T1: ad es. per annual T1 = 1, per semiannual T1 = 0.5, ecc.
         var T1_default = 1 / interval;
 
         // Prelevo dinamicamente il primo valore della colonna "Years (T)" della tabella Buyer
@@ -3025,7 +3025,7 @@
         // Buyer Payments Table
         html += "<h4>Buyer Payments</h4>";
         html += "<table style='table-layout: fixed; width: 100%;'><thead><tr>";
-        html += "<th>Years (T)</th><th>SP</th><th>E[payment] (T₁×SP×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
+        html += "<th>Years (T)</th><th>SP</th><th>E[payment] (T1×SP×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
         html += "</tr></thead><tbody>";
         buyerData.forEach(function(row) {
           html += "<tr>";
@@ -3058,7 +3058,7 @@
         // Accrual Payments Table
         html += "<h4>Accrual Payments</h4>";
         html += "<table style='table-layout: fixed; width: 100%;'><thead><tr>";
-        html += "<th>Years (T)</th><th>PD</th><th>E[payment] (T₁×PD×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
+        html += "<th>Years (T)</th><th>PD</th><th>E[payment] (T1×PD×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
         html += "</tr></thead><tbody>";
         accrualData.forEach(function(row) {
           html += "<tr>";
@@ -5230,7 +5230,7 @@
           throw new Error("Please enter all values greater than zero.");
         }
         if (T1 >= T2) {
-          throw new Error("Choice Time (T₁) must be less than Option Maturity (T₂).");
+          throw new Error("Choice Time (T1) must be less than Option Maturity (T₂).");
         }
         
         // Step 1: Calculate the European call option price with maturity T₂
@@ -5238,7 +5238,7 @@
         const d2 = d1 - sigma * Math.sqrt(T2);
         const callPrice = S * Math.exp(-q * T2) * normalCDF(d1) - K * Math.exp(-r * T2) * normalCDF(d2);
         
-        // Step 2: Calculate the put option price (with modified strike) at T₁
+        // Step 2: Calculate the put option price (with modified strike) at T1
         const kStar = K * Math.exp(-r * (T2 - T1));
         const d1Star = (Math.log(S / kStar) + (r + 0.5 * sigma * sigma) * T1) / (sigma * Math.sqrt(T1));
         const d2Star = d1Star - sigma * Math.sqrt(T1);
@@ -5262,15 +5262,15 @@
           <p>N(d1) = ${normalCDF(d1).toFixed(4)} and N(d₂) = ${normalCDF(d2).toFixed(4)}</p>
           <p>Call Price = ${S.toFixed(4)}·e^(–q×${T2.toFixed(4)})·N(d1) – ${K.toFixed(4)}·e^(–r×${T2.toFixed(4)})·N(d₂) = ${callPrice.toFixed(4)}</p>
           
-          <p><strong>Step 2: Put Option Price (Maturity T₁) with Modified Strike</strong></p>
-          <p>Modified Strike k* = ${K.toFixed(4)}·e^(–r×(T₂–T₁)) = ${kStar.toFixed(4)}</p>
+          <p><strong>Step 2: Put Option Price (Maturity T1) with Modified Strike</strong></p>
+          <p>Modified Strike k* = ${K.toFixed(4)}·e^(–r×(T₂–T1)) = ${kStar.toFixed(4)}</p>
           <p>d1* = [ln(${S.toFixed(4)}/${kStar.toFixed(4)}) + (${r.toFixed(4)} + 0.5×${(sigma * sigma).toFixed(4)})×${T1.toFixed(4)}] ÷ (${sigma.toFixed(4)}×√${T1.toFixed(4)}) = ${d1Star.toFixed(4)}</p>
           <p>d₂* = d1* – ${sigma.toFixed(4)}×√${T1.toFixed(4)} = ${d2Star.toFixed(4)}</p>
           <p>N(–d1*) = ${normalCDF(-d1Star).toFixed(4)} and N(–d₂*) = ${normalCDF(-d2Star).toFixed(4)}</p>
           <p>Put Price = ${kStar.toFixed(4)}·e^(–r×${T1.toFixed(4)})·N(–d₂*) – ${S.toFixed(4)}·N(–d1*) = ${putPrice.toFixed(4)}</p>
           
           <p><strong>Step 3: Long Chooser Price</strong></p>
-          <p>Long Chooser Price = Call Price + e^(–q×(T₂–T₁))·max(Put Price, 0)</p>
+          <p>Long Chooser Price = Call Price + e^(–q×(T₂–T1))·max(Put Price, 0)</p>
           <p>= ${callPrice.toFixed(4)} + e^(–q×(${(T2 - T1).toFixed(4)}))·max(${putPrice.toFixed(4)}, 0) = ${longChooserPrice.toFixed(4)}</p>
           
           <p><strong>Step 4: Short Chooser Price</strong></p>
@@ -5868,7 +5868,7 @@
     try {
       const S = parseFloat(document.getElementById('fsS').value);
       const X = parseFloat(document.getElementById('fsX').value);
-      const T = parseFloat(document.getElementById('fsTime').value); // T₂ - T₁
+      const T = parseFloat(document.getElementById('fsTime').value); // T₂ - T1
       const r = (parseFloat(document.getElementById('fsRate').value) || 0) / 100;
       const sigma = (parseFloat(document.getElementById('fsVol').value) || 0) / 100;
       const q = (parseFloat(document.getElementById('fsDiv').value) || 0) / 100;
