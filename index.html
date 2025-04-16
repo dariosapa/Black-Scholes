@@ -7,6 +7,57 @@
   <!-- Inclusione del font Rubik da Google Fonts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+
+  <script>
+    window.addEventListener("load", function(){
+      window.cookieconsent.initialise({
+        type: "opt-in",          // richiede un clic “Accept” esplicito
+        revokable: true,         // abilita il link per cambiare scelta
+        palette: {
+          popup: {
+            background: "#F8FAFC",
+            text:       "#000000"
+          },
+          button: {
+            background: "#01796F",
+            text:       "#FFFFFF"
+          }
+        },
+        theme: "classic",
+        content: {
+          message: "This website uses cookies for analytics and marketing. You can accept or decline them.",
+          dismiss: "Accept",     // conferma
+          deny:    "Decline",    // rifiuto
+          link:    "Learn more",
+          href:    "/cookie-policy"
+        },
+        onInitialise: function(status) {
+          if (status === cookieconsent.status.allow) {
+            loadAnalytics();
+          }
+        },
+        onStatusChange: function(status) {
+          if (status === cookieconsent.status.allow) {
+            loadAnalytics();
+          }
+          // se status==='deny', non fa nulla (resta bloccato)
+        }
+      });
+    
+      function loadAnalytics(){
+        var s = document.createElement('script');
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R83ENCYEQN';
+        s.async = true;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer||[];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-R83ENCYEQN');
+      }
+    });
+    </script>
   
   <style>
     /* RESET */
