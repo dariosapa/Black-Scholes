@@ -390,61 +390,58 @@
         <section>
           <h2>Introduction</h2>
           <p>
-            Futures and forwards are financial derivatives that allow parties to lock in the price of an underlying asset for future delivery. These instruments are vital for hedging, speculation, and arbitrage.
+            Futures and forwards are essential financial derivatives used primarily for hedging, speculation, and arbitrage. While forwards are customized, over‑the‑counter (OTC) agreements, futures are standardized contracts traded on regulated exchanges.
           </p>
         </section>
         <section>
           <h2>Definitions and Characteristics</h2>
           <h3>Forward Contracts</h3>
           <p>
-            A forward contract is a private, over‑the‑counter agreement to buy or sell an asset at a predetermined price on a future date. They offer flexibility but expose participants to counterparty risk.
+            A forward contract is a private agreement to buy or sell an asset at a predetermined price on a future date. Key features include:
           </p>
           <ul>
-            <li><strong>Customization:</strong> Terms such as quantity and delivery date are negotiated.</li>
-            <li><strong>Counterparty Risk:</strong> Lack of centralized clearing increases default risk.</li>
-            <li><strong>Limited Regulation:</strong> Typically less transparent than exchange‑traded instruments.</li>
+            <li><strong>Customization:</strong> Terms such as quantity, delivery date, and price are tailored to the counterparties' needs.</li>
+            <li><strong>Counterparty Risk:</strong> Lacking centralized clearing, forwards expose participants to the risk of default.</li>
+            <li><strong>Flexibility:</strong> They are used for non-standardized assets and over‑the‑counter transactions.</li>
           </ul>
           <h3>Futures Contracts</h3>
           <p>
-            Futures contracts are standardized agreements traded on exchanges that obligate parties to transact at a predetermined price on a future date. They incorporate margin systems and daily mark‑to‑market settlements.
+            Futures contracts are standardized and traded on exchanges. They require the posting of margin and are settled daily via a mark‑to‑market mechanism. This structure enhances transparency and reduces counterparty risk.
           </p>
           <ul>
-            <li><strong>Standardization:</strong> Contract terms are set by the exchange.</li>
-            <li><strong>Transparency:</strong> Centralized trading ensures clear pricing.</li>
-            <li><strong>Risk Management:</strong> Margin requirements help control volatility risk.</li>
+            <li><strong>Standardization:</strong> Contract specifications (size, expiration, etc.) are determined by the exchange.</li>
+            <li><strong>Daily Settlement:</strong> Mark‑to‑market procedures help manage credit exposure by adjusting positions daily.</li>
+            <li><strong>Liquidity:</strong> High trading volumes provide tighter bid‑ask spreads and easier entry/exit.</li>
           </ul>
         </section>
         <section>
           <h2>Pricing and Valuation</h2>
           <p>
-            The cost‑of‑carry model is used to price forwards and futures. This model factors in the spot price, financing costs, storage (if any), and income such as dividends.
+            Both forwards and futures are typically priced using the cost‑of‑carry model. This model takes into account the spot price, financing costs (or risk‑free rate), storage or convenience yields (if applicable), and any income such as dividends.
           </p>
           <p style="text-align: center; font-style: italic;">
             Basic forward pricing formula: F = S · e<sup>r·T</sup>
           </p>
-          <ul>
-            <li><strong>F:</strong> Forward or futures price</li>
-            <li><strong>S:</strong> Spot price</li>
-            <li><strong>r:</strong> Risk‑free rate</li>
-            <li><strong>T:</strong> Time to expiration (years)</li>
-          </ul>
+          <p>
+            For futures, additional factors such as daily margin adjustments and convergence to the spot price at expiration are crucial. In practice, while the theoretical forward price is given by the formula above, observed futures prices may vary slightly due to market dynamics and liquidity conditions.
+          </p>
         </section>
         <section>
           <h2>Hedging Strategies and Risks</h2>
           <p>
-            Futures and forwards enable hedging of price fluctuations. For example, exporters can lock in exchange rates, while traders profit from anticipated price changes.
+            Futures and forwards help market participants lock in prices and hedge against adverse movements. However, while forwards expose users to counterparty risk, futures involve risks related to margin calls and liquidity.
           </p>
         </section>
         <section>
           <h2>Practical Examples and Applications</h2>
           <p>
-            An exporter may use a forward contract to secure a fixed exchange rate, and a commodity trader might use futures to take advantage of market volatility.
+            For example, an exporter might use a forward contract to secure a fixed exchange rate for future sales, while a commodity trader could use futures to speculate on price movements or hedge an inventory position.
           </p>
         </section>
         <section>
           <h2>Conclusions</h2>
           <p>
-            Futures and forwards are indispensable for managing risk. Forwards offer flexibility, whereas futures provide high liquidity and standardized pricing.
+            In summary, forwards offer bespoke solutions for OTC transactions, whereas futures provide a standardized, liquid, and transparent market environment. Each serves a critical role in risk management and price discovery.
           </p>
         </section>
         `
@@ -455,25 +452,24 @@
         <section>
           <h2>Introduction</h2>
           <p>
-            Vanilla options are among the most widely traded derivatives. They grant the right—but not the obligation—to buy (call) or sell (put) an asset at a predetermined price on or before expiration.
+            Vanilla options are the foundational options contracts that grant the right—but not the obligation—to buy (call) or sell (put) an underlying asset at a predetermined strike price by expiration. They are widely used in both hedging and speculative strategies.
           </p>
         </section>
         <section>
           <h2>Definitions and Characteristics</h2>
           <p>
-            These standardized contracts may be traded on an exchange or over‑the‑counter, featuring:
+            Vanilla options can be either European or American style, with European options exercisable only at expiration and American options offering early exercise privileges. Their primary components include the strike price, expiration date, and premium paid.
           </p>
           <ul>
-            <li><strong>Call Option:</strong> Right to buy at the strike price.</li>
-            <li><strong>Put Option:</strong> Right to sell at the strike price.</li>
-            <li><strong>Expiration:</strong> The option must be exercised before or at this date.</li>
-            <li><strong>Premium:</strong> The cost to acquire the option.</li>
+            <li><strong>Call Option:</strong> Provides the right to buy the underlying asset at the strike price.</li>
+            <li><strong>Put Option:</strong> Provides the right to sell the underlying asset at the strike price.</li>
+            <li><strong>Premium:</strong> The cost paid for acquiring the option.</li>
           </ul>
         </section>
         <section>
           <h2>Pricing and Valuation</h2>
           <p>
-            The Black‑Scholes model is used for pricing European‑style vanilla options. The formulas are:
+            European vanilla options are predominantly priced using the Black‑Scholes model, which is founded on risk‑neutral valuation. This model assumes that the underlying asset’s price follows a lognormal distribution. The option’s value consists of its intrinsic value and time premium.
           </p>
           <p style="text-align: center; font-style: italic;">
             <strong>Call Option:</strong><br>
@@ -485,47 +481,39 @@
             <strong>Put Option:</strong><br>
             P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · N(-d<sub>1</sub>)
           </p>
-          <ul>
-            <li><strong>S:</strong> Current asset price</li>
-            <li><strong>K:</strong> Strike price</li>
-            <li><strong>r:</strong> Risk‑free interest rate</li>
-            <li><strong>T:</strong> Time to expiration</li>
-            <li><strong>σ:</strong> Volatility</li>
-            <li><strong>N(d):</strong> Cumulative normal distribution function</li>
-          </ul>
           <p>
-            Adjustments may be required for dividend payments or American‑style contracts.
+            In cases involving dividend‑paying stocks or adjustments for American exercise features, modifications to the base model are applied. The model’s accuracy depends critically on the assumptions regarding volatility, interest rates, and the behavior of the underlying asset.
           </p>
         </section>
         <section>
           <h2>The Greeks and Sensitivity Analysis</h2>
           <p>
-            The Greeks reflect how sensitive an option’s price is to different factors:
+            The Greeks are pivotal in measuring the sensitivity of an option’s price to various factors:
           </p>
           <ul>
-            <li><strong>Delta:</strong> Change in option price with a one‑unit change in the underlying’s price.</li>
-            <li><strong>Gamma:</strong> Rate of change of Delta.</li>
-            <li><strong>Theta:</strong> Time decay of the option’s value.</li>
-            <li><strong>Vega:</strong> Sensitivity to changes in volatility.</li>
-            <li><strong>Rho:</strong> Sensitivity to changes in interest rates.</li>
+            <li><strong>Delta:</strong> The rate of change of the option price with respect to the price of the underlying asset.</li>
+            <li><strong>Gamma:</strong> The rate of change of Delta, indicating curvature in the price dynamics.</li>
+            <li><strong>Theta:</strong> Time decay; it measures how the option’s value diminishes as expiration nears.</li>
+            <li><strong>Vega:</strong> Sensitivity to changes in the underlying asset’s volatility.</li>
+            <li><strong>Rho:</strong> Sensitivity to changes in the risk‑free interest rate.</li>
           </ul>
         </section>
         <section>
           <h2>Hedging Strategies and Risks</h2>
           <p>
-            Vanilla options are used for hedging and income strategies. For example, protective puts can safeguard a portfolio, and covered calls can generate extra income.
+            Due to the dynamic nature of market conditions, traders use various hedging strategies (such as delta hedging) to manage the risk associated with vanilla options. These strategies help mitigate losses from adverse price movements, although they require continuous adjustments to reflect changes in the Greeks.
           </p>
         </section>
         <section>
           <h2>Practical Examples and Applications</h2>
           <p>
-            Investors may buy calls to benefit from rising prices or use puts to hedge against downside risk.
+            In practice, vanilla options are used to implement straightforward directional bets, provide portfolio insurance (for example, through protective puts), and capture income through strategies like covered calls.
           </p>
         </section>
         <section>
           <h2>Conclusions</h2>
           <p>
-            Vanilla options are a cornerstone of options trading, prized for their simplicity and the efficiency of the Black‑Scholes pricing model.
+            Vanilla options serve as the building blocks for more complex derivatives. Their valuation through the Black‑Scholes model—along with the practical insights provided by the Greeks—offers market participants a clear framework for managing risk and making informed trading decisions.
           </p>
         </section>
         `
@@ -533,936 +521,885 @@
       "futures-options": {
         title: "Theory on Futures/Forward Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Futures/Forward Options combine characteristics of both options and futures (or forwards). They give the right—but not the obligation—to enter into a futures or forward contract at a predetermined price by expiration.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            These options are based on an underlying futures or forward contract. Their features include:
-          </p>
-          <ul>
-            <li><strong>Underlying Contract:</strong> A standardized futures or forward agreement.</li>
-            <li><strong>Optionality:</strong> The right to take a position without obligation.</li>
-            <li><strong>Standardization:</strong> Exchange‑traded versions are uniform and liquid.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Black’s model, adapted from Black‑Scholes, is used for valuation, based on the current futures price:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Call Option on a Futures Contract:</strong><br>
-            C = e<sup>-rT</sup> [F · N(d<sub>1</sub>) - K · N(d<sub>2</sub>)]<br>
-            d<sub>1</sub> = [ln(F/K) + (σ²/2)T] / (σ√T)<br>
-            d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Put Option on a Futures Contract:</strong><br>
-            P = e<sup>-rT</sup> [K · N(-d<sub>2</sub>) - F · N(-d<sub>1</sub>)]
-          </p>
-          <ul>
-            <li><strong>F:</strong> Current futures/forward price</li>
-            <li><strong>K:</strong> Strike price</li>
-            <li><strong>r:</strong> Risk‑free interest rate</li>
-            <li><strong>T:</strong> Time to expiration (in years)</li>
-            <li><strong>σ:</strong> Volatility of the underlying contract</li>
-            <li><strong>N(d):</strong> Cumulative normal distribution function</li>
-          </ul>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The sensitivities (Greeks) for futures/forward options include:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Sensitivity to changes in the underlying futures price.</li>
-            <li><strong>Gamma:</strong> The rate of change of delta.</li>
-            <li><strong>Theta:</strong> Time decay effect on the option’s price.</li>
-            <li><strong>Vega:</strong> Sensitivity to volatility shifts.</li>
-            <li><strong>Rho:</strong> Sensitivity to interest rate changes.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            These options allow for hedging price exposure while limiting commitment to a full futures position. They carry inherent market, liquidity, and volatility risks.
-          </p>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            An investor might use a call option on a commodity futures contract to speculate on a price rise, or a producer might utilize a put option to hedge against price declines.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Futures/Forward Options combine the benefits of options and futures, serving as flexible instruments for both hedging and speculation when valued with Black’s model.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Futures/Forward Options combine the flexibility of options with the underlying exposure of futures or forward contracts. These derivatives give the holder the right—but not the obligation—to enter into a long or short position in a futures or forward contract at a predetermined price. They are especially useful for hedging exposure without fully committing to a futures position.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              These instruments derive their value from an underlying futures or forward contract. Key attributes include:
+            </p>
+            <ul>
+              <li><strong>Underlying Contract:</strong> Can be either a standardized futures or a customized forward agreement.</li>
+              <li><strong>Optionality:</strong> Provides the right to take a position at a fixed price without mandatory execution.</li>
+              <li><strong>Standardization (for futures):</strong> Contracts traded on exchanges benefit from liquidity and transparency, whereas forward options traded OTC allow bespoke terms.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              The valuation of futures/forward options is typically performed using a variant of Black’s model—an adaptation of the Black‑Scholes framework. In this approach, the futures or forward price replaces the spot price, and the model incorporates the cost‑of‑carry, which reflects financing costs and the convergence of futures to the spot price at expiration. Moreover, daily margining in futures markets plays a critical role in risk management.
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Call Option on a Futures Contract:</strong><br>
+              C = e<sup>-rT</sup> [F · N(d<sub>1</sub>) - K · N(d<sub>2</sub>)]<br>
+              d<sub>1</sub> = [ln(F/K) + (σ²/2)T] / (σ√T)<br>
+              d<sub>2</sub> = d<sub>1</sub> - σ√T
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Put Option on a Futures Contract:</strong><br>
+              P = e<sup>-rT</sup> [K · N(-d<sub>2</sub>) - F · N(-d<sub>1</sub>)]
+            </p>
+            <ul>
+              <li><strong>F:</strong> The current futures/forward price.</li>
+              <li><strong>K:</strong> Strike price.</li>
+              <li><strong>r:</strong> Risk‑free interest rate.</li>
+              <li><strong>T:</strong> Time to expiration in years.</li>
+              <li><strong>σ:</strong> Volatility of the underlying futures price.</li>
+              <li><strong>N(d):</strong> The cumulative standard normal distribution function.</li>
+            </ul>
+            <p>
+              Note that, as expiration nears, the futures price converges to the spot price. Additionally, because futures are marked‑to‑market daily, the pricing reflects the impact of interim settlement, which is not present in forward contracts.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              The Greeks of futures/forward options are calculated similarly to those for vanilla options, but with the underlying price replaced by the futures price. Key sensitivities include:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Measures the sensitivity of the option’s price to changes in the underlying futures price.</li>
+              <li><strong>Gamma:</strong> Indicates the rate of change of Delta.</li>
+              <li><strong>Theta:</strong> Reflects time decay, with adjustments for the futures’ daily settlement mechanism.</li>
+              <li><strong>Vega:</strong> Captures the sensitivity to shifts in volatility.</li>
+              <li><strong>Rho:</strong> Sensitivity to changes in the risk‑free rate.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              These options allow market participants to hedge exposure without committing fully to a futures position. However, they inherit risks from both the option and the underlying futures. Margin calls, liquidity fluctuations, and convergence mechanics near expiration are some risks to consider.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For instance, a commodity trader might use a call option on a futures contract to speculate on rising prices while capping the downside risk. Similarly, a producer could use a put option to ensure a minimum sale price, protecting against adverse market movements.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Futures/forward options successfully merge the advantages of options with the characteristics of futures and forwards. Their pricing—based on the adjusted Black model—and risk management techniques make them versatile tools for hedging and speculative strategies in dynamic markets.
+            </p>
+          </section>
         `
       },
       "discrete-div": {
         title: "Theory on Options with Discrete Dividends",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Options with discrete dividends are written on dividend‑paying stocks, where scheduled dividend payments affect the underlying asset's price and, subsequently, the option's value.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            These options are similar to standard options but must account for the impact of known dividend payments:
-          </p>
-          <ul>
-            <li><strong>Discrete Dividends:</strong> Fixed dividend amounts paid on specific dates before expiration.</li>
-            <li><strong>Ex‑Dividend Effect:</strong> The underlying stock's price typically decreases by the dividend amount on the ex‑dividend date.</li>
-            <li><strong>Valuation Adjustment:</strong> The present value of the dividends is subtracted from the current stock price.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            To price these options, the spot price is adjusted by subtracting the present value of expected dividends:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Adjusted Stock Price:</strong><br>
-            S<sub>adj</sub> = S - PV(Dividends)
-          </p>
-          <p>
-            The Black‑Scholes model is then applied using S<sub>adj</sub>:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Call Option:</strong><br>
-            C = S<sub>adj</sub> · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
-            where<br>
-            d<sub>1</sub> = [ln(S<sub>adj</sub>/K) + (r + σ²/2)T] / (σ√T)<br>
-            d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Put Option:</strong><br>
-            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S<sub>adj</sub> · N(-d<sub>1</sub>)
-          </p>
-          <ul>
-            <li><strong>S:</strong> Current stock price</li>
-            <li><strong>K:</strong> Strike price</li>
-            <li><strong>r:</strong> Risk‑free interest rate</li>
-            <li><strong>T:</strong> Time to expiration (years)</li>
-            <li><strong>σ:</strong> Volatility</li>
-            <li><strong>N(d):</strong> Cumulative normal distribution function</li>
-          </ul>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The Greeks for these options adjust for the dividend impact:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Impact on the option's price per unit change in the adjusted stock price.</li>
-            <li><strong>Gamma:</strong> The rate of change of delta.</li>
-            <li><strong>Theta:</strong> Increased time decay, particularly as the ex‑dividend date approaches.</li>
-            <li><strong>Vega:</strong> Sensitivity to volatility changes.</li>
-            <li><strong>Rho:</strong> Sensitivity to changes in the risk‑free rate.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Traders adjust hedges to account for dividend risk, aligning positions with the ex‑dividend schedule. Strategies typically involve a mix of calls and puts to manage downside risk.
-          </p>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            An investor may evaluate call options by subtracting the present value of an expected dividend from the stock's price, often resulting in a lower call price and a higher put price.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Accounting for discrete dividends is essential to accurately price dividend‑paying stock options. Adjusting the stock price by the present value of expected dividends yields a more precise valuation.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Options on dividend‑paying stocks require special attention because dividends affect the underlying asset’s price. Options with discrete dividends incorporate specific, scheduled dividend payments into the valuation process.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              These options are similar to standard (vanilla) options but take into account known dividend amounts paid on specific dates prior to expiration. The primary features include:
+            </p>
+            <ul>
+              <li><strong>Discrete Dividends:</strong> Fixed dividend payments occurring at predetermined intervals.</li>
+              <li><strong>Ex‑Dividend Impact:</strong> On the ex‑dividend date, the stock price typically decreases by approximately the dividend amount.</li>
+              <li><strong>Adjustable Valuation:</strong> The underlying’s effective price is adjusted by the present value of expected dividends.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              To accurately price options with discrete dividends, the standard Black‑Scholes model is modified by subtracting the present value of all known dividend payments from the current stock price. This adjusted stock price, denoted S<sub>adj</sub>, accounts for the drop in value expected when dividends are paid.
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              Adjusted Stock Price: S<sub>adj</sub> = S - PV(Dividends)
+            </p>
+            <p>
+              The Black‑Scholes formulas are then applied using S<sub>adj</sub>:
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Call Option:</strong><br>
+              C = S<sub>adj</sub> · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
+              d<sub>1</sub> = [ln(S<sub>adj</sub> /K) + (r + σ²/2)T] / (σ√T)<br>
+              d<sub>2</sub> = d<sub>1</sub> - σ√T
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Put Option:</strong><br>
+              P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S<sub>adj</sub> · N(-d<sub>1</sub>)
+            </p>
+            <p>
+              These adjustments ensure that the model accurately reflects the expected drop in the underlying’s price on ex‑dividend dates, providing a more precise option valuation.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              While the fundamental Greeks (Delta, Gamma, Theta, Vega, and Rho) for options with discrete dividends are calculated similarly to those for standard options, their values are influenced by the dividend adjustments. For example:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Reflects the sensitivity to changes in the adjusted stock price (S<sub>adj</sub>).</li>
+              <li><strong>Gamma:</strong> Indicates the curvature of the price relation, adjusted for the dividend effect.</li>
+              <li><strong>Theta:</strong> May accelerate near dividend dates due to the sudden drop in stock price.</li>
+              <li><strong>Vega:</strong> Measures volatility sensitivity while accounting for dividend impacts.</li>
+              <li><strong>Rho:</strong> Sensitivity to changes in the risk‑free rate remains, but the effective underlying is S<sub>adj</sub>.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              In hedging dividend‑paying positions, traders must adjust their strategies to account for the dividend-induced price drop. Dynamic hedging methods may require rebalancing around the ex‑dividend date to maintain effective risk coverage.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For example, an investor holding call options on a dividend‑paying stock might see a reduced call value due to anticipated dividend payments. By adjusting the stock price using the present value of dividends, the valuation models provide a clearer picture and guide better hedging decisions.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Options with discrete dividends require adjustments to the standard pricing models. By subtracting the present value of anticipated dividends from the stock price, market participants achieve a more accurate reflection of expected price movements, leading to more precise option valuations and effective hedging strategies.
+            </p>
+          </section>
         `
       },
       "american": {
         title: "Theory on American Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            American options allow the holder to exercise at any time up to and including the expiration date. This added flexibility is valuable for dividend‑paying assets and deep in‑the‑money scenarios.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            The key difference from European options is the early exercise privilege. This feature influences the option’s premium and optimal exercise strategy.
-          </p>
-          <ul>
-            <li><strong>Early Exercise:</strong> Can be optimal for dividend‑paying stocks or deep in‑the‑money puts.</li>
-            <li><strong>Call Options:</strong> Generally not exercised early on non‑dividend paying stocks.</li>
-            <li><strong>Put Options:</strong> Often exercised early when deep in‑the‑money.</li>
-            <li><strong>Valuation:</strong> Typically requires numerical methods such as the binomial tree model.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Due to early exercise possibilities, American options are valued with numerical methods. Approximations like the Bjerksund‑Stensland model are also sometimes used.
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Note:</strong> Numerical techniques capture the early exercise feature.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            While similar to European options, the Greeks for American options can be more volatile:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Sensitivity to the underlying's price.</li>
-            <li><strong>Gamma:</strong> Change rate of delta.</li>
-            <li><strong>Theta:</strong> Time decay, often accelerating near expiration.</li>
-            <li><strong>Vega:</strong> Sensitivity to volatility.</li>
-            <li><strong>Rho:</strong> Sensitivity to interest rate changes.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Hedging American options requires dynamic strategies that incorporate the possibility of early exercise and dividend effects.
-          </p>
-          <ul>
-            <li><strong>Early Exercise Risk:</strong> Must be considered in hedging plans.</li>
-            <li><strong>Dividend Considerations:</strong> Particularly important for calls on dividend‑paying stocks.</li>
-            <li><strong>Higher Premiums:</strong> The increased flexibility generally leads to higher option prices.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            For instance, an investor might exercise an American call option early to capture a dividend payout or adjust hedges for American puts when market conditions change.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            American options offer valuable flexibility for managing risk, though they require complex valuation and hedging techniques. A thorough grasp of their unique characteristics is essential.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              American options provide the holder with the right, but not the obligation, to exercise the option at any time up to and including the expiration date. This additional flexibility is especially useful for dividend‑paying stocks and deep in‑the‑money put positions, though it also introduces complexities in pricing and risk management.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              The key feature that distinguishes American options from their European counterparts is the early exercise privilege. Important characteristics include:
+            </p>
+            <ul>
+              <li><strong>Early Exercise:</strong> Can be beneficial for capturing dividend payments or locking in intrinsic value, particularly for deep in‑the‑money puts.</li>
+              <li><strong>Flexibility:</strong> The option can be exercised at any point during its life, not just at expiration.</li>
+              <li><strong>Valuation Challenges:</strong> Unlike European options, there is no closed‑form pricing formula for American options in most cases, necessitating numerical methods (e.g., binomial trees, finite difference methods, or approximations such as the Bjerksund‑Stensland model).</li>
+              <li><strong>Market Application:</strong> They are widely used in practice, especially in the U.S. markets, where many stocks pay dividends and early exercise may be optimal.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              American options are typically valued using numerical methods since the optimal exercise boundary is not known in closed‑form. For example, binomial or trinomial tree models simulate the possibility of early exercise at each node. For non‑dividend‑paying stocks, American call options are rarely exercised early and can often be priced similarly to European calls.
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <em>Note:</em> When dividends are involved, the likelihood of early exercise increases, impacting the option's premium.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              The Greeks for American options are similar to those for European options, yet their behavior can differ notably because of the early exercise feature:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Indicates how the option’s price changes with the underlying asset price, but may change more abruptly near the early exercise boundary.</li>
+              <li><strong>Gamma:</strong> Often larger due to non‑linear exercise features, particularly for deep in‑the‑money options.</li>
+              <li><strong>Theta:</strong> Reflects time decay, which can accelerate as the option nears potential exercise periods, especially around ex‑dividend dates.</li>
+              <li><strong>Vega:</strong> Measures sensitivity to volatility; changes in volatility can affect the optimal exercise decision.</li>
+              <li><strong>Rho:</strong> Remains a measure of sensitivity to interest rate changes, influencing both the discounting of cash flows and the early exercise premium.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Due to the possibility of early exercise, hedging American options is more challenging than for European options. Dynamic hedging strategies must be frequently rebalanced to account for changes in the option’s delta and the underlying asset’s price, and to adjust for dividend effects.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For example, an investor holding American call options on a dividend‑paying stock may choose to exercise early to receive an upcoming dividend. Conversely, an investor with deep in‑the‑money American put options might exercise early to secure the intrinsic value before further deterioration in the underlying’s price.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              American options offer significant flexibility for managing risk and capturing value, particularly in environments with dividend payments or high volatility. However, this flexibility comes with additional pricing and hedging complexities that require advanced numerical methods and dynamic risk management techniques.
+            </p>
+          </section>
         `
       },
       "index": {
         title: "Theory on Index Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Index options are derivatives based on stock market indices, providing exposure to broad market movements and serving as effective hedging instruments.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            An index option grants the right, but not the obligation, to buy (call) or sell (put) a market index at a fixed strike price on the expiration date. Typically, these options are European style and cash‑settled.
-          </p>
-          <ul>
-            <li><strong>Underlying Asset:</strong> A stock market index (e.g., S&P 500, FTSE 100).</li>
-            <li><strong>European Style:</strong> Exercisable only at expiration.</li>
-            <li><strong>Cash‑Settled:</strong> Settlement is done in cash based on the index level.</li>
-            <li><strong>Dividend Yield:</strong> Continuous yield from the index components is factored into pricing.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Index options are priced using an adjusted Black‑Scholes model that incorporates a continuous dividend yield (q). The formulas are:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Call Option:</strong><br>
-            C = S · e<sup>-qT</sup> · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
-            d<sub>1</sub> = [ln(S/K) + (r - q + σ²/2)T] / (σ√T)<br>
-            d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Put Option:</strong><br>
-            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · e<sup>-qT</sup> · N(-d<sub>1</sub>)
-          </p>
-          <ul>
-            <li><strong>S:</strong> Current index level</li>
-            <li><strong>K:</strong> Strike price</li>
-            <li><strong>r:</strong> Domestic risk‑free rate</li>
-            <li><strong>q:</strong> Continuous dividend yield</li>
-            <li><strong>T:</strong> Time to expiration (years)</li>
-            <li><strong>σ:</strong> Volatility of the index</li>
-            <li><strong>N(d):</strong> Standard normal cumulative distribution</li>
-          </ul>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The Greeks for index options capture the sensitivity of the option’s price to market changes:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Rate of change of the option price with a change in the index.</li>
-            <li><strong>Gamma:</strong> The rate of change of delta with respect to the index level.</li>
-            <li><strong>Theta:</strong> Time decay of the option value.</li>
-            <li><strong>Vega:</strong> Sensitivity to changes in index volatility.</li>
-            <li><strong>Rho:</strong> Impact of changes in the risk‑free rate.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Index options are commonly used to hedge diversified portfolios against broad market risks, help in portfolio insurance, and even generate additional income.
-          </p>
-          <ul>
-            <li><strong>Portfolio Insurance:</strong> Using put options to protect against market downturns.</li>
-            <li><strong>Income Generation:</strong> Selling calls on an index to earn premium income.</li>
-            <li><strong>Risk Diversification:</strong> Exposure to a basket of stocks reduces idiosyncratic risk.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            Institutional investors might buy S&P 500 put options to hedge a large portfolio, while traders may use index options for leveraged exposure.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Index options provide an efficient way to manage broad market exposure. Their pricing, adjusted for dividend yield, and sensitivity measures make them essential tools for hedging and portfolio management.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Index options are derivatives based on stock market indices. They allow investors to gain exposure to or hedge against the overall market movements without the need to transact in individual stocks. Typically, these options are European style and cash‑settled.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              An index option grants the right, but not the obligation, to buy (call) or sell (put) a market index at a specified strike price on the expiration date. Key features include:
+            </p>
+            <ul>
+              <li><strong>Underlying Asset:</strong> A diversified stock market index (e.g., S&P 500, FTSE 100), representing a basket of stocks.</li>
+              <li><strong>Cash Settlement:</strong> Rather than delivering the actual index components, these options are settled in cash based on the difference between the index level and the strike price.</li>
+              <li><strong>European Style:</strong> Index options are typically exercisable only at expiration.</li>
+              <li><strong>Dividend Yield:</strong> The continuous dividend yield derived from the index’s components is factored into pricing models.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              The pricing of index options commonly employs an adjusted version of the Black‑Scholes model. In this adaptation, the dividend yield (q) is subtracted from the risk‑free rate to account for the continuous income generated by the index components. The standard formulas for a European call and put option are:
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Call Option:</strong><br>
+              C = S · e<sup>-qT</sup> · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
+              d<sub>1</sub> = [ln(S/K) + (r - q + σ²/2)T] / (σ√T)<br>
+              d<sub>2</sub> = d<sub>1</sub> - σ√T
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Put Option:</strong><br>
+              P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · e<sup>-qT</sup> · N(-d<sub>1</sub>)
+            </p>
+            <p>
+              These models assume that the index follows a lognormal process and that the impact of dividends is captured via a continuous dividend yield.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              The Greeks for index options are used to measure sensitivities as follows:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Measures the rate of change in the option’s price relative to changes in the index level.</li>
+              <li><strong>Gamma:</strong> Indicates the rate of change of Delta with respect to changes in the index level.</li>
+              <li><strong>Theta:</strong> Represents time decay, quantifying how the option's value erodes as expiration approaches.</li>
+              <li><strong>Vega:</strong> Captures sensitivity to changes in the index’s volatility.</li>
+              <li><strong>Rho:</strong> Reflects sensitivity to changes in the domestic risk‑free interest rate.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Index options are primarily used for hedging diversified portfolios against systemic market risks. They help protect against broad market declines or enhance income through strategies like selling calls. However, they are subject to risks such as rapid changes in volatility and market sentiment.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              Institutional investors often use index options for portfolio insurance, such as buying put options to safeguard against significant market downturns. Conversely, traders might use call options to leverage exposure to anticipated market rallies.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              In conclusion, index options provide a streamlined approach to managing exposure across entire markets. Their pricing incorporates adjustments for dividend yield, and the sensitivity measures (Greeks) offer critical insights for effective hedging and risk management strategies.
+            </p>
+          </section>
         `
       },
       "currency": {
         title: "Theory on Currency Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Currency options grant the right, but not the obligation, to exchange currencies at a specified rate on or before expiration. They are useful tools for hedging foreign exchange risk and for speculating on currency movements.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            Currency options involve a currency pair and reflect both domestic and foreign interest rates. Key features include:
-          </p>
-          <ul>
-            <li><strong>Underlying Exchange Rate:</strong> The rate between two currencies (e.g., EUR/USD).</li>
-            <li><strong>Call Option:</strong> Right to buy the base currency by selling the quote currency.</li>
-            <li><strong>Put Option:</strong> Right to sell the base currency in exchange for the quote currency.</li>
-            <li><strong>Dual Interest Rates:</strong> Pricing factors in both domestic and foreign risk‑free rates.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            The Garman–Kohlhagen model, an adaptation of Black‑Scholes, is used for pricing currency options. It incorporates the foreign risk‑free rate as a “dividend yield.” The formulas are:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Call Option:</strong><br>
-            C = S · e<sup>-r_fT</sup> · N(d<sub>1</sub>) - K · e<sup>-r_dT</sup> · N(d<sub>2</sub>)<br>
-            d<sub>1</sub> = [ln(S/K) + (r_d - r_f + σ²/2)T] / (σ√T)<br>
-            d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Put Option:</strong><br>
-            P = K · e<sup>-r_dT</sup> · N(-d<sub>2</sub>) - S · e<sup>-r_fT</sup> · N(-d<sub>1</sub>)
-          </p>
-          <ul>
-            <li><strong>S:</strong> Current spot exchange rate</li>
-            <li><strong>K:</strong> Strike exchange rate</li>
-            <li><strong>r_d:</strong> Domestic risk‑free rate</li>
-            <li><strong>r_f:</strong> Foreign risk‑free rate</li>
-            <li><strong>T:</strong> Time to expiration (years)</li>
-            <li><strong>σ:</strong> Volatility of the exchange rate</li>
-            <li><strong>N(d):</strong> Standard normal cumulative function</li>
-          </ul>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The Greeks for currency options incorporate both domestic and foreign interest rate effects:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> For calls, Delta = e<sup>-r_fT</sup> · N(d<sub>1</sub>).</li>
-            <li><strong>Gamma:</strong> Rate of change of Delta.</li>
-            <li><strong>Theta:</strong> Time decay of option value.</li>
-            <li><strong>Vega:</strong> Sensitivity to changes in exchange rate volatility.</li>
-            <li><strong>Rho:</strong> Sensitivity to interest rate changes (both domestic and foreign).</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Currency options are used to hedge against FX risks and to speculate on currency movements. For example, importers may use call options to cap costs.
-          </p>
-          <ul>
-            <li><strong>Hedging:</strong> Protect against unfavorable exchange rate movements.</li>
-            <li><strong>Speculation:</strong> Gain leveraged exposure with limited downside risk.</li>
-            <li><strong>Risk Factors:</strong> Sensitive to changes in volatility and dual interest rates.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            A U.S. importer might buy a call option on EUR/USD to limit the maximum exchange rate, while a European exporter could use a put option to hedge against an appreciating euro.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Currency options are essential tools in the FX market. The Garman–Kohlhagen model provides a framework for pricing these options by incorporating both domestic and foreign interest rates, making them indispensable for managing exchange rate risk.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Currency options provide the right, but not the obligation, to exchange one currency for another at a predetermined exchange rate (strike) on or before a specified expiration date. They are essential tools for hedging foreign exchange (FX) risk and for speculating on currency movements.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              Currency options involve a currency pair and factor in the differences between domestic and foreign interest rates. Key features include:
+            </p>
+            <ul>
+              <li><strong>Underlying Exchange Rate:</strong> This is typically expressed as the price of one unit of the base currency in terms of the quote currency (e.g., EUR/USD).</li>
+              <li><strong>Call Option:</strong> Grants the right to buy the base currency by selling the quote currency.</li>
+              <li><strong>Put Option:</strong> Grants the right to sell the base currency in exchange for the quote currency.</li>
+              <li><strong>Dual Interest Rates:</strong> Both domestic and foreign risk‑free rates affect the option’s pricing.</li>
+              <li><strong>Cash Settlement:</strong> Currency options are usually settled in cash rather than via physical delivery.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              The Garman–Kohlhagen model, an adaptation of Black‑Scholes, is commonly used to price European‑style currency options. In this model, the foreign risk‑free rate is incorporated as a “dividend yield.” The pricing formulas are:
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Call Option:</strong><br>
+              C = S · e<sup>-r<sub>f</sub>T</sup> · N(d<sub>1</sub>) - K · e<sup>-r<sub>d</sub>T</sup> · N(d<sub>2</sub>)<br>
+              d<sub>1</sub> = [ln(S/K) + (r<sub>d</sub> - r<sub>f</sub> + σ²/2)T] / (σ√T)<br>
+              d<sub>2</sub> = d<sub>1</sub> - σ√T
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              <strong>Put Option:</strong><br>
+              P = K · e<sup>-r<sub>d</sub>T</sup> · N(-d<sub>2</sub>) - S · e<sup>-r<sub>f</sub>T</sup> · N(-d<sub>1</sub>)
+            </p>
+            <ul>
+              <li><strong>S:</strong> Current spot exchange rate.</li>
+              <li><strong>K:</strong> Strike exchange rate.</li>
+              <li><strong>r<sub>d</sub>:</strong> Domestic risk‑free interest rate.</li>
+              <li><strong>r<sub>f</sub>:</strong> Foreign risk‑free interest rate.</li>
+              <li><strong>T:</strong> Time to expiration in years.</li>
+              <li><strong>σ:</strong> Volatility of the exchange rate.</li>
+              <li><strong>N(d):</strong> Cumulative standard normal distribution function.</li>
+            </ul>
+            <p>
+              This model assumes the underlying exchange rate follows a lognormal process and that the dividend–like effect of the foreign interest rate is fully captured by discounting at rate r<sub>f</sub>.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              Key sensitivity measures (Greeks) for currency options include:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Reflects the change in the option’s price for a small change in the exchange rate. For calls, Delta is typically e<sup>-r<sub>f</sub>T</sup>·N(d<sub>1</sub>).</li>
+              <li><strong>Gamma:</strong> Indicates the rate of change of Delta with respect to the exchange rate.</li>
+              <li><strong>Theta:</strong> Represents time decay; currency options may experience accelerated decay as expiration nears.</li>
+              <li><strong>Vega:</strong> Measures sensitivity to volatility changes in the exchange rate.</li>
+              <li><strong>Rho:</strong> Captures the sensitivity to changes in domestic and foreign interest rates.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Currency options are often employed to hedge against adverse foreign exchange movements or to gain leveraged exposure with limited downside risk. However, they are subject to risks such as rapid changes in volatility, dual interest rate influences, and market liquidity considerations.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For example, a U.S. importer might purchase a call option on EUR/USD to protect against a rising euro, while a European exporter could use a put option to hedge against an appreciating euro.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              In conclusion, currency options allow market participants to manage FX risk effectively. The Garman–Kohlhagen model, with its incorporation of both domestic and foreign interest rates, provides a robust framework for pricing these options, while the Greeks offer critical insights for dynamic hedging.
+            </p>
+          </section>
         `
       },
       "swap": {
         title: "Theory on Interest Rate Swaps",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Interest rate swaps are over‑the‑counter derivatives that allow two parties to exchange cash flows based on differing interest rate structures—typically fixed for floating. They are widely used for hedging interest rate risk and managing balance sheet exposures.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            In an interest rate swap, one party pays a fixed rate while receiving a floating rate (or vice versa) on a notional principal amount. Key components include:
-          </p>
-          <ul>
-            <li><strong>Fixed Leg:</strong> Periodic payments at a fixed interest rate.</li>
-            <li><strong>Floating Leg:</strong> Periodic payments at a variable rate, often linked to a benchmark (e.g., LIBOR, EURIBOR).</li>
-            <li><strong>Notional Amount:</strong> The principal amount used for calculations (not exchanged).</li>
-            <li><strong>Tenor:</strong> The duration over which the swap operates.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            The swap rate is determined such that the net present value (NPV) of the fixed and floating legs is equal at initiation. A common formula for the swap rate is:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            Swap Rate = [1 - P(T)] / Σ (δ<sub>i</sub> · P(t<sub>i</sub>))
-          </p>
-          <p>
-            where P(t) represents the discount factor at time t and δ<sub>i</sub> is the day count fraction for the i‑th period. This rate ensures the NPV of the swap is zero at inception.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            Although traditional “Greeks” do not directly apply, key sensitivity measures include:
-          </p>
-          <ul>
-            <li><strong>Duration:</strong> Sensitivity of the swap’s value to changes in interest rates.</li>
-            <li><strong>Convexity:</strong> Measures the curvature of the price‑yield relationship.</li>
-            <li><strong>DV01:</strong> The change in the swap’s value for a one‑basis‑point move in interest rates.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Interest rate swaps are used to manage exposure to fluctuations in interest rates. Common applications include converting a variable rate into a fixed rate and vice versa, thereby aligning debt profiles with risk management objectives.
-          </p>
-          <ul>
-            <li><strong>Hedging Exposure:</strong> Altering the interest rate profile of a portfolio.</li>
-            <li><strong>Credit and Market Risk:</strong> Swaps carry counterparty, market, and operational risks.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            A company with floating‑rate debt may enter a swap to receive floating and pay fixed, stabilizing its interest expense. Conversely, an investor might speculate on interest rate moves by taking an opposing position.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Interest rate swaps are pivotal for managing interest rate risk. Their pricing, based on discount factors and annuity concepts, along with sensitivity measures like duration and DV01, makes them essential for effective risk management.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Interest rate swaps are over‑the‑counter derivatives used to exchange cash flows between two parties based on differing interest rate payment structures, typically fixed versus floating. These instruments are fundamental for managing interest rate risk and for optimizing the balance sheet.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              In an interest rate swap, one counterparty agrees to pay a fixed rate while receiving a floating rate (or vice versa) on a notional principal, which is not exchanged. Key characteristics include:
+            </p>
+            <ul>
+              <li><strong>Fixed Leg:</strong> Involves periodic, predetermined payments based on a fixed interest rate.</li>
+              <li><strong>Floating Leg:</strong> Involves payments that vary with a benchmark rate (e.g., LIBOR, SOFR, EURIBOR).</li>
+              <li><strong>Notional Amount:</strong> The principal value used solely for calculating payment amounts.</li>
+              <li><strong>Tenor:</strong> The duration over which the swap is active, which can range from a few years to several decades.</li>
+              <li><strong>Customization:</strong> Unlike exchange‑traded products, swaps can be tailored to the needs of the counterparties.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              The pricing of an interest rate swap is based on the principle that, at initiation, the swap’s net present value (NPV) is zero. The fixed rate, often called the swap rate, is determined by equating the present value of the fixed leg’s cash flows with that of the floating leg. A common formula to determine the swap rate is:
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              Swap Rate = [1 - P(T)] / Σ (δ<sub>i</sub> · P(t<sub>i</sub>))
+            </p>
+            <p>
+              Here, P(t) represents the discount factor at time t, and δ<sub>i</sub> is the day count fraction for the i‑th payment period. The floating leg is typically assumed to reset periodically to the prevailing market rate, which leads to its NPV being equal to the notional (or par value) at the start.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              Although interest rate swaps do not have Greeks in the same sense as options, key sensitivity measures include:
+            </p>
+            <ul>
+              <li><strong>Duration:</strong> Measures the sensitivity of the swap’s value to changes in interest rates.</li>
+              <li><strong>Convexity:</strong> Captures the curvature of the price-yield relationship.</li>
+              <li><strong>DV01:</strong> The change in the swap’s value for a one-basis-point change in interest rates.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Swaps are primarily used to convert fixed-rate debt to floating-rate debt (or vice versa) to match a firm’s risk management objectives. While they offer efficient risk transfer, swaps carry risks such as counterparty risk, market volatility, and operational risk.
+            </p>
+            <ul>
+              <li><strong>Counterparty Risk:</strong> As OTC instruments, swaps expose parties to the risk of default by the counterparty.</li>
+              <li><strong>Market Risk:</strong> Changes in interest rate environments can affect the swap’s valuation.</li>
+              <li><strong>Liquidity Risk:</strong> Customization of swaps may result in less liquid secondary markets compared to standardized products.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For example, a company with floating-rate liabilities might enter a swap to pay a fixed rate, thereby stabilizing its interest expense, while a bank could use the opposite strategy to benefit from a rising interest rate environment.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Interest rate swaps are pivotal instruments in modern financial markets. Their pricing is underpinned by discount factor analysis and the balancing of fixed and floating cash flows, while their applications in hedging and balance sheet management make them essential for effective interest rate risk management.
+            </p>
+          </section>
         `
       },
       "swaption": {
         title: "Theory on Swaptions",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            A swaption is an option that grants the holder the right, but not the obligation, to enter into an interest rate swap at a predetermined rate on or before a specified date. Swaptions provide flexibility for hedging interest rate exposure and are widely used by financial institutions and corporations.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            Swaptions come in two main types:
-          </p>
-          <ul>
-            <li><strong>Payer Swaption:</strong> Gives the right to enter into a swap where the holder will pay a fixed rate and receive a floating rate. It is used to hedge against rising interest rates.</li>
-            <li><strong>Receiver Swaption:</strong> Gives the right to enter into a swap where the holder will receive a fixed rate and pay a floating rate. This is useful when expecting falling interest rates.</li>
-            <li><strong>Underlying Swap:</strong> The option is linked to an interest rate swap characterized by its notional amount, tenor, and fixed (strike) rate.</li>
-            <li><strong>Exercise Style:</strong> Most swaptions are European style, meaning they can be exercised only at expiration, though American swaptions also exist.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Swaptions are commonly priced using Black’s swaption model, an adaptation of the Black‑Scholes framework. The model values a European swaption as:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            Swaption Value = A · [F · N(d<sub>1</sub>) - K · N(d<sub>2</sub>)]<br>
-            where<br>
-            d<sub>1</sub> = [ln(F/K) + 0.5 · σ²T] / (σ√T)<br>
-            d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p>
-            In this equation:
-          </p>
-          <ul>
-            <li><strong>A:</strong> The present value of the annuity (swap’s cash flow leg), representing the sum of discounted payment periods.</li>
-            <li><strong>F:</strong> The forward swap rate.</li>
-            <li><strong>K:</strong> The strike swap rate specified in the swaption.</li>
-            <li><strong>σ:</strong> The volatility of the forward swap rate.</li>
-            <li><strong>T:</strong> Time to expiration of the swaption.</li>
-            <li><strong>N(d):</strong> Cumulative normal distribution function.</li>
-          </ul>
-          <p>
-            This model assumes a European‑style exercise. For American swaptions, numerical methods are generally required.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The sensitivity of a swaption’s price to changes in market conditions is measured by its Greeks:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Sensitivity of the swaption’s price to changes in the forward swap rate.</li>
-            <li><strong>Vega:</strong> Sensitivity to changes in the volatility of the forward swap rate.</li>
-            <li><strong>Theta:</strong> Time decay of the swaption’s value as expiration nears.</li>
-            <li><strong>Rho:</strong> Sensitivity to changes in the risk‑free rate affecting the discount factor A.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Swaptions are used to hedge interest rate risk. Payer swaptions protect against rising rates, while receiver swaptions help hedge falling rates. However, they also carry risks related to volatility, market liquidity, and counterparty credit.
-          </p>
-          <ul>
-            <li><strong>Hedging Interest Rate Exposure:</strong> Swaptions allow market participants to secure future swap rates in uncertain environments.</li>
-            <li><strong>Speculative Use:</strong> Traders may use swaptions to take advantage of anticipated changes in rate volatility.</li>
-            <li><strong>Risks:</strong> Include volatility risk, model risk, and credit risk.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            For example, a corporation expecting an increase in interest rates might purchase a payer swaption to lock in a favorable fixed rate for a future swap, while an investor might buy a receiver swaption to profit from a decline in rates.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Swaptions are versatile derivatives that allow for flexible management of interest rate risk. Using Black’s model, their valuation incorporates the forward swap rate, annuity factors, and volatility, while the Greeks help measure sensitivities. A solid understanding of swaptions is critical for those managing or speculating on interest rate exposures.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              A swaption is an option that provides its holder with the right, but not the obligation, to enter into an interest rate swap at a predetermined fixed rate on or before a specified expiration date. Swaptions are widely used by financial institutions to hedge interest rate risk and to speculate on future movements in interest rates.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              Swaptions come in two primary types:
+            </p>
+            <ul>
+              <li><strong>Payer Swaption:</strong> Grants the right to enter into a swap as the fixed-rate payer (and floating-rate receiver). It is typically used to hedge against rising interest rates.</li>
+              <li><strong>Receiver Swaption:</strong> Grants the right to enter into a swap as the fixed-rate receiver (and floating-rate payer). It is used when expecting falling interest rates.</li>
+              <li><strong>Underlying Swap:</strong> The swap linked to the swaption features a notional amount, a fixed (strike) rate, and a tenor, which defines the sequence of cash flows.</li>
+              <li><strong>Exercise Style:</strong> Most swaptions are European style, meaning they can only be exercised at expiration, though American swaptions do exist.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              Swaptions are generally priced using Black’s swaption model, which is an adaptation of the Black‑Scholes framework for interest rate derivatives. In this model, the swaption value is determined by the forward swap rate (F), the strike swap rate (K), the volatility of the swap rate (σ), and the time to expiration (T). An annuity factor (A), representing the present value of the swap’s fixed leg cash flows, is used to discount the payoff.
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              Swaption Value = A · [F · N(d<sub>1</sub>) - K · N(d<sub>2</sub>)]<br>
+              d<sub>1</sub> = [ln(F/K) + 0.5 · σ²T] / (σ√T)<br>
+              d<sub>2</sub> = d<sub>1</sub> - σ√T
+            </p>
+            <p>
+              This approach assumes that the forward swap rate follows a lognormal distribution. Adjustments for market conditions and the specific characteristics of the underlying swap may be necessary for more precise valuations.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              The sensitivity of a swaption’s price to changes in market parameters is measured by its Greeks:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Measures the sensitivity of the swaption’s price to changes in the forward swap rate.</li>
+              <li><strong>Vega:</strong> Reflects the sensitivity to changes in the volatility of the forward swap rate.</li>
+              <li><strong>Theta:</strong> Represents time decay as the swaption approaches expiration.</li>
+              <li><strong>Rho:</strong> Captures the sensitivity to changes in the risk‑free rate, which affects the discount factor for annuity cash flows.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Swaptions offer flexibility in managing interest rate risk. However, their hedging is complex due to the need to account for the optionality and the underlying swap’s cash flow structure. Traders often use dynamic hedging strategies and monitor the sensitivity measures (Greeks) closely. Additionally, model risk and market liquidity must be carefully managed.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For example, a corporation expecting an increase in interest rates might purchase a payer swaption to lock in a favorable fixed rate for future debt refinancing. Conversely, an investor might buy a receiver swaption to benefit from a decline in interest rates, thereby generating a profit from the swap rate differential.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Swaptions are versatile instruments that allow market participants to manage and speculate on interest rate movements. Their valuation through Black’s model, combined with dynamic hedging strategies, makes them essential tools for modern interest rate risk management.
+            </p>
+          </section>
         `
       },
       "cds": {
         title: "Theory on Credit Default Swaps",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Credit Default Swaps (CDS) are financial derivatives that allow an investor to “insure” against the credit risk of a reference entity, such as a corporation or sovereign issuer. In a CDS contract, the protection buyer pays periodic premiums to the protection seller in exchange for compensation if a predefined credit event—such as default, restructuring, or bankruptcy—occurs.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            Key elements and features of a CDS contract include:
-          </p>
-          <ul>
-            <li><strong>Reference Entity:</strong> The borrower or issuer whose credit risk is being transferred.</li>
-            <li><strong>Protection Buyer:</strong> Pays a recurring premium (or spread) to the protection seller.</li>
-            <li><strong>Protection Seller:</strong> Commits to compensate the protection buyer if a credit event occurs.</li>
-            <li><strong>Credit Event:</strong> Defined triggering events (e.g., default, failure to pay, restructuring) that activate the payout.</li>
-            <li><strong>Notional Amount:</strong> The face value upon which the premium payments and compensation are based.</li>
-            <li><strong>Maturity:</strong> The duration over which the CDS contract is active.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Valuing a CDS involves estimating the probability of a credit event and the expected recovery rate if default occurs. The premium (spread) reflects the market's perception of the reference entity’s credit risk. Valuation typically utilizes a risk‑neutral framework:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            Basic CDS pricing (simplified):<br>
-            Spread ≈ (Default Probability × (1 - Recovery Rate)) / (1 - Default Probability × Recovery Rate)
-          </p>
-          <p>
-            More advanced models involve hazard rates, survival probabilities, and discount factors to determine the fair spread and the CDS's mark‑to‑market value.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            Although CDS contracts do not have Greeks in the traditional options sense, key sensitivity measures include:
-          </p>
-          <ul>
-            <li><strong>Sensitivities to Credit Spread:</strong> How changes in the perceived credit risk (spread widening or tightening) affect the contract’s value.</li>
-            <li><strong>DV01 (Dollar Value of a 1 bp Move):</strong> Measures the change in the value of the CDS for a one basis point change in the credit spread.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            CDS contracts are used both for hedging credit exposures and for speculative purposes. While they provide a mechanism to transfer credit risk, they also introduce:
-          </p>
-          <ul>
-            <li><strong>Counterparty Risk:</strong> The risk that the protection seller may fail to meet its obligations.</li>
-            <li><strong>Basis Risk:</strong> Mismatches between the CDS and the underlying credit exposure.</li>
-            <li><strong>Liquidity Risk:</strong> Variability in market liquidity can affect pricing and exit opportunities.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            An investor holding corporate bonds can buy a CDS to hedge against potential default by the issuer. Conversely, a trader might sell CDS protection to earn premium income while speculating on an improvement in the reference entity’s credit quality.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Credit Default Swaps are essential instruments in credit risk management, offering a mechanism to transfer and price credit risk. Their valuation depends on market perceptions of default probabilities and recovery rates, and while they provide valuable hedging opportunities, they also carry significant counterparty and market risks.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Credit Default Swaps (CDS) are financial derivatives that allow investors to transfer credit risk from one party to another. In a CDS contract, the protection buyer makes periodic premium payments to the protection seller in exchange for compensation if a predefined credit event occurs, such as a default, restructuring, or bankruptcy of the reference entity.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              The key elements and features of a CDS include:
+            </p>
+            <ul>
+              <li><strong>Reference Entity:</strong> The borrower or issuer whose credit risk is being transferred.</li>
+              <li><strong>Protection Buyer:</strong> Pays a periodic premium (spread) to secure protection against credit events.</li>
+              <li><strong>Protection Seller:</strong> Commits to compensate the buyer if a credit event occurs.</li>
+              <li><strong>Credit Event:</strong> Defined triggers such as default, missed payments, or restructuring that activate the contract.</li>
+              <li><strong>Notional Amount:</strong> The principal amount on which premiums and compensation calculations are based.</li>
+              <li><strong>Maturity:</strong> The duration over which the CDS contract is active.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              Pricing a CDS involves estimating the probability of a credit event (default) and the expected recovery rate if such an event occurs. Under a risk‑neutral framework, the premium (or spread) reflects these probabilities and is determined such that the present value of the premium payments equals the expected loss from the credit event. More advanced models use hazard rates, survival probabilities, and discount factors to derive the fair CDS spread.
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              Basic CDS Pricing (Simplified):<br>
+              Spread ≈ (Default Probability × (1 - Recovery Rate)) / [1 - (Default Probability × Recovery Rate)]
+            </p>
+            <p>
+              In practice, calibration to market data is essential to incorporate current credit spreads, recovery assumptions, and liquidity conditions.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              Unlike options, CDS contracts do not have traditional Greeks. However, sensitivity measures are still crucial:
+            </p>
+            <ul>
+              <li><strong>Sensitivity to Credit Spreads:</strong> How the value of the CDS changes with widening or tightening of the credit spread.</li>
+              <li><strong>DV01 (Dollar Value of a 1 bp Move):</strong> Reflects the change in the CDS’s value for a one‑basis‑point shift in the credit spread.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              CDS contracts are used both for hedging and for speculative purposes. They enable investors holding fixed-income assets to hedge against potential credit losses, while traders may take positions to profit from changes in perceived credit risk. However, CDS contracts involve risks such as counterparty risk, basis risk (mismatch between the CDS and the underlying exposure), and liquidity risk.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For instance, an investor holding a portfolio of corporate bonds might purchase CDS protection to hedge against the default risk of one or more issuers. Alternatively, a trader might sell CDS protection to capture premium income, betting that the credit quality of the reference entities will improve.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Credit Default Swaps are indispensable instruments for transferring and managing credit risk. Their valuation relies on assessing default probabilities and recovery rates within a risk‑neutral framework, while their use in hedging and speculation highlights the importance of managing counterparty and liquidity risks.
+            </p>
+          </section>
         `
       },
       "gap options": {
         title: "Theory on Gap Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Gap options are exotic financial instruments characterized by the separation between the activation level of the option (trigger strike) and the exercise price used for calculating the payoff (payment strike). This structure allows for different risk/reward profiles compared to traditional vanilla options.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            Gap options feature two distinct strike prices:
-          </p>
-          <ul>
-            <li><strong>Trigger Strike (K<sub>1</sub>):</strong> The level the underlying asset must reach for the option to become active (i.e., “in the money”).</li>
-            <li><strong>Payment Strike (K<sub>2</sub>):</strong> The price used for calculating the payoff once the trigger has been breached.</li>
-          </ul>
-          <p>
-            This separation can lead to lower premiums compared to vanilla options, while offering attractive leverage if the underlying asset’s price moves favorably.
-          </p>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Gap options are typically priced using models similar to Black‑Scholes with adjustments for the dual strike structure. For a call gap option, the payoff is defined as:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            Payoff = { S - K<sub>2</sub> if S ≥ K<sub>1</sub>; otherwise 0 }
-          </p>
-          <p>
-            The pricing model must incorporate the probability that the underlying asset’s price will reach or exceed the trigger strike (K<sub>1</sub>) and, if it does, use the payment strike (K<sub>2</sub>) to determine the intrinsic value.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            Although gap options share some sensitivity measures with vanilla options, they exhibit a more complex dynamic due to the two-strike structure:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Reflects the sensitivity of the option’s price to changes in the underlying asset’s price, particularly near the trigger strike.</li>
-            <li><strong>Gamma:</strong> Indicates the rate of change of Delta, which becomes more pronounced as the underlying asset approaches the trigger level.</li>
-            <li><strong>Theta:</strong> Measures time decay, often accentuated by the dual strike structure.</li>
-            <li><strong>Vega:</strong> Represents sensitivity to volatility changes, critical for estimating the likelihood of reaching the trigger strike.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Hedging gap options can be more complex than hedging standard options:
-          </p>
-          <ul>
-            <li><strong>Trigger Risk:</strong> The risk that the underlying asset does not reach the trigger strike, rendering the option worthless.</li>
-            <li><strong>Pricing Risk:</strong> Accurate models are needed to correctly estimate the probability of activation.</li>
-            <li><strong>Volatility Risk:</strong> Fluctuations in volatility can significantly impact the option’s value due to its dependence on the chance of breaching the trigger strike.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            An investor may use a gap option to gain exposure to an asset at a lower cost compared to a vanilla call, accepting the risk that the option only becomes profitable if the asset’s price exceeds a specific level (K<sub>1</sub>), with the eventual payoff determined by a different strike (K<sub>2</sub>).
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Gap options provide an innovative way to structure investment strategies by decoupling the activation condition from the payoff calculation. While they offer the potential for lower premiums and targeted risk management, they require careful evaluation of market probabilities and vigilant risk monitoring.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Gap options are a type of exotic option characterized by two distinct strike prices. The first strike, called the <strong>trigger strike</strong> (K<sub>1</sub>), determines when the option becomes active, while the second strike, called the <strong>payment strike</strong> (K<sub>2</sub>), is used to calculate the payoff. This dual-strike design allows for more customized risk/reward profiles compared to standard options.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              Key features of gap options include:
+            </p>
+            <ul>
+              <li><strong>Trigger Strike (K<sub>1</sub>):</strong> The level that the underlying asset must reach or exceed for the option to become active.</li>
+              <li><strong>Payment Strike (K<sub>2</sub>):</strong> Once activated, the payoff is computed based on the difference between the underlying asset’s price and this strike.</li>
+              <li><strong>Exotic Structure:</strong> The separation between trigger and payment strikes may result in a lower premium, offering tailored exposure and leverage.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              Gap options are generally priced using modifications of standard option pricing models. The Black‑Scholes framework is adjusted to reflect the probability of the underlying asset reaching the trigger strike. For a gap call option, if the asset’s price (S) reaches or exceeds K<sub>1</sub>, the payoff is calculated as (S − K<sub>2</sub>); otherwise, the payoff is zero.
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              Payoff (Call): { S − K<sub>2</sub> if S ≥ K<sub>1</sub>; otherwise 0 }
+            </p>
+            <p>
+              Due to the discontinuous nature of the payoff, numerical methods—such as Monte Carlo simulation or finite difference approaches—are frequently used to obtain an accurate valuation.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              Because of the dual-strike structure, the sensitivity measures (Greeks) for gap options can differ significantly from those of vanilla options:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> The sensitivity to changes in the underlying asset’s price may change sharply near the trigger strike.</li>
+              <li><strong>Gamma:</strong> Can be very high around the trigger point as the option switches from inactive to active.</li>
+              <li><strong>Theta:</strong> Time decay may be irregular, accelerating when the probability of triggering increases.</li>
+              <li><strong>Vega:</strong> Very sensitive to volatility changes, which affect the likelihood of reaching the trigger strike.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Hedging gap options is challenging due to their discontinuous payoff. Traders must employ dynamic hedging strategies that accurately estimate the chance of activation and adjust positions as market conditions change. Special attention is required near the trigger threshold to manage sudden shifts in risk exposure.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For example, a trader looking to reduce premium costs might purchase a gap call option with a trigger strike slightly above the current market price and a lower payment strike, aiming to capture leveraged gains if the underlying asset surges beyond the trigger level.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Gap options provide an innovative way to tailor exposure by separating the activation condition from the payoff calculation. Their effective valuation and risk management require specialized pricing models and dynamic hedging techniques.
+            </p>
+          </section>
         `
       },
       "binary": {
         title: "Theory on Binary Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Binary options, also known as digital or all‑or‑nothing options, offer a fixed payout if a specified condition is met at expiration and nothing otherwise. Their simple, discontinuous payoff structure distinguishes them from traditional vanilla options.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            Binary options are defined by their all‑or‑nothing payoff and generally come in two forms:
-          </p>
-          <ul>
-            <li><strong>Binary Call Option:</strong> Pays a fixed amount if the underlying asset’s price is above a predetermined strike at expiration.</li>
-            <li><strong>Binary Put Option:</strong> Pays a fixed amount if the underlying asset’s price is below the strike at expiration.</li>
-          </ul>
-          <p>
-            The steep payout profile means that prices are highly sensitive to small changes in the underlying, particularly when close to the strike.
-          </p>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Binary options are priced by calculating the risk‑neutral probability of the option expiring in‑the‑money. Digital option pricing models or modified Black‑Scholes formulas are commonly used. For a binary call, the price is often given by:
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            Price = e<sup>-rT</sup> · N(d<sub>2</sub>)
-          </p>
-          <p>
-            Here, N(d<sub>2</sub>) is the cumulative normal distribution value, r is the risk‑free rate, and T is the time to expiration.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            Due to their discontinuous payoff, the Greeks for binary options can be extreme:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Measures the sensitivity of the option’s price to small changes in the underlying’s price, especially near the strike.</li>
-            <li><strong>Gamma:</strong> Often very high near the strike, showing large changes in Delta.</li>
-            <li><strong>Theta:</strong> Indicates rapid time decay as expiration approaches.</li>
-            <li><strong>Vega:</strong> Reflects the sensitivity to volatility changes, which are crucial in estimating the probability of an in‑the‑money outcome.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Binary options can be challenging to hedge given their all‑or‑nothing nature; small shifts in the underlying near the strike can lead to significant changes in value.
-          </p>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            Binary options are often used for short‑term speculation. For example, a trader might purchase a binary call option in anticipation of a positive earnings report.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Binary options offer a simple yet high‑risk/high‑reward payoff profile. Their pricing depends heavily on the probability of finishing in‑the‑money, and their discontinuous nature demands careful risk management.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Binary options, also known as digital options, offer a fixed payout if a specified condition is met at expiration and nothing otherwise. Their simplified, all‑or‑nothing payoff structure distinguishes them from traditional options and provides a straightforward risk/reward profile.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              Key characteristics of binary options include:
+            </p>
+            <ul>
+              <li><strong>All‑or‑Nothing Payout:</strong> The option pays a fixed amount if the underlying asset’s price is above (for a call) or below (for a put) the strike at expiration.</li>
+              <li><strong>Fixed Payout:</strong> The payout is predetermined and does not vary with the magnitude of the price move.</li>
+              <li><strong>Discontinuous Payoff:</strong> The abrupt switch in payoff results in unique sensitivity to changes in the underlying asset’s price near the strike.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              Binary options are generally priced by determining the risk‑neutral probability that the option will finish in‑the‑money. For a binary call option, the price is typically given by:
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              Price = e<sup>-rT</sup> · N(d<sub>2</sub>)
+            </p>
+            <p>
+              where r represents the risk‑free rate, T is the time until expiration, and N(d<sub>2</sub>) is the cumulative standard normal probability of finishing in‑the‑money. The discontinuous nature of the payoff may require numerical methods or refined closed‑form approximations within the Black‑Scholes framework.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              The Greeks for binary options are typically more extreme than for vanilla options:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Exhibits high sensitivity near the strike since a small change in the underlying’s price can switch the payout from 0 to a fixed amount.</li>
+              <li><strong>Gamma:</strong> Can be very large near the strike, reflecting the sudden jump in Delta.</li>
+              <li><strong>Theta:</strong> Time decay is often rapid as expiration approaches, particularly if the probability of finishing in‑the‑money decreases.</li>
+              <li><strong>Vega:</strong> Even minor changes in volatility can have a pronounced effect on the risk-neutral probability of payout.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Hedging binary options poses unique challenges due to their discontinuous payoff profile. Effective hedging typically requires dynamic adjustments, with close monitoring of the underlying asset’s price and volatility, especially near the strike. Model risk and liquidity constraints are also critical considerations.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              Binary options are often used for short-term speculative strategies, such as betting on the outcome of an earnings announcement. Their fixed payout structure can create attractive risk/reward profiles when market conditions suggest a high probability of a significant move.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              In summary, binary options provide a simple, fixed-payout mechanism that can yield high returns under the right conditions. However, due to their all‑or‑nothing nature, their valuation, Greeks, and hedging require specialized techniques and vigilant market monitoring.
+            </p>
+          </section>
         `
       },
       "chooser-options": {
         title: "Theory on Chooser Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Chooser options give the holder the flexibility to decide, at a pre‑determined date before expiration, whether the option will be a call or a put. This flexibility allows investors to hedge against uncertainty in market direction.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            Key features of chooser options include:
-          </p>
-          <ul>
-            <li><strong>Decision Date:</strong> The date on which the holder chooses between a call or put.</li>
-            <li><strong>Flexibility:</strong> Offers advantages of both calls and puts depending on market conditions.</li>
-            <li><strong>Underlying Asset:</strong> Typically similar to that used in standard options with corresponding strike and maturity parameters.</li>
-          </ul>
-          <p>
-            This unique property makes chooser options particularly attractive when market direction is uncertain.
-          </p>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            The valuation of chooser options involves considering both the call and put components, often combining their values. Analytical formulas exist under simplified assumptions; however, numerical methods are typically applied for more complex scenarios.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The Greeks for chooser options share similarities with standard options, while also reflecting the extra flexibility offered:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Shows sensitivity to the underlying asset’s price, with dynamics changing before and after the decision date.</li>
-            <li><strong>Gamma:</strong> Indicates the rate of change in Delta, particularly around the decision date.</li>
-            <li><strong>Theta:</strong> Time decay is significant due to the extended period of uncertainty before the decision.</li>
-            <li><strong>Vega:</strong> Reflects sensitivity to volatility changes, impacting both potential call and put values.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Chooser options require dynamic hedging strategies, as the optimal hedge may change depending on the decision made at the decision date.
-          </p>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            An investor might use a chooser option when facing high volatility but uncertain market direction, enabling them to select the most advantageous option type once the market outlook clarifies.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Chooser options offer valuable flexibility in uncertain markets. While their pricing and hedging can be complex, they provide an effective compromise for investors who desire exposure to both upward and downward moves.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Chooser options provide the holder with a unique flexibility: at a predetermined decision date before expiration, the holder can choose whether the option will function as a call or a put. This adaptability makes chooser options particularly useful in uncertain market environments.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              Key features of chooser options include:
+            </p>
+            <ul>
+              <li><strong>Decision Date:</strong> The specific date on which the holder must decide whether the option becomes a call or a put.</li>
+              <li><strong>Flexibility:</strong> Allows the investor to select the more advantageous option type based on market conditions that prevail at the decision date.</li>
+              <li><strong>Underlying Asset:</strong> Typically similar to that used in standard options, with the same strike and expiration parameters initially set.</li>
+              <li><strong>Valuation Complexity:</strong> The dual nature of the payoff necessitates pricing methods that effectively combine the valuation of both calls and puts.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              Chooser options are generally priced by decomposing the contract into its call and put components. Under simplified assumptions, analytical formulas can be derived by using put-call parity and risk‑neutral valuation. However, in practice, numerical methods such as binomial trees or Monte Carlo simulations are often employed to accommodate the dynamic decision feature.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              The sensitivity measures for chooser options are influenced by the timing of the decision:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Initially low until the decision date; after the decision, it behaves similarly to the chosen option’s Delta.</li>
+              <li><strong>Gamma:</strong> Can exhibit a surge around the decision date, reflecting the rapid change in option sensitivity once the choice is made.</li>
+              <li><strong>Theta:</strong> Time decay is a critical factor, particularly before the decision is finalized.</li>
+              <li><strong>Vega:</strong> Measures the sensitivity to volatility, which significantly impacts both potential call and put values.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Hedging chooser options is challenging because the optimal hedge depends on the decision made at the predetermined date. Dynamic hedging strategies are typically required to manage exposures, especially as market conditions evolve prior to the decision.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              An investor uncertain about market direction might purchase a chooser option to retain the flexibility of choosing between a call or a put at a future date when the market outlook is clearer. This can be particularly effective in volatile markets.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Chooser options offer significant strategic flexibility by allowing the holder to decide between call and put features based on future market conditions. Their complex valuation and hedging requirements highlight the necessity of advanced numerical techniques and vigilant risk management.
+            </p>
+          </section>
         `
       },
       "straddle": {
         title: "Theory on Straddle Strategy",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            A straddle is a non‑directional options strategy in which an investor holds a position in both a call option and a put option with the same strike price and expiration. This strategy is used to profit from significant volatility in the underlying asset.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            In a long straddle, the investor buys both a call and a put option at the same strike. Key characteristics include:
-          </p>
-          <ul>
-            <li><strong>Same Strike and Expiration:</strong> Both options have identical strike prices and expiration dates.</li>
-            <li><strong>Volatility Play:</strong> Profits arise from significant price moves in either direction.</li>
-            <li><strong>Limited Loss:</strong> The maximum loss is limited to the total premium paid for both options.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            The value of a straddle is essentially the sum of the call and put option prices. Pricing models for each component can be derived using Black‑Scholes or other option pricing methods.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The Greeks for a straddle can differ significantly from those of individual options:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> The net Delta is typically close to zero, as the call and put deltas offset each other.</li>
-            <li><strong>Gamma:</strong> High Gamma near the strike reflects significant sensitivity to price moves.</li>
-            <li><strong>Theta:</strong> The straddle experiences time decay, which can erode value rapidly if volatility does not materialize.</li>
-            <li><strong>Vega:</strong> Very sensitive to changes in volatility; increased volatility can dramatically raise the straddle’s value.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Hedging a straddle can be challenging because of its volatility sensitivity. It is important to manage the risk of rapid theta decay and to adjust hedges as market conditions change.
-          </p>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            Traders often use long straddles ahead of events (e.g., earnings announcements) when significant price movement is expected, yet the direction is uncertain.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            The straddle strategy is an effective way to capitalize on volatility. However, investors must carefully manage time decay and monitor market conditions to avoid losses if the underlying asset does not move significantly.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              A straddle is a non‑directional options strategy that involves simultaneously buying a call and a put option on the same underlying asset with the same strike price and expiration date. This approach enables the investor to profit from significant volatility, regardless of the direction of price movement.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              Key characteristics of a straddle include:
+            </p>
+            <ul>
+              <li><strong>Equal Strike and Expiration:</strong> Both the call and put options have identical strike prices and maturities.</li>
+              <li><strong>Volatility Play:</strong> The strategy benefits from substantial moves in the underlying asset’s price, regardless of the direction.</li>
+              <li><strong>Limited Loss:</strong> The maximum loss is confined to the total premiums paid for both options.</li>
+              <li><strong>Sensitivity to Volatility:</strong> High sensitivity is inherent, leading to rapid changes in option value with volatility shifts.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              The value of a straddle is the sum of the prices of the call and put options. When using models such as Black‑Scholes for each component, the combined position reflects both the intrinsic and time value contributions. Because the strategy is designed to capture large moves, its premium is highly sensitive to implied volatility.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              Due to the combined effect of both options, the Greeks for a straddle may differ considerably from those of individual options:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> The net Delta is typically close to zero, as the call’s positive Delta offsets the put’s negative Delta.</li>
+              <li><strong>Gamma:</strong> High Gamma indicates a steep curvature, reflecting significant sensitivity to underlying price movements.</li>
+              <li><strong>Theta:</strong> Time decay can be rapid, particularly if the anticipated volatility does not materialize.</li>
+              <li><strong>Vega:</strong> The straddle’s value is extremely sensitive to changes in volatility; a rise in volatility generally increases the overall position value.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Hedging a straddle can be complex because the position is highly sensitive to volatility and time decay. Traders must continuously manage Gamma and Vega exposures to avoid significant losses if the underlying asset’s price does not move as expected.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              Straddles are commonly used ahead of events with expected high volatility such as earnings announcements or regulatory decisions. They allow traders to benefit from significant price swings regardless of the direction of the move.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              The straddle strategy is an effective way to profit from volatility, but it requires careful monitoring and dynamic hedging to manage rapid time decay and sensitivity to volatility changes.
+            </p>
+          </section>
         `
       },
       "forward-start-options": {
         title: "Theory on Forward Start Options",
         content: `
-        <section>
-          <h2>Introduction</h2>
-          <p>
-            Forward start options are derivatives that begin at a future date rather than immediately. Their strike price is determined at a specified future date, making them popular in executive compensation and long‑term hedging strategies.
-          </p>
-        </section>
-        <section>
-          <h2>Definitions and Characteristics</h2>
-          <p>
-            Key features of forward start options include:
-          </p>
-          <ul>
-            <li><strong>Delayed Start Date:</strong> The option's life begins at a future date, with the strike determined at that time.</li>
-            <li><strong>Strike Determination:</strong> Often, the strike is set as a multiple of the underlying asset’s price at the start date.</li>
-            <li><strong>Usage:</strong> Commonly used for employee stock options and long‑term hedging strategies.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Pricing and Valuation</h2>
-          <p>
-            Pricing forward start options involves estimating the expected volatility and distribution of the underlying asset at the future start date. Models extend the Black‑Scholes framework to account for the deferred start and strike setting mechanism.
-          </p>
-        </section>
-        <section>
-          <h2>The Greeks and Sensitivity Analysis</h2>
-          <p>
-            The Greeks for forward start options behave differently before and after the start date:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Initially low until the start date, then behaves like a standard option.</li>
-            <li><strong>Gamma:</strong> Typically increases after the option becomes active.</li>
-            <li><strong>Theta:</strong> Time decay may be less pronounced before the start date, but accelerates afterwards.</li>
-            <li><strong>Vega:</strong> Reflects sensitivity to volatility; very important in the period prior to the option’s start as volatility determines the future strike.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Hedging Strategies and Risks</h2>
-          <p>
-            Due to their delayed start, forward start options pose unique hedging challenges. Effective management requires dynamic strategies that adjust as the option transitions from inactive to active status.
-          </p>
-        </section>
-        <section>
-          <h2>Practical Examples and Applications</h2>
-          <p>
-            Forward start options are frequently used in executive compensation plans, where the option’s strike is set based on future performance. They are also employed by hedgers seeking to mitigate long‑term exposure.
-          </p>
-        </section>
-        <section>
-          <h2>Conclusions</h2>
-          <p>
-            Forward start options offer the benefit of deferring the start of the option's life, which can be valuable in aligning incentives or planning long‑term hedges. Their pricing and risk management are more complex, necessitating careful evaluation of future volatility and asset behavior.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Forward start options are unique derivatives that commence at a future date rather than immediately. Their strike price is set at the time of activation, based on the underlying asset’s prevailing market price, making them particularly useful for long-term hedging and executive compensation programs.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              Key features of forward start options include:
+            </p>
+            <ul>
+              <li><strong>Deferred Start Date:</strong> The option does not become active until a predetermined future date.</li>
+              <li><strong>Strike Determination:</strong> The strike price is set based on the underlying asset’s price at the future start date, often as a fixed multiple or percentage of that price.</li>
+              <li><strong>Application:</strong> Commonly used in executive compensation to align incentives with long-term performance and in hedging strategies that require deferred exposure.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              Pricing forward start options involves forecasting the expected volatility and distribution of the underlying asset at the deferred start date. The Black‑Scholes framework is extended by incorporating a forward measure for the strike determination. As the option’s effective life begins at a future time, numerical methods such as Monte Carlo simulations or adjusted binomial trees are often employed for more accurate valuations.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              The Greeks for forward start options differ from standard options in that their sensitivities evolve over two distinct periods—the pre‐start phase and the active phase:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Initially minimal until the option becomes active; afterward, it adjusts to mirror a standard option’s Delta.</li>
+              <li><strong>Gamma:</strong> Tends to increase once the option is active, as the sensitivity to price changes becomes more pronounced.</li>
+              <li><strong>Theta:</strong> Time decay is subdued before the option starts, but accelerates after activation.</li>
+              <li><strong>Vega:</strong> Highly significant during the pre‑start period, as volatility influences the future strike level and, consequently, the option’s eventual value.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              Hedging forward start options requires a dynamic approach that adjusts for the transition from the inactive to the active period. The uncertainty regarding future volatility and the deferred strike setting make these options more complex to hedge compared to standard options.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              Forward start options are often included in executive compensation packages where vesting conditions depend on future company performance. They are also used by hedgers who wish to defer the onset of exposure until market conditions become more favorable.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              In summary, forward start options offer deferred exposure that aligns long‑term incentives with market performance. Their complex valuation and sensitivity profile require advanced numerical methods and dynamic hedging strategies, making them an important yet sophisticated tool in derivative markets.
+            </p>
+          </section>
         `
       }
     };
