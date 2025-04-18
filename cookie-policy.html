@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie Policy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #01796F;
+      --background: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+      --card-radius: 8px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow-x: hidden; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    /* Cookie Banner & Modal */
+    .cookie-banner, .cookie-modal { position: fixed; left: 0; right: 0; z-index: 1000; }
+    .cookie-banner {
+      bottom: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cookie-banner p { flex: 1 1 60%; margin-right: 1rem; }
+    .cookie-banner button { margin: 0.25rem; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+    #accept-all { background: var(--primary); color: #fff; }
+    #decline-all { background: #ddd; }
+    #cookie-settings { background: transparent; color: var(--primary); }
+    .cookie-modal { top: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; }
+    .cookie-modal-content {
+      background: var(--card-bg);
+      max-width: 400px;
+      margin: 5% auto;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      position: relative;
+    }
+    .cookie-modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+    .cookie-modal-content label { display: block; margin-bottom: 0.75rem; }
+    .cookie-modal-content input[type="checkbox"] { margin-right: 0.5rem; }
+    #save-settings, #close-modal { margin-top: 1rem; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; }
+    #save-settings { background: var(--primary); color: #fff; }
+    #close-modal { background: #ddd; }
+
+    /* Navbar, Main, Footer */
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: var(--background); border-bottom: 1px solid #e0e0e0; }
+    .brand { font-size: 1.25rem; font-weight: 700; color: #000; text-decoration: none; }
+    .nav-link { margin-left: 1.5rem; font-weight: 500; color: #333; text-decoration: none; }
+    .nav-link:hover { color: var(--primary); }
+    main {
+      max-width: 720px;
+      background: var(--card-bg);
+      margin: 2rem auto 3rem;
+      padding: 1.5rem 2rem;
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+    }
+    main h1 { font-size: 1.75rem; color: var(--primary); margin-bottom: 1rem; text-align: center; }
+    main h2 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--primary); }
+    main p, main li { font-size: 1rem; margin-bottom: 0.75rem; }
+    main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .site-footer { background: var(--card-bg); border-top: 1px solid #eaeaea; padding: 2rem; }
+    .footer-container { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .footer-left, .footer-right { flex: 1; }
+    .footer-brand { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .footer-text { font-size: 0.9rem; color: #555; line-height: 1.4; margin-bottom: 1rem; }
+    .footer-right ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 0; margin: 0; }
+    .footer-right a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s ease; }
+    .footer-right a:hover { color: var(--primary); }
+
+    /* Table Responsive */
+    .table-responsive { width: 100%; margin-bottom: 1.5rem; }
+    .table-responsive table { width: 100%; border-collapse: collapse; }
+    .table-responsive th, .table-responsive td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; font-size: 0.9rem; }
+    .table-responsive th { background: var(--background); font-weight: 600; }
+
+    /* Mobile Stacked Table */
+    @media (max-width: 600px) {
+      .cookie-modal-content { width: 90%; }
+      main { padding: 1rem; margin: 1rem; width: auto; }
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.25rem; }
+      p, li { font-size: 0.875rem; }
+      .table-responsive table, .table-responsive thead, .table-responsive tbody, .table-responsive th, .table-responsive td, .table-responsive tr { display: block; width: 100%; }
+      .table-responsive thead tr { position: absolute; top: -9999px; left: -9999px; }
+      .table-responsive tr { background: var(--card-bg); margin-bottom: 1rem; padding: 0.5rem; border-radius: var(--card-radius); box-shadow: var(--card-shadow); }
+      .table-responsive td { border: none; border-bottom: 1px solid #eee; position: relative; padding-left: 50%; font-size: 0.8rem; }
+      .table-responsive td:before { position: absolute; left: 0.5rem; width: 45%; padding-right: 0.5rem; white-space: nowrap; font-weight: 600; content: attr(data-label); }
+      td:nth-child(3), th:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/index.html" class="brand">Black & Scholes Calculator</a>
+    <div>
+      <a href="/calculators.html" class="nav-link">Calculators</a>
+      <a href="/theory.html" class="nav-link">Theory</a>
+    </div>
+  </nav>
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent banner">
+    <p>We use cookies to remember your settings, analyze traffic, and provide personalized ads. Please select your preferences.</p>
+    <div>
+      <button id="accept-all">Accept All</button>
+      <button id="decline-all">Decline All</button>
+      <button id="cookie-settings">Settings</button>
+    </div>
+  </div>
+  <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+    <div class="cookie-modal-content">
+      <h2 id="cookie-modal-title">Cookie Preferences</h2>
+      <form id="cookie-form">
+        <label><input type="checkbox" id="toggle-preferences"> Preferences Cookies</label>
+        <label><input type="checkbox" id="toggle-statistics"> Statistics Cookies</label>
+        <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
+        <button type="button" id="save-settings">Save Settings</button>
+      </form>
+      <button id="close-modal">Close</button>
+    </div>
+  </div>
+  <main>
+    <h1>Cookie Policy</h1>
+    <p>This Cookie Policy is separate from our <a href="/privacy.html">Privacy Policy</a>. For full details, please refer to the Privacy Policy or contact our DPO at <a href="mailto:
+      postmaster@calculatorblackscholes.com">
+      postmaster@calculatorblackscholes.com</a>.</p>
+    <p><strong>Last updated:</strong> April 17, 2025</p>
+    <p><strong>Data Controller:</strong> Black & Scholes Calculator</p>
+    <p><strong>Contact:</strong> <a href="mailto:
+      postmaster@calculatorblackscholes.com">
+      postmaster@calculatorblackscholes.com</a></p>
+    <h2>1. Transparency and user information</h2>
+    <ul>
+      <li><strong>Necessary cookies:</strong> Art. 6(1)(f) GDPR</li>
+      <li><strong>All other cookies:</strong> Art. 6(1)(a) GDPR</li>
+    </ul>
+    <h2>2. Types of cookies we use</h2>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th><th>Purpose</th><th>Provider</th><th>Name &amp; Lifetime</th><th>Legal Basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Type">Necessary</td>
+            <td data-label="Purpose">Core functionality (banner, security)</td>
+            <td data-label="Provider">Black & Scholes Calculator</td>
+            <td data-label="Name &amp; Lifetime"><strong>cookie_consent</strong>: 1 year</td>
+            <td data-label="Legal Basis">Art. 6(1)(f) GDPR</td>
+          </tr>
+          <tr>
+            <td data-label="Type">Preferences</td>
+            <td data-label="Purpose">Remember user settings</td>
+            <td data-label="Provider">Black & Scholes Calculator</td>
+            <td data-label="Name &amp; Lifetime"><strong>lang</strong>: 1 year;<br><strong>theme</strong>: 1 year</td>
+            <td data-label="Legal Basis">Art. 6(1)(a) GDPR</td>
+          </tr>
+          <tr>
+            <td data-label="Type">Statistics</td>
+            <td data-label="Purpose">Traffic & usage data</td>
+            <td data-label="Provider"><a href="https://policies.google.com/privacy" target="_blank">Google Analytics</a></td>
+            <td data-label="Name &amp; Lifetime"><strong>_ga</strong>: 2 years;<br><strong>_gid</strong>: 24h;<br><strong>_gat</strong>: 1m</td>
+            <td data-label="Legal Basis">Art. 6(1)(a) GDPR</td>
+          </tr>
+          <tr>
+            <td data-label="Type">Marketing</td>
+            <td data-label="Purpose">Ad tracking & personalization</td>
+            <td data-label="Provider"><a href="https://www.facebook.com/policies/cookies/" target="_blank">Facebook</a>, <a href="https://policies.google.com/privacy#ads" target="_blank">Google Ads</a></td>
+            <td data-label="Name &amp; Lifetime"><strong>_gcl_au</strong>: 3m;<br><strong>IDE</strong>: 13m;<br><strong>fr</strong>: 3m</td>
+            <td data-label="Legal Basis">Art. 6(1)(a) GDPR</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>3. Google Analytics</h2>
+    <p>We load GA4 <em>only</em> if you have given consent for statistics cookies. IP anonymization is enabled. See <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a> and <a href="https://commission.europa.eu/system/files/2021-06/standard_contractual_clauses_annex_ii.pdf" target="_blank">Standard Contractual Clauses</a> for data transfers.</p>
+    <h2>4. Obtaining free, specific and informed consent</h2>
+    <p>We block all non-essential cookies until you make a choice. Use the banner or open <a href="#" class="cookie-settings-link">Cookie Settings</a> anytime.</p>
+    <h2>5. Managing and revoking consent</h2>
+    <p>Click <a href="#" class="cookie-settings-link">Cookie Settings</a> in the footer or via your browser to change your preferences.</p>
+    <h2>6. Consent logging (client & server)</h2>
+    <p>We store your choices in a cookie <code>cookie_consent</code> for 1 year with <code>Secure</code> and <code>SameSite=Lax</code> and <code>domain=yourdomain.com</code>. We also POST to <code>/api/log-consent</code> recording timestamp, IP, and selections.</p>
+    <h2>7. Accessibility</h2>
+    <p>The modal uses <code>role="dialog"</code>, <code>aria-live="polite"</code>, <code>aria-modal="true"</code>, and <code>aria-labelledby="cookie-modal-title"</code>. Focus trapping keeps keyboard navigation inside.</p>
+    <h2>8. Changes to this Policy</h2>
+    <p>We update the “Last updated” date when we make changes.</p>
+    <h2>9. Further information</h2>
+    <p>See our <a href="/privacy.html">Privacy Policy</a> or contact our DPO at <a href="mailto:
+      postmaster@calculatorblackscholes.com">
+      postmaster@calculatorblackscholes.com</a>.</p>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h3 class="footer-brand">Black & Scholes Calculator</h3>
+        <p class="footer-text">© 2025 Black & Scholes Calculator. All rights reserved.</p>
+        <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
+      </div>
+      <div class="footer-right">
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="license.html">License</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Helpers
+    function setCookie(name, value, days) {
+      const d = new Date(); d.setTime(d.getTime() + days*24*60*60*1000);
+      document.cookie = `${name}=${encodeURIComponent(value)};path=/;domain=yourdomain.com;expires=${d.toUTCString()};Secure;SameSite=Lax`;
+    }
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+    }
+    // Elements
+    const banner = document.getElementById('cookie-banner');
+    const modal = document.getElementById('cookie-modal');
+    const btnAccept = document.getElementById('accept-all');
+    const btnDecline = document.getElementById('decline-all');
+    const btnSettings = document.getElementById('cookie-settings');
+    const btnSave = document.getElementById('save-settings');
+    const btnClose = document.getElementById('close-modal');
+    const chkPref = document.getElementById('toggle-preferences');
+    const chkStat = document.getElementById('toggle-statistics');
+    const chkMark = document.getElementById('toggle-marketing');
+    const footerLinks = document.querySelectorAll('.cookie-settings-link');
+
+    // Focus trap
+    let focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    let focusableElements, firstFocusable, lastFocusable;
+    function updateFocusable() {
+      focusableElements = modal.querySelectorAll(focusableSelectors);
+      firstFocusable = focusableElements[0];
+      lastFocusable = focusableElements[focusableElements.length-1];
+    }
+    function trapFocus(e) {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) { if (document.activeElement === firstFocusable) { e.preventDefault(); lastFocusable.focus(); } }
+        else { if (document.activeElement === lastFocusable) { e.preventDefault(); firstFocusable.focus(); } }
+      }
+      if (e.key === 'Escape') closeModal();
+    }
+    function openModal() {
+      updateFocusable();
+      modal.style.display = 'block';
+      firstFocusable.focus();
+      document.addEventListener('keydown', trapFocus);
+    }
+    function closeModal() {
+      modal.style.display = 'none';
+      document.removeEventListener('keydown', trapFocus);
+      btnSettings.focus();
+    }
+
+    // Load according to consent
+    function loadAnalytics() {
+      window.dataLayer = window.dataLayer||[]; function gtag(){dataLayer.push(arguments);} gtag('js', new Date());
+      gtag('config','GA_MEASUREMENT_ID',{anonymize_ip:true});
+      var s=document.createElement('script'); s.src='https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID'; document.head.appendChild(s);
+    }
+    function loadMarketing() { /* Placeholder */ }
+
+    // Apply consent
+    function applyConsent(consent) {
+      setCookie('cookie_consent', JSON.stringify(consent), 365);
+      banner.style.display='none'; closeModal();
+      fetch('/api/log-consent', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ timestamp:new Date().toISOString(), consent }) });
+      if (consent.statistics) loadAnalytics();
+      if (consent.marketing) loadMarketing();
+    }
+
+    // Initialize
+    function initConsent() {
+      const saved = getCookie('cookie_consent');
+      if (saved) {
+        const consent = JSON.parse(saved);
+        chkPref.checked = consent.preferences;
+        chkStat.checked = consent.statistics;
+        chkMark.checked = consent.marketing;
+        banner.style.display = 'none';
+        if (consent.statistics) loadAnalytics();
+        if (consent.marketing) loadMarketing();
+      }
+    }
+
+    // Events
+    btnAccept.addEventListener('click', () => applyConsent({ preferences:true, statistics:true, marketing:true }));
+    btnDecline.addEventListener('click', () => applyConsent({ preferences:false, statistics:false, marketing:false }));
+    btnSettings.addEventListener('click', openModal);
+    btnSave.addEventListener('click', () => applyConsent({ preferences:chkPref.checked, statistics:chkStat.checked, marketing:chkMark.checked }));
+    btnClose.addEventListener('click', closeModal);
+    footerLinks.forEach(el => el.addEventListener('click', e => { e.preventDefault(); openModal(); }));
+    document.addEventListener('DOMContentLoaded', initConsent);
+  </script>
+</body>
+</html>
