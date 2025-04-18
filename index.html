@@ -7,59 +7,61 @@
   <!-- Inclusione del font Rubik da Google Fonts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
 
-  <script>
-    window.addEventListener("load", function(){
-      window.cookieconsent.initialise({
-        type: "opt-in",          // richiede un clic “Accept” esplicito
-        revokable: true,         // abilita il link per cambiare scelta
-        palette: {
-          popup: {
-            background: "#F8FAFC",
-            text:       "#000000"
-          },
-          button: {
-            background: "#01796F",
-            text:       "#FFFFFF"
-          }
-        },
-        theme: "classic",
-        content: {
-          message: "This website uses cookies for analytics and marketing. You can accept or decline them.",
-          dismiss: "Accept",     // conferma
-          deny:    "Decline",    // rifiuto
-          link:    "Learn more",
-          href:    "cookie-policy.html"
-        },
-        onInitialise: function(status) {
-          if (status === cookieconsent.status.allow) {
-            loadAnalytics();
-          }
-        },
-        onStatusChange: function(status) {
-          if (status === cookieconsent.status.allow) {
-            loadAnalytics();
-          }
-          // se status==='deny', non fa nulla (resta bloccato)
-        }
-      });
-    
-      function loadAnalytics(){
-        var s = document.createElement('script');
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R83ENCYEQN';
-        s.async = true;
-        document.head.appendChild(s);
-        window.dataLayer = window.dataLayer||[];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-R83ENCYEQN');
-      }
-    });
-    </script>
   
   <style>
+    /* ================================
+       COOKIE BANNER & MODAL STYLES
+       ================================ */
+       :root {
+      --primary: #01796F;
+      --background: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+      --card-radius: 8px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .cookie-banner, .cookie-modal { position: fixed; left: 0; right: 0; z-index: 1000; }
+    .cookie-banner {
+      bottom: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+    }
+    .cookie-banner p { flex: 1 1 60%; margin-right: 1rem; }
+    .cookie-banner button {
+      margin: 0.25rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px;
+      cursor: pointer; font-weight: 600;
+    }
+    #accept-all { background: var(--primary); color: #fff; }
+    #decline-all { background: #ddd; }
+    #cookie-settings { background: transparent; color: var(--primary); }
+    .cookie-modal {
+      top: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+    }
+    .cookie-modal-content {
+      background: var(--card-bg);
+      max-width: 400px;
+      margin: 5% auto;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      position: relative;
+    }
+    .cookie-modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+    .cookie-modal-content label { display: block; margin-bottom: 0.75rem; }
+    .cookie-modal-content input[type="checkbox"] { margin-right: 0.5rem; }
+    #save-settings, #close-modal {
+      margin-top: 1rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px; cursor: pointer;
+    }
+    #save-settings { background: var(--primary); color: #fff; }
+    #close-modal { background: #ddd; }
+
     /* RESET */
     * {
       margin: 0;
@@ -560,6 +562,31 @@
   </style>
 </head>
 <body>
+
+  <!-- COOKIE BANNER -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
+    <p>We use cookies to remember your settings, analyze traffic, and provide personalized ads. Please select your preferences.</p>
+    <div>
+      <button id="accept-all">Accept All</button>
+      <button id="decline-all">Decline All</button>
+      <button id="cookie-settings">Settings</button>
+    </div>
+  </div>
+
+  <!-- COOKIE SETTINGS MODAL -->
+  <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+    <div class="cookie-modal-content">
+      <h2 id="cookie-modal-title">Cookie Preferences</h2>
+      <form id="cookie-form">
+        <label><input type="checkbox" id="toggle-preferences"> Preferences Cookies</label>
+        <label><input type="checkbox" id="toggle-statistics"> Statistics Cookies</label>
+        <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
+        <button type="button" id="save-settings">Save Settings</button>
+      </form>
+      <button id="close-modal">Close</button>
+    </div>
+  </div>
+
   <!-- NAVBAR -->
   <nav class="navbar">
     <!-- Brand (sinistra) -->
@@ -688,19 +715,151 @@
     <div class="footer-container">
       <div class="footer-left">
         <h3 class="footer-brand">Black &amp; Scholes Calculator</h3>
-        <p class="footer-text">
-          © 2025 Black &amp; Scholes Calculator. All rights reserved.
-        </p>
+        <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
+        <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
       </div>
       <div class="footer-right">
         <ul>
           <li><a href="about.html">About Us</a></li>
           <li><a href="privacy.html">Privacy</a></li>
           <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="license.html">License</a></li>
+          <li><a href="cookie-policy.html">Cookie Policy</a></li>
         </ul>
       </div>
     </div>
   </footer>
+
+  <script>
+    // — Helpers to set/get cookie —
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + days*24*60*60*1000);
+      document.cookie = `${name}=${encodeURIComponent(value)};path=/;domain=yourdomain.com;expires=${d.toUTCString()};Secure;SameSite=Lax`;
+    }
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+    }
+  
+    // — Elements —
+    const banner      = document.getElementById('cookie-banner');
+    const modal       = document.getElementById('cookie-modal');
+    const btnAccept   = document.getElementById('accept-all');
+    const btnDecline  = document.getElementById('decline-all');
+    const btnSettings = document.getElementById('cookie-settings');
+    const btnSave     = document.getElementById('save-settings');
+    const btnClose    = document.getElementById('close-modal');
+    const chkPref     = document.getElementById('toggle-preferences');
+    const chkStat     = document.getElementById('toggle-statistics');
+    const chkMark     = document.getElementById('toggle-marketing');
+    const footerLinks = document.querySelectorAll('.cookie-settings-link');
+  
+    // — Focus trap in modal —
+    let focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    let focusableEls, firstFocusable, lastFocusable;
+    function updateFocusable() {
+      focusableEls = modal.querySelectorAll(focusableSelectors);
+      firstFocusable = focusableEls[0];
+      lastFocusable  = focusableEls[focusableEls.length - 1];
+    }
+    function trapFocus(e) {
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === firstFocusable) {
+          e.preventDefault(); lastFocusable.focus();
+        } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+          e.preventDefault(); firstFocusable.focus();
+        }
+      }
+      if (e.key === 'Escape') closeModal();
+    }
+    function openModal() {
+      // ricarico sempre dal cookie per garantire che le checkbox siano corrette
+      const saved = getCookie('cookie_consent');
+      if (saved) {
+        const consent = JSON.parse(saved);
+        chkPref.checked = consent.preferences;
+        chkStat.checked = consent.statistics;
+        chkMark.checked = consent.marketing;
+      }
+      updateFocusable();
+      modal.style.display = 'block';
+      firstFocusable.focus();
+      document.addEventListener('keydown', trapFocus);
+    }
+    function closeModal() {
+      modal.style.display = 'none';
+      document.removeEventListener('keydown', trapFocus);
+      btnSettings.focus();
+    }
+  
+    // — Load scripts after consent —
+    function loadAnalytics() {
+      var s = document.createElement('script');
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-R83ENCYEQN';
+      s.async = true;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-R83ENCYEQN', { anonymize_ip: true });
+    }
+    function loadMarketing() {
+      // qui puoi inserire il codice per Facebook Pixel, Google Ads, ecc.
+    }
+  
+    // — Apply consent choices —
+    function applyConsent(consent) {
+      setCookie('cookie_consent', JSON.stringify(consent), 365);
+      // aggiorno subito le checkbox con i nuovi valori
+      chkPref.checked = consent.preferences;
+      chkStat.checked = consent.statistics;
+      chkMark.checked = consent.marketing;
+      banner.style.display = 'none';
+      closeModal();
+      // invio log al server per audit trail
+      fetch('/api/log-consent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ timestamp: new Date().toISOString(), consent })
+      });
+      if (consent.statistics) loadAnalytics();
+      if (consent.marketing)   loadMarketing();
+    }
+  
+    // — Init on page load —
+    function initConsent() {
+      const saved = getCookie('cookie_consent');
+      if (saved) {
+        const consent = JSON.parse(saved);
+        chkPref.checked = consent.preferences;
+        chkStat.checked = consent.statistics;
+        chkMark.checked = consent.marketing;
+        banner.style.display = 'none';
+        if (consent.statistics) loadAnalytics();
+        if (consent.marketing)   loadMarketing();
+      }
+    }
+  
+    // — Event listeners —
+    btnAccept.addEventListener('click', () => applyConsent({
+      preferences: true, statistics: true, marketing: true
+    }));
+    btnDecline.addEventListener('click', () => applyConsent({
+      preferences: false, statistics: false, marketing: false
+    }));
+    btnSettings.addEventListener('click', openModal);
+    btnSave.addEventListener('click', () => applyConsent({
+      preferences: chkPref.checked,
+      statistics: chkStat.checked,
+      marketing:   chkMark.checked
+    }));
+    btnClose.addEventListener('click', closeModal);
+    footerLinks.forEach(el => el.addEventListener('click', e => {
+      e.preventDefault();
+      openModal();
+    }));
+    document.addEventListener('DOMContentLoaded', initConsent);
+  </script>
+  
 </body>
 </html>
