@@ -6,6 +6,59 @@
   <title>Derivatives Theory</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+
+    /* ================================
+       COOKIE BANNER & MODAL STYLES
+       ================================ */
+       :root {
+      --primary: #01796F;
+      --background: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+      --card-radius: 8px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .cookie-banner, .cookie-modal { position: fixed; left: 0; right: 0; z-index: 1000; }
+    .cookie-banner {
+      bottom: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+    }
+    .cookie-banner p { flex: 1 1 60%; margin-right: 1rem; }
+    .cookie-banner button {
+      margin: 0.25rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px;
+      cursor: pointer; font-weight: 600;
+    }
+    #accept-all { background: var(--primary); color: #fff; }
+    #decline-all { background: #ddd; }
+    #cookie-settings { background: transparent; color: var(--primary); }
+    .cookie-modal {
+      top: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+    }
+    .cookie-modal-content {
+      background: var(--card-bg);
+      max-width: 400px;
+      margin: 5% auto;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      position: relative;
+    }
+    .cookie-modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+    .cookie-modal-content label { display: block; margin-bottom: 0.75rem; }
+    .cookie-modal-content input[type="checkbox"] { margin-right: 0.5rem; }
+    #save-settings, #close-modal {
+      margin-top: 1rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px; cursor: pointer;
+    }
+    #save-settings { background: var(--primary); color: #fff; }
+    #close-modal { background: #ddd; }
+
     :root {
       --primary: #01796F;
       --secondary: #01796F;
@@ -22,6 +75,7 @@
       margin: 0;
       padding: 0;
     }
+
     .navbar {
       display: flex;
       height: 47px;
@@ -186,19 +240,32 @@
     }
 
     /* Imposta un layout mobile-first per il container */
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
-  }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+    }
 
-  /* Esempio di grid responsiva */
-  .input-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
+    /* Esempio di grid responsiva */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .cookie-policy-link {
+      color: var(--primary);
+      text-decoration: underline;
+      margin-left: 0.25rem;
+    }
+    .cookie-policy-link:hover {
+      color: #01665E;
+    }
+    .cookie-settings-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
 
   @media (max-width: 600px) {
     /* Contenitore principale per sezioni comuni */
@@ -218,7 +285,7 @@
       align-items: center;
       position: relative;
       z-index: 100;
-      padding: 0.5rem;
+      padding: 0.75rem;
       margin-bottom: 0.5rem;
     }
     .navbar-left,
@@ -1435,6 +1502,36 @@
   </script>
 </head>
 <body>
+
+  <!-- COOKIE BANNER -->
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
+    <p>
+      We use cookies to remember your settings, analyze traffic, and provide personalized ads. 
+      Please select your preferences or read our
+      <a href="cookie-policy.html" class="cookie-policy-link" target="_blank" rel="noopener">Cookie Policy</a>.
+    </p>
+    <div>
+      <button id="accept-all">Accept All</button>
+      <button id="decline-all">Decline All</button>
+      <button id="cookie-settings">Settings</button>
+    </div>
+  </div>
+
+
+  <!-- COOKIE SETTINGS MODAL -->
+  <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+    <div class="cookie-modal-content">
+      <h2 id="cookie-modal-title">Cookie Preferences</h2>
+      <form id="cookie-form">
+        <label><input type="checkbox" id="toggle-preferences"> Preferences Cookies</label>
+        <label><input type="checkbox" id="toggle-statistics"> Statistics Cookies</label>
+        <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
+        <button type="button" id="save-settings">Save Settings</button>
+      </form>
+      <button id="close-modal">Close</button>
+    </div>
+  </div>
+
   <nav class="navbar">
     <!-- Left: Brand -->
     <div class="navbar-left">
@@ -1487,12 +1584,12 @@
     </div>
   </main>
   
-  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-left">
-        <h3 class="footer-brand">Black &amp; Scholes Calculator</h3>
-        <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
+        <h3 class="footer-brand">Black & Scholes Calculator</h3>
+        <p class="footer-text">© 2025 Black & Scholes Calculator. All rights reserved.</p>
+        <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
       </div>
       <div class="footer-right">
         <ul>
@@ -1500,9 +1597,11 @@
           <li><a href="privacy.html">Privacy</a></li>
           <li><a href="terms.html">Terms of Service</a></li>
           <li><a href="license.html">License</a></li>
+          <li><a href="cookie-policy.html">Cookie Policy</a></li>
         </ul>
       </div>
     </div>
   </footer>
+  <script src="cookie-consent.js"></script>
 </body>
 </html>
