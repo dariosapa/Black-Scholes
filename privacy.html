@@ -81,6 +81,18 @@
     .footer-right ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 0; margin: 0; }
     .footer-right a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s ease; }
     .footer-right a:hover { color: var(--primary); }
+
+    /* nel tuo style */
+    .footer-brand a {
+      color: inherit;         /* eredita il colore del .footer-brand */
+      text-decoration: none;  /* rimuove la sottolineatura */
+      font-weight: 700;       /* mantiene il peso del font */
+    }
+    
+    .footer-brand a:hover {
+      color: var(--primary);  /* cambia colore on hover se vuoi */
+    }
+
     @media (max-width: 600px) {
       .cookie-modal-content { width: 90%; }
       main { padding: 1rem; margin: 1rem; width: auto; }
@@ -192,7 +204,9 @@
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-left">
-        <h3 class="footer-brand">Black &amp; Scholes Calculator</h3>
+        <h3 class="footer-brand">
+          <a href="index.html">Black &amp; Scholes Calculator</a>
+        </h3>
         <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
         <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
       </div>
