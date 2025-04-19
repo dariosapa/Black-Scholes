@@ -89,6 +89,18 @@
     .table-responsive th, .table-responsive td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; font-size: 0.9rem; }
     .table-responsive th { background: var(--background); font-weight: 600; }
 
+    /* nel tuo style */
+    .footer-brand a {
+      color: inherit;         /* eredita il colore del .footer-brand */
+      text-decoration: none;  /* rimuove la sottolineatura */
+      font-weight: 700;       /* mantiene il peso del font */
+    }
+    
+    .footer-brand a:hover {
+      color: var(--primary);  /* cambia colore on hover se vuoi */
+    }
+
+
     /* Mobile Stacked Table */
     @media (max-width: 600px) {
       .cookie-modal-content { width: 90%; }
@@ -208,7 +220,9 @@
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-left">
-        <h3 class="footer-brand">Black & Scholes Calculator</h3>
+        <h3 class="footer-brand">
+          <a href="index.html">Black &amp; Scholes Calculator</a>
+        </h3>
         <p class="footer-text">© 2025 Black & Scholes Calculator. All rights reserved.</p>
         <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
       </div>
