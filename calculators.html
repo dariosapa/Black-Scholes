@@ -2469,22 +2469,19 @@
         }
 
         // 2. Compute d₁ and d₂
-        //    d₁ = [ ln(S/K) + (r − q + ½σ²) T ] ÷ (σ √T)
-        //    d₂ = d₁ − σ √T
         const sqrtT = Math.sqrt(T);
         const drift = r - q;
-        const d1 = ( Math.log(S / K)
-                  + (drift + 0.5 * sigma * sigma) * T )
-                  / (sigma * sqrtT);
-        const d2 = d1 - sigma * sqrtT;
+        const d1    = (
+          Math.log(S / K)
+          + (drift + 0.5 * sigma * sigma) * T
+        ) / (sigma * sqrtT);
+        const d2    = d1 - sigma * sqrtT;
 
         // 3. Price formulas
-        //    Call = S e^(−qT) N(d₁) − K e^(−rT) N(d₂)
-        //    Put  = K e^(−rT) N(−d₂) − S e^(−qT) N(−d₁)
-        const dfS = S * Math.exp(-q * T);
-        const dfK = K * Math.exp(-r * T);
-        const callPrice = dfS * normalCDF(d1) - dfK * normalCDF(d2);
-        const putPrice  = dfK * normalCDF(-d2) - dfS * normalCDF(-d1);
+        const dfS        = S * Math.exp(-q * T);
+        const dfK        = K * Math.exp(-r * T);
+        const callPrice  = dfS * normalCDF(d1) - dfK * normalCDF(d2);
+        const putPrice   = dfK * normalCDF(-d2) - dfS * normalCDF(-d1);
 
         // 4. Display numeric prices
         safeSetText('callPrice', callPrice.toFixed(4));
@@ -2503,53 +2500,56 @@
             = ${d2.toFixed(4)}</p>
 
           <h4>Step 2: Call & Put Prices</h4>
-          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d₁) − K e<sup>−rT</sup> N(d₂)</p>
+          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d₁) − K e<sup>−rT</sup> N(d₂)</p>
           <p>= ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
             − ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
             = ${callPrice.toFixed(4)}</p>
-          <p><strong>Put</strong> = K e<sup>−rT</sup> N(−d₂) − S e<sup>−qT</sup> N(−d₁)</p>
+          <p><strong>Put</strong>  = K e<sup>−rT</sup> N(−d₂) − S e<sup>−qT</sup> N(−d₁)</p>
           <p>= ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
             − ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(−${d1.toFixed(4)})
             = ${putPrice.toFixed(4)}</p>
         `;
         safeSetHTML('calculationsContent', steps);
 
-        // 6. Compute Greeks via your existing helper
-        const greeks = calculateGreeks(S, K, T, r, sigma, q, d1, d2);
+        // 6. Compute all Greeks
+        const pdf1      = normalPDF(d1);
+        const callDelta = normalCDF(d1);
+        const putDelta  = normalCDF(d1) - 1;
+        const gamma     = pdf1 / (S * sigma * sqrtT);
+        const vega      = S * sqrtT * pdf1  * 0.01;
+        const callTheta = 
+            - (S * pdf1 * sigma) / (2 * sqrtT)
+            - r * dfK * normalCDF(d2)
+            + q * dfS * normalCDF(d1);
+        const putTheta  = 
+            - (S * pdf1 * sigma) / (2 * sqrtT)
+            + r * dfK * normalCDF(-d2)
+            - q * dfS * normalCDF(-d1);
+        const callRho   = K * T * Math.exp(-r * T) * normalCDF(d2) * 0.01;
+        const putRho    = -K * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01;
 
         // 7. Display numeric Greeks
-        safeSetText('callDelta', greeks.callDelta.toFixed(4));
-        safeSetText('putDelta',  greeks.putDelta .toFixed(4));
-        safeSetText('callGamma', greeks.gamma    .toFixed(4));
-        safeSetText('callVega',  greeks.vega     .toFixed(4));
-        safeSetText('callTheta', greeks.callTheta.toFixed(4));
-        safeSetText('putTheta',  greeks.putTheta .toFixed(4));
-        safeSetText('callRho',   greeks.callRho  .toFixed(4));
-        safeSetText('putRho',    greeks.putRho   .toFixed(4));
+        safeSetText('callDelta', callDelta.toFixed(4));
+        safeSetText('putDelta',  putDelta .toFixed(4));
+        safeSetText('callGamma', gamma    .toFixed(4));
+        safeSetText('putGamma',  gamma    .toFixed(4));
+        safeSetText('callVega',  vega     .toFixed(4));
+        safeSetText('putVega',   vega     .toFixed(4));
+        safeSetText('callTheta', callTheta.toFixed(4));
+        safeSetText('putTheta',  putTheta .toFixed(4));
+        safeSetText('callRho',   callRho  .toFixed(4));
+        safeSetText('putRho',    putRho   .toFixed(4));
 
-        // 8. Build “Greeks” HTML
+        // 8. Build “Greeks” HTML with explicit formulas
         const greekSteps = `
-          <p><strong>Δ Call</strong> = e<sup>−qT</sup>N(d₁)
-            = e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)})
-            = ${greeks.callDelta.toFixed(4)}</p>
-          <p><strong>Δ Put</strong>  = e<sup>−qT</sup>[N(d₁)−1]
-            = ${greeks.putDelta.toFixed(4)}</p>
-          <p><strong>Γ</strong>     = e<sup>−qT</sup>N′(d₁)/(Sσ√T)
-            = ${greeks.gamma.toFixed(4)}</p>
-          <p><strong>ν</strong>     = S e<sup>−qT</sup>√T N′(d₁)×0.01
-            = ${greeks.vega.toFixed(4)}</p>
-          <p><strong>θ Call</strong> = [−S q e<sup>−qT</sup>N(d₁)
-            − S e<sup>−qT</sup>N′(d₁)σ/(2√T)
-            − r K e<sup>−rT</sup>N(d₂)]
-            = ${greeks.callTheta.toFixed(4)}</p>
-          <p><strong>θ Put</strong>  = [−S q e<sup>−qT</sup>N(d₁)
-            + S e<sup>−qT</sup>N′(d₁)σ/(2√T)
-            + r K e<sup>−rT</sup>N(−d₂)]
-            = ${greeks.putTheta.toFixed(4)}</p>
-          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup>N(d₂)×0.01
-            = ${greeks.callRho.toFixed(4)}</p>
-          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup>N(−d₂)×0.01
-            = ${greeks.putRho.toFixed(4)}</p>
+          <p><strong>Delta Call</strong> = N(d₁) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Delta Put</strong>  = N(d₁) - 1 = ${putDelta.toFixed(4)}</p>
+          <p><strong>Gamma</strong>     = N'(d₁)/(Sσ√T) = ${gamma.toFixed(4)}</p>
+          <p><strong>Vega</strong>      = S√T×N'(d₁)×0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>Theta Call</strong> = [-(S×N'(d₁)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d₂) + qS×e<sup>-qT</sup>×N(d₁)] = ${callTheta.toFixed(4)}</p>
+          <p><strong>Theta Put</strong>  = [-(S×N'(d₁)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d₂) - qS×e<sup>-qT</sup>×N(-d₁)] = ${putTheta.toFixed(4)}</p>
+          <p><strong>Rho Call</strong>   = K×T×e<sup>-rT</sup>×N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>Rho Put</strong>    = -K×T×e<sup>-rT</sup>×N(-d₂)×0.01 = ${putRho.toFixed(4)}</p>
         `;
         safeSetHTML('greeksCalculationsContent', greekSteps);
 
@@ -2557,6 +2557,7 @@
         alert("Error: " + e.message);
       }
     }
+
 
     
     // Funzione per il calcolo delle Index Options (identica a quella delle Vanilla Options, con id differenziati)
@@ -4452,7 +4453,6 @@
     // Futures Options Calculations
     function calculateFuturesOptions() {
       try {
-        // 1. Read inputs and validate
         const S     = parseFloat(document.getElementById('foSpot').value);
         const K     = parseFloat(document.getElementById('foStrike').value);
         const T     = parseFloat(document.getElementById('foTime').value);
@@ -4464,83 +4464,64 @@
           throw new Error("Please enter valid values (all > 0)");
         }
 
-        // 2. Forward price formula
-        //    F = S × e^{(r − q)T}
-        const exponent = (r - q) * T;
-        const F = S * Math.exp(exponent);
-
-        // 3. Compute d₁ and d₂
-        //    d₁ = [ ln(F/K) + ½σ² T ] ÷ (σ √T)
-        //    d₂ = d₁ − σ √T
         const sqrtT = Math.sqrt(T);
+        const F     = S * Math.exp((r - q) * T);
         const d1    = (Math.log(F / K) + 0.5 * sigma * sigma * T) / (sigma * sqrtT);
         const d2    = d1 - sigma * sqrtT;
+        const df    = Math.exp(-r * T);
 
-        // 4. Discounted option prices
-        //    Call = e^{−rT}[ F N(d₁) − K N(d₂) ]
-        //    Put  = e^{−rT}[ K N(−d₂) − F N(−d₁) ]
-        const df = Math.exp(-r * T);
-        const call = df * (F * normalCDF(d1) - K * normalCDF(d2));
-        const put  = df * (K * normalCDF(-d2) - F * normalCDF(-d1));
+        const callPrice = df * (F * normalCDF(d1) - K * normalCDF(d2));
+        const putPrice  = df * (K * normalCDF(-d2) - F * normalCDF(-d1));
 
-        // 5. Greeks
-        const pdfd1    = normalPDF(d1);
-        const callDelta= df * normalCDF(d1);
-        const putDelta = df * (normalCDF(d1) - 1);
-        const gamma    = df * (pdfd1 / (F * sigma * sqrtT));
-        const vega     = df * F * sqrtT * pdfd1 * 0.01;
-        const callTheta= -(F * pdfd1 * sigma * df) / (2 * sqrtT) - r * call;
-        const putTheta = -(F * pdfd1 * sigma * df) / (2 * sqrtT) - r * put;
-        const callRho  =  K * T * df * normalCDF(d2) * 0.01;
-        const putRho   = -K * T * df * normalCDF(-d2) * 0.01;
+        const pdfd1      = normalPDF(d1);
+        const gamma      = df * pdfd1 / (F * sigma * sqrtT);
+        const vega       = df * F * sqrtT * pdfd1 * 0.01;
+        const callDelta  = df * normalCDF(d1);
+        const putDelta   = df * (normalCDF(d1) - 1);
+        const callTheta  = -(F * pdfd1 * sigma * df) / (2 * sqrtT) - r * callPrice;
+        const putTheta   = -(F * pdfd1 * sigma * df) / (2 * sqrtT) - r * putPrice;
+        const callRho    =  K * T * df * normalCDF(d2) * 0.01;
+        const putRho     = -K * T * df * normalCDF(-d2) * 0.01;
 
-        // 6. Write numeric results
-        safeSetText('foCallPrice', call.toFixed(4));
-        safeSetText('foPutPrice',  put .toFixed(4));
+        // Output prices
+        safeSetText('foCallPrice', callPrice.toFixed(4));
+        safeSetText('foPutPrice',  putPrice.toFixed(4));
 
+        // Output Greeks
         safeSetText('foCallDelta', callDelta.toFixed(4));
         safeSetText('foPutDelta',  putDelta .toFixed(4));
         safeSetText('foCallGamma', gamma.toFixed(4));
+        safeSetText('foPutGamma',  gamma.toFixed(4));
         safeSetText('foCallVega',  vega .toFixed(4));
+        safeSetText('foPutVega',   vega .toFixed(4));
         safeSetText('foCallTheta', callTheta.toFixed(4));
         safeSetText('foPutTheta',  putTheta .toFixed(4));
         safeSetText('foCallRho',   callRho .toFixed(4));
         safeSetText('foPutRho',    putRho  .toFixed(4));
 
-        // 7. Build “Calculations” HTML
         const calcSteps = `
           <h4>Step 1: Forward Price</h4>
-          <p><strong>F</strong> = S × e<sup>(r − q)T</sup></p>
-          <p>= ${S.toFixed(4)} × e<sup>(${r.toFixed(4)} − ${q.toFixed(4)})×${T.toFixed(4)}</sup>
-            = ${F.toFixed(4)}</p>
+          <p><strong>F</strong> = S × e<sup>(r − q)T</sup> = ${F.toFixed(4)}</p>
 
-          <h4>Step 2: Compute d₁ and d₂</h4>
-          <p>d₁ = [ ln(F/K) + ½σ² T ] ÷ (σ √T)</p>
-          <p>= [ ln(${F.toFixed(4)}/${K.toFixed(4)}) + ½×${sigma.toFixed(4)}²×${T.toFixed(4)} ]
-            ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-          <p>d₂ = d₁ − σ √T = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
+          <h4>Step 2: d₁ and d₂</h4>
+          <p><strong>d₁</strong> = [ln(F/K) + ½σ²T] / (σ√T) = ${d1.toFixed(4)}</p>
+          <p><strong>d₂</strong> = d₁ − σ√T = ${d2.toFixed(4)}</p>
 
           <h4>Step 3: Option Prices</h4>
-          <p><strong>Call</strong> = e<sup>−rT</sup>[ F N(d₁) − K N(d₂) ]</p>
-          <p>= e<sup>−${(r*T).toFixed(4)}</sup>[ ${F.toFixed(4)}×N(${d1.toFixed(4)}) − ${K.toFixed(4)}×N(${d2.toFixed(4)}) ]
-            = ${call.toFixed(4)}</p>
-          <p><strong>Put</strong> = e<sup>−rT</sup>[ K N(−d₂) − F N(−d₁) ]</p>
-          <p>= e<sup>−${(r*T).toFixed(4)}</sup>[ ${K.toFixed(4)}×N(−${d2.toFixed(4)}) − ${F.toFixed(4)}×N(−${d1.toFixed(4)}) ]
-            = ${put.toFixed(4)}</p>
+          <p><strong>Call</strong> = e<sup>−rT</sup>[ F·N(d₁) − K·N(d₂) ] = ${callPrice.toFixed(4)}</p>
+          <p><strong>Put</strong> = e<sup>−rT</sup>[ K·N(−d₂) − F·N(−d₁) ] = ${putPrice.toFixed(4)}</p>
         `;
         safeSetHTML('foCalculationsContent', calcSteps);
 
-        // 8. Build “Greeks” HTML
         const greekSteps = `
-          <p><strong>Δ<sub>Call</sub></strong> = e<sup>−rT</sup>N(d₁)
-            = e<sup>−${(r*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) = ${callDelta.toFixed(4)}</p>
-          <p><strong>Δ<sub>Put</sub></strong>  = e<sup>−rT</sup>[N(d₁) − 1] = ${putDelta.toFixed(4)}</p>
-          <p><strong>Γ</strong> = e<sup>−rT</sup>[N′(d₁)/(Fσ√T)] = ${gamma.toFixed(4)}</p>
-          <p><strong>ν</strong> = e<sup>−rT</sup>F√T N′(d₁)×0.01 = ${vega.toFixed(4)}</p>
-          <p><strong>θ<sub>Call</sub></strong> = −[FσN′(d₁)e<sup>−rT</sup>/(2√T)] − rC = ${callTheta.toFixed(4)}</p>
-          <p><strong>θ<sub>Put</sub></strong>  = −[FσN′(d₁)e<sup>−rT</sup>/(2√T)] − rP = ${putTheta.toFixed(4)}</p>
-          <p><strong>ρ<sub>Call</sub></strong> = K T e<sup>−rT</sup>N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
-          <p><strong>ρ<sub>Put</sub></strong>  = −K T e<sup>−rT</sup>N(−d₂)×0.01 = ${putRho.toFixed(4)}</p>
+          <p><strong>Δ Call</strong> = e<sup>−rT</sup>·N(d₁) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Δ Put</strong> = e<sup>−rT</sup>·[N(d₁) − 1] = ${putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong> = e<sup>−rT</sup>·N′(d₁)/(F·σ·√T) = ${gamma.toFixed(4)}</p>
+          <p><strong>Vega</strong> = e<sup>−rT</sup>·F·√T·N′(d₁)·0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>θ Call</strong> = −[F·σ·N′(d₁)·e<sup>−rT</sup> / (2√T)] − r·Call = ${callTheta.toFixed(4)}</p>
+          <p><strong>θ Put</strong> = −[F·σ·N′(d₁)·e<sup>−rT</sup> / (2√T)] − r·Put = ${putTheta.toFixed(4)}</p>
+          <p><strong>ρ Call</strong> = K·T·e<sup>−rT</sup>·N(d₂)·0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>ρ Put</strong> = −K·T·e<sup>−rT</sup>·N(−d₂)·0.01 = ${putRho.toFixed(4)}</p>
         `;
         safeSetHTML('foGreeksContent', greekSteps);
 
@@ -4548,6 +4529,7 @@
         alert("Error: " + error.message);
       }
     }
+
 
 
     let foCallChart, foPutChart;
@@ -6251,7 +6233,7 @@
       //    d₁ = [ ln(S/X) + (r + ½σ²) T ] ÷ (σ √T)
       //    d₂ = d₁ − σ √T
       const sqrtT = Math.sqrt(T);
-      const d1 = (
+      const d1    = (
         Math.log(S / X)
         + (r + 0.5 * sigma * sigma) * T
       ) / (sigma * sqrtT);
@@ -6260,9 +6242,9 @@
       // 3. Price formulas for forward‑start (vanilla BS form)
       //    Call = S N(d₁) − X e^(−rT) N(d₂)
       //    Put  = X e^(−rT) N(−d₂) − S N(−d₁)
-      const dfX = X * Math.exp(-r * T);
-      const call = S * normalCDF(d1) - dfX * normalCDF(d2);
-      const put  = dfX * normalCDF(-d2) - S * normalCDF(-d1);
+      const dfX  = X * Math.exp(-r * T);
+      const call  = S * normalCDF(d1) - dfX * normalCDF(d2);
+      const put   = dfX * normalCDF(-d2) - S * normalCDF(-d1);
 
       // 4. Greeks (vanilla BS-style on original S)
       const pdf1       = normalPDF(d1);
@@ -6280,10 +6262,13 @@
       // 5. Render numeric prices & Greeks
       safeSetText('fsCallPrice', call.toFixed(4));
       safeSetText('fsPutPrice',  put .toFixed(4));
+
       safeSetText('fsCallDelta', callDelta.toFixed(4));
       safeSetText('fsPutDelta',  putDelta .toFixed(4));
       safeSetText('fsCallGamma', gamma.toFixed(4));
+      safeSetText('fsPutGamma',  gamma.toFixed(4));    // now shows put gamma
       safeSetText('fsCallVega',  vega .toFixed(4));
+      safeSetText('fsPutVega',   vega .toFixed(4));     // now shows put vega
       safeSetText('fsCallTheta', callTheta.toFixed(4));
       safeSetText('fsPutTheta',  putTheta .toFixed(4));
       safeSetText('fsCallRho',   callRho .toFixed(4));
@@ -6335,10 +6320,12 @@
       if (document.getElementById('fsGraph').style.display === 'block') {
         renderFSChart();
       }
+
     } catch (error) {
       alert("Error: " + error.message);
     }
   }
+
 
 
 
