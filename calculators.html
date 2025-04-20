@@ -4361,9 +4361,7 @@
           throw new Error("Please enter all values (S, K, T, σ) greater than zero");
         }
 
-        // 2. Compute d₁ and d₂ symbolically:
-        //    d₁ = [ ln(S/K) + (r − r_f + ½σ²) T ] ÷ (σ √T)
-        //    d₂ = d₁ − σ √T
+        // 2. Compute d₁ and d₂
         const sqrtT = Math.sqrt(T);
         const drift = r - rf;
         const d1 = (
@@ -4372,16 +4370,28 @@
         ) / (sigma * sqrtT);
         const d2 = d1 - sigma * sqrtT;
 
-        // 3. Price formulas symbolically:
-        //    Call = S e^(−r_f T) N(d₁) − K e^(−r T) N(d₂)
-        //    Put  = K e^(−r T) N(−d₂) − S e^(−r_f T) N(−d₁)
-        const dfS = S * Math.exp(-rf * T);
-        const dfK = K * Math.exp(-r  * T);
+        // 3. Price formulas
+        const dfS  = S * Math.exp(-rf * T);
+        const dfK  = K * Math.exp(-r  * T);
         const call = dfS * normalCDF(d1) - dfK * normalCDF(d2);
         const put  = dfK * normalCDF(-d2) - dfS * normalCDF(-d1);
 
-        // 4. Greeks via helper
-        const greeks = calculateCurrencyGreeks(S, K, T, r, sigma, rf, d1, d2);
+        // 4. Greeks (Garman–Kohlhagen) inline
+        const pdf1      = (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * d1 * d1);
+        const callDelta = dfS * normalCDF(d1);
+        const putDelta  = dfS * (normalCDF(d1) - 1);
+        const gamma     = dfS * pdf1 / (S * sigma * sqrtT);
+        const vega      = dfS * S * sqrtT * pdf1 * 0.01;
+        const callTheta =
+            - (dfS * S * pdf1 * sigma) / (2 * sqrtT)
+            - r * K * T * dfK * normalCDF(d2)
+            + rf * S * dfS * normalCDF(d1);
+        const putTheta  =
+            - (dfS * S * pdf1 * sigma) / (2 * sqrtT)
+            + r * K * T * dfK * normalCDF(-d2)
+            - rf * S * dfS * normalCDF(-d1);
+        const callRho   =  K * T * dfK * normalCDF(d2)  * 0.01;
+        const putRho    = -K * T * dfK * normalCDF(-d2) * 0.01;
 
         // 5. Render numeric prices
         safeSetText('cCallPrice', call.toFixed(4));
@@ -4412,29 +4422,29 @@
         safeSetHTML('currencyCalculationsContent', steps);
 
         // 7. Render numeric Greeks
-        safeSetText('cCallDelta', greeks.callDelta.toFixed(4));
-        safeSetText('cCallGamma', greeks.gamma    .toFixed(4));
-        safeSetText('cCallVega',  greeks.vega     .toFixed(4));
-        safeSetText('cCallTheta', greeks.callTheta.toFixed(4));
-        safeSetText('cCallRho',   greeks.callRho  .toFixed(4));
+        safeSetText('cCallDelta', callDelta.toFixed(4));
+        safeSetText('cCallGamma', gamma    .toFixed(4));
+        safeSetText('cCallVega',  vega     .toFixed(4));
+        safeSetText('cCallTheta', callTheta.toFixed(4));
+        safeSetText('cCallRho',   callRho  .toFixed(4));
 
-        safeSetText('cPutDelta', greeks.putDelta .toFixed(4));
-        safeSetText('cPutGamma', greeks.gamma    .toFixed(4));
-        safeSetText('cPutVega',  greeks.vega     .toFixed(4));
-        safeSetText('cPutTheta', greeks.putTheta .toFixed(4));
-        safeSetText('cPutRho',   greeks.putRho  .toFixed(4));
+        safeSetText('cPutDelta', putDelta .toFixed(4));
+        safeSetText('cPutGamma', gamma    .toFixed(4));
+        safeSetText('cPutVega',  vega     .toFixed(4));
+        safeSetText('cPutTheta', putTheta .toFixed(4));
+        safeSetText('cPutRho',   putRho   .toFixed(4));
 
         // 8. Build “Greeks” HTML
         const greekSteps = `
           <h4>Greeks</h4>
-          <p><strong>Δ<sub>Call</sub></strong> = N(d₁) = ${greeks.callDelta.toFixed(4)}</p>
-          <p><strong>Δ<sub>Put</sub></strong>  = N(d₁) − 1 = ${greeks.putDelta.toFixed(4)}</p>
-          <p><strong>Γ</strong>        = N′(d₁)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
-          <p><strong>ν</strong>        = S√T N′(d₁)×0.01 = ${greeks.vega.toFixed(4)}</p>
-          <p><strong>θ<sub>Call</sub></strong> = [−(SσN′(d₁))/(2√T) − rK e<sup>−rT</sup>N(d₂) + r<sub>f</sub>S e<sup>−r<sub>f</sub>T</sup>N(d₁)] = ${greeks.callTheta.toFixed(4)}</p>
-          <p><strong>θ<sub>Put</sub></strong>  = [−(SσN′(d₁))/(2√T) + rK e<sup>−rT</sup>N(−d₂) − r<sub>f</sub>S e<sup>−r<sub>f</sub>T</sup>N(−d₁)] = ${greeks.putTheta.toFixed(4)}</p>
-          <p><strong>ρ<sub>Call</sub></strong> = K T e<sup>−rT</sup>N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
-          <p><strong>ρ<sub>Put</sub></strong>  = −K T e<sup>−rT</sup>N(−d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
+          <p><strong>Δ<sub>Call</sub></strong> = e<sup>−r<sub>f</sub>T</sup>N(d₁) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Δ<sub>Put</sub></strong>  = e<sup>−r<sub>f</sub>T</sup>[N(d₁)−1] = ${putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong>        = e<sup>−r<sub>f</sub>T</sup>φ(d₁)/(Sσ√T) = ${gamma.toFixed(4)}</p>
+          <p><strong>ν</strong>        = e<sup>−r<sub>f</sub>T</sup>S√Tφ(d₁)×0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>θ<sub>Call</sub></strong> = [−(Sσφ(d₁)e<sup>−r<sub>f</sub>T</sup>)/(2√T) − rK T e<sup>−rT</sup>N(d₂) + r<sub>f</sub>S e<sup>−r<sub>f</sub>T</sup>N(d₁)] = ${callTheta.toFixed(4)}</p>
+          <p><strong>θ<sub>Put</sub></strong>  = [−(Sσφ(d₁)e<sup>−r<sub>f</sub>T</sup>)/(2√T) + rK T e<sup>−rT</sup>N(−d₂) − r<sub>f</sub>S e<sup>−r<sub>f</sub>T</sup>N(−d₁)] = ${putTheta.toFixed(4)}</p>
+          <p><strong>ρ<sub>Call</sub></strong> = K T e<sup>−rT</sup>N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>ρ<sub>Put</sub></strong>  = −K T e<sup>−rT</sup>N(−d₂)×0.01 = ${putRho.toFixed(4)}</p>
         `;
         safeSetHTML('currencyGreeksCalculationsContent', greekSteps);
 
@@ -4448,6 +4458,7 @@
         resetAllResults();
       }
     }
+
 
 
     // Futures Options Calculations
@@ -5187,140 +5198,105 @@
 
     function calculateBinaryOptionGreeks() {
       try {
-          const S = parseFloat(document.getElementById('binary-S').value);
-          const K = parseFloat(document.getElementById('binary-K').value);
-          const Q = parseFloat(document.getElementById('binary-Q').value);
-          const r = (parseFloat(document.getElementById('binary-r').value) || 0) / 100;
-          const T = parseFloat(document.getElementById('binary-T').value);
-          const vol = (parseFloat(document.getElementById('binary-vol').value) || 0) / 100;
-          
-          if (isNaN(S) || isNaN(K) || isNaN(Q) || isNaN(T) || isNaN(vol) ||
-              S <= 0 || K <= 0 || Q <= 0 || T <= 0 || vol <= 0) {
-              throw new Error("Please enter all values greater than zero");
-          }
+        // 1. Read inputs and validate
+        const S   = parseFloat(document.getElementById('binary-S').value);
+        const K   = parseFloat(document.getElementById('binary-K').value);
+        const Q   = parseFloat(document.getElementById('binary-Q').value);
+        const r   = (parseFloat(document.getElementById('binary-r').value) || 0) / 100;
+        const T   = parseFloat(document.getElementById('binary-T').value);
+        const vol = (parseFloat(document.getElementById('binary-vol').value) || 0) / 100;
 
-          const d1 = (Math.log(S / K) + (r + 0.5 * vol * vol) * T) / (vol * Math.sqrt(T));
-          const d2 = d1 - vol * Math.sqrt(T);
-          const sqrtT = Math.sqrt(T);
-          const N = x => normalCDF(x);
-          const N_prime = x => normalPDF(x);
-          const e_rT = Math.exp(-r * T);
+        if ([S,K,Q,T,vol].some(v => isNaN(v) || v <= 0)) {
+          throw new Error("Please enter all values greater than zero");
+        }
 
-          // Common factors
-          const cashFactor = Q * e_rT;
-          const assetFactor = S;
-          const N_prime_d2 = N_prime(d2);
-          const N_prime_d1 = N_prime(d1);
+        // 2. Compute d1, d2
+        const sqrtT = Math.sqrt(T);
+        const d1     = (Math.log(S/K) + (r + 0.5*vol*vol)*T) / (vol*sqrtT);
+        const d2     = d1 - vol*sqrtT;
 
-          // Cash-or-Nothing Greeks
-          const cashCallDelta = cashFactor * (N_prime_d2 / (S * vol * sqrtT));
-          const cashCallGamma = -cashCallDelta * (d2 / (S * vol * sqrtT) + 1 / (vol * sqrtT));
-          const cashCallVega = cashFactor * N_prime_d2 * (d1 / vol - sqrtT);
-          const cashCallTheta = -cashFactor * (N_prime_d2 * (r * d1 / (vol * sqrtT)) + r * N(d2));
-          const cashCallRho = cashFactor * T * N(d2) - cashCallTheta * T;
+        // 3. Helpers
+        const N       = x => normalCDF(x);
+        const pdf     = x => normalPDF(x);
+        const df      = Math.exp(-r*T);
+        const pdf2    = pdf(d2);
+        const pdf1    = pdf(d1);
+        const cashF   = Q * df;
+        const dfS     = Math.exp(-r*T);  // for asset-or-nothing
 
-          const cashPutDelta = -cashCallDelta;
-          const cashPutGamma = cashCallGamma;
-          const cashPutVega = cashCallVega;
-          const cashPutTheta = -cashFactor * (N_prime_d2 * (r * d1 / (vol * sqrtT)) - r * N(-d2));
-          const cashPutRho = -cashFactor * T * N(-d2) - cashPutTheta * T;
+        // 4. Cash‑or‑Nothing Greeks
+        // Delta
+        const cashCallDelta = cashF * pdf2 / (S * vol * sqrtT);
+        // Gamma = ∂Δ/∂S = Δ * [ -d2/(S·σ√T) - 1/S ]
+        const cashCallGamma = cashCallDelta * ( -d2/(S*vol*sqrtT) - 1/S );
+        // Vega
+        const cashCallVega  = cashF * pdf2 * (d2/(vol) );
+        // Theta = −r*C + ∂C/∂T  ≈ −r·(Qe^{-rT}N(d2)) − cashF·pdf2·(d2/(2T))
+        // but use the standard closed‐form for cash‑binary:
+        const cashCallTheta = -r * cashF * N(d2) - (cashF * pdf2 * vol) / (2 * sqrtT);
+        // Rho = ∂C/∂r = Q·T·e^{-rT}·N(d2)
+        const cashCallRho   = Q * T * df * N(d2);
 
-          // Asset-or-Nothing Greeks
-          const assetCallDelta = N(d1);
-          const assetCallGamma = N_prime_d1 / (S * vol * sqrtT);
-          const assetCallVega = S * N_prime_d1 * sqrtT;
-          const assetCallTheta = -(S * N_prime_d1 * vol) / (2 * sqrtT) - r * S * N(d1);
-          const assetCallRho = S * sqrtT * N_prime_d1;
+        // Put (parity)
+        const cashPutDelta = -cashCallDelta;
+        const cashPutGamma =  cashCallGamma;
+        const cashPutVega  =  cashCallVega;
+        const cashPutTheta = -r * cashF * N(-d2) - (cashF * pdf2 * vol) / (2 * sqrtT);
+        const cashPutRho   = -Q * T * df * N(-d2);
 
-          const assetPutDelta = -N(-d1);
-          const assetPutGamma = assetCallGamma;
-          const assetPutVega = assetCallVega;
-          const assetPutTheta = -(S * N_prime_d1 * vol) / (2 * sqrtT) + r * S * N(-d1);
-          const assetPutRho = -assetCallRho;
+        // 5. Asset‑or‑Nothing Greeks
+        // Value: S e^{-rT} N(d1)
+        // Delta = e^{-rT}[ N(d1) + φ(d1)/(σ√T) ]
+        const assetCallDelta = dfS * ( N(d1) + pdf1/(vol*sqrtT) );
+        // Gamma = e^{-rT} φ(d1)/(Sσ√T) [1 - d1/(σ√T)]
+        const assetCallGamma = dfS * pdf1/(S*vol*sqrtT) * (1 - d1/(vol*sqrtT));
+        // Vega = S e^{-rT} φ(d1) [√T/σ - d1/σ] × 0.01
+        const assetCallVega  = dfS * S * pdf1 * ((sqrtT/vol - d1/vol)) * 0.01;
+        // Theta = −r·S e^{-rT} N(d1) − (σ S e^{-rT} φ(d1))/(2√T)
+        const assetCallTheta = -r * dfS * S * N(d1)
+                              - (dfS * S * pdf1 * vol) / (2 * sqrtT);
+        // Rho = −T·S e^{-rT} N(d1)
+        const assetCallRho   = -T * dfS * S * N(d1);
 
-          // 📝 Greeks Calculations
-          let calcDetails = `<h3>📝 Greeks Calculations:</h3>`;
-          
-          // Cash-or-Nothing Calculations
-          calcDetails += `<h4>Cash-or-Nothing Options:</h4>`;
-          calcDetails += `<div class="calculation-step">`;
-          calcDetails += `<h5>Call Options:</h5>`;
-          calcDetails += `<p><strong>Delta Δ:</strong> (Q × e<sup>-rT</sup> × N'(d₂)) / (S × σ × √T)<br>`;
-          calcDetails += `= (${Q} × e<sup>-${(r*T).toFixed(4)}</sup> × ${N_prime_d2.toFixed(4)}) / (${S} × ${vol} × ${sqrtT.toFixed(4)}) = ${cashCallDelta.toFixed(4)}</p>`;
-          
-          calcDetails += `<p><strong>Gamma Γ:</strong> -Δ × (d₂/(Sσ√T) + 1/(σ√T))<br>`;
-          calcDetails += `= -${cashCallDelta.toFixed(4)} × (${d2.toFixed(4)}/(${S*vol*sqrtT}) + 1/${vol*sqrtT}) = ${cashCallGamma.toFixed(4)}</p>`;
-          
-          calcDetails += `<p><strong>Vega ν:</strong> Q × e<sup>-rT</sup> × N'(d₂) × (d1/σ - √T) × 0.01<br>`;
-          calcDetails += `= ${cashFactor.toFixed(4)} × ${N_prime_d2.toFixed(4)} × (${d1.toFixed(4)}/${vol} - ${sqrtT.toFixed(4)}) × 0.01 = ${cashCallVega.toFixed(4)}</p>`;
-          
-          calcDetails += `<p><strong>Theta θ:</strong> -Q × e<sup>-rT</sup> × [N'(d₂)(r d1)/(σ√T) + r N(d₂)]<br>`;
-          calcDetails += `= -${cashFactor.toFixed(4)} × [${N_prime_d2.toFixed(4)}×(${r}×${d1.toFixed(4)})/(${vol}×${sqrtT.toFixed(4)}) + ${r}×${N(d2).toFixed(4)}] = ${cashCallTheta.toFixed(4)}</p>`;
-          
-          calcDetails += `<p><strong>Rho ρ:</strong> Q × T × e<sup>-rT</sup> × N(d₂) × 0.01<br>`;
-          calcDetails += `= ${Q} × ${T} × e<sup>-${(r*T).toFixed(4)}</sup> × ${N(d2).toFixed(4)} × 0.01 = ${cashCallRho.toFixed(4)}</p>`;
-          calcDetails += `</div>`;
+        // Put (parity)
+        // Delta = e^{-rT}[ N(d1) + φ(d1)/(σ√T) ] − e^{-rT}
+        const assetPutDelta = assetCallDelta - dfS;
+        const assetPutGamma = assetCallGamma;
+        const assetPutVega  = assetCallVega;
+        const assetPutTheta = -r * dfS * S * N(-d1)
+                              - (dfS * S * pdf1 * vol) / (2 * sqrtT);
+        const assetPutRho   = -T * dfS * S * N(-d1);
 
-          calcDetails += `<div class="calculation-step">`;
-          calcDetails += `<h5>Put Options:</h5>`;
-          calcDetails += `<p><strong>Delta Δ:</strong> -Δ<sub>call</sub> = -${cashCallDelta.toFixed(4)} = ${cashPutDelta.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Gamma Γ:</strong> Same as Call = ${cashPutGamma.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Vega ν:</strong> Same as Call = ${cashPutVega.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Theta θ:</strong> -Q × e<sup>-rT</sup> × [N'(d₂)(r d1)/(σ√T) - r N(-d₂)] = ${cashPutTheta.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Rho ρ:</strong> -Q × T × e<sup>-rT</sup> × N(-d₂) × 0.01 = ${cashPutRho.toFixed(4)}</p>`;
-          calcDetails += `</div>`;
+        // 6. Display
+        safeSetText('cashCallDelta', cashCallDelta.toFixed(4));
+        safeSetText('cashCallGamma', cashCallGamma.toFixed(4));
+        safeSetText('cashCallVega',  cashCallVega .toFixed(4));
+        safeSetText('cashCallTheta', cashCallTheta.toFixed(4));
+        safeSetText('cashCallRho',   cashCallRho   .toFixed(4));
 
-          // Asset-or-Nothing Calculations
-          calcDetails += `<h4>Asset-or-Nothing Options:</h4>`;
-          calcDetails += `<div class="calculation-step">`;
-          calcDetails += `<h5>Call Options:</h5>`;
-          calcDetails += `<p><strong>Delta Δ:</strong> N(d1) = ${N(d1).toFixed(4)} = ${assetCallDelta.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Gamma Γ:</strong> N'(d1)/(Sσ√T) = ${N_prime_d1.toFixed(4)}/(${S}×${vol}×${sqrtT.toFixed(4)}) = ${assetCallGamma.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Vega ν:</strong> S × N'(d1) × √T × 0.01 = ${S} × ${N_prime_d1.toFixed(4)} × ${sqrtT.toFixed(4)} × 0.01 = ${assetCallVega.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Theta θ:</strong> -(S N'(d1) σ)/(2√T) - r S N(d1) = ${assetCallTheta.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Rho ρ:</strong> S √T N'(d1) × 0.01 = ${assetCallRho.toFixed(4)}</p>`;
-          calcDetails += `</div>`;
+        safeSetText('cashPutDelta',  cashPutDelta .toFixed(4));
+        safeSetText('cashPutGamma',  cashPutGamma .toFixed(4));
+        safeSetText('cashPutVega',   cashPutVega  .toFixed(4));
+        safeSetText('cashPutTheta',  cashPutTheta .toFixed(4));
+        safeSetText('cashPutRho',    cashPutRho   .toFixed(4));
 
-          calcDetails += `<div class="calculation-step">`;
-          calcDetails += `<h5>Put Options:</h5>`;
-          calcDetails += `<p><strong>Delta Δ:</strong> -N(-d1) = -${N(-d1).toFixed(4)} = ${assetPutDelta.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Gamma Γ:</strong> Same as Call = ${assetPutGamma.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Vega ν:</strong> Same as Call = ${assetPutVega.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Theta θ:</strong> -(S N'(d1) σ)/(2√T) + r S N(-d1) = ${assetPutTheta.toFixed(4)}</p>`;
-          calcDetails += `<p><strong>Rho ρ:</strong> -ρ<sub>call</sub> = -${assetCallRho.toFixed(4)} = ${assetPutRho.toFixed(4)}</p>`;
-          calcDetails += `</div>`;
+        safeSetText('assetCallDelta', assetCallDelta.toFixed(4));
+        safeSetText('assetCallGamma', assetCallGamma.toFixed(4));
+        safeSetText('assetCallVega',  assetCallVega .toFixed(4));
+        safeSetText('assetCallTheta', assetCallTheta.toFixed(4));
+        safeSetText('assetCallRho',   assetCallRho   .toFixed(4));
 
-          safeSetHTML('binaryGreeksContent', calcDetails);
-
-          // Update displayed values
-          safeSetText('cashCallDelta', cashCallDelta.toFixed(4));
-          safeSetText('cashCallGamma', cashCallGamma.toFixed(4));
-          safeSetText('cashCallVega', cashCallVega.toFixed(4));
-          safeSetText('cashCallTheta', cashCallTheta.toFixed(4));
-          safeSetText('cashCallRho', cashCallRho.toFixed(4));
-          
-          safeSetText('cashPutDelta', cashPutDelta.toFixed(4));
-          safeSetText('cashPutGamma', cashPutGamma.toFixed(4));
-          safeSetText('cashPutVega', cashPutVega.toFixed(4));
-          safeSetText('cashPutTheta', cashPutTheta.toFixed(4));
-          safeSetText('cashPutRho', cashPutRho.toFixed(4));
-
-          safeSetText('assetCallDelta', assetCallDelta.toFixed(4));
-          safeSetText('assetCallGamma', assetCallGamma.toFixed(4));
-          safeSetText('assetCallVega', assetCallVega.toFixed(4));
-          safeSetText('assetCallTheta', assetCallTheta.toFixed(4));
-          safeSetText('assetCallRho', assetCallRho.toFixed(4));
-          
-          safeSetText('assetPutDelta', assetPutDelta.toFixed(4));
-          safeSetText('assetPutGamma', assetPutGamma.toFixed(4));
-          safeSetText('assetPutVega', assetPutVega.toFixed(4));
-          safeSetText('assetPutTheta', assetPutTheta.toFixed(4));
-          safeSetText('assetPutRho', assetPutRho.toFixed(4));
+        safeSetText('assetPutDelta',  assetPutDelta .toFixed(4));
+        safeSetText('assetPutGamma',  assetPutGamma .toFixed(4));
+        safeSetText('assetPutVega',   assetPutVega  .toFixed(4));
+        safeSetText('assetPutTheta',  assetPutTheta .toFixed(4));
+        safeSetText('assetPutRho',    assetPutRho   .toFixed(4));
 
       } catch (error) {
-          alert("Error: " + error.message);
+        alert("Error: " + error.message);
       }
-  }
+    }
+
 
     // Renderizza i grafici per il payoff delle Binary Options
     function renderBinaryOptionChart() {
