@@ -2515,46 +2515,38 @@
         safeSetHTML('calculationsContent', steps);
 
         // 6. Compute Greeks via your existing helper
-        const greeks = calculateGreeks(S, K, T, r, sigma, q, d1, d2);
-
-        // 7. Display numeric Greeks
-        safeSetText('callDelta', greeks.callDelta.toFixed(4));
-        safeSetText('putDelta',  greeks.putDelta .toFixed(4));
-        safeSetText('callGamma', greeks.gamma    .toFixed(4));
-        safeSetText('callVega',  greeks.vega     .toFixed(4));
-        safeSetText('callTheta', greeks.callTheta.toFixed(4));
-        safeSetText('putTheta',  greeks.putTheta .toFixed(4));
-        safeSetText('callRho',   greeks.callRho  .toFixed(4));
-        safeSetText('putRho',    greeks.putRho   .toFixed(4));
-
-        // 8. Build “Greeks” HTML
         const greekSteps = `
-          <p><strong>Δ Call</strong> = e<sup>−qT</sup>N(d1)
-            = e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)})
-            = ${greeks.callDelta.toFixed(4)}</p>
-          <p><strong>Δ Put</strong>  = e<sup>−qT</sup>[N(d1)−1]
-            = ${greeks.putDelta.toFixed(4)}</p>
-          <p><strong>Γ</strong>     = e<sup>−qT</sup>N′(d1)/(Sσ√T)
-            = ${greeks.gamma.toFixed(4)}</p>
-          <p><strong>ν</strong>     = S e<sup>−qT</sup>√T N′(d1)×0.01
-            = ${greeks.vega.toFixed(4)}</p>
-          <p><strong>θ Call</strong> = [−S q e<sup>−qT</sup>N(d1)
-            − S e<sup>−qT</sup>N′(d1)σ/(2√T)
-            − r K e<sup>−rT</sup>N(d2)]
-            = ${greeks.callTheta.toFixed(4)}</p>
-          <p><strong>θ Put</strong>  = [−S q e<sup>−qT</sup>N(d1)
-            + S e<sup>−qT</sup>N′(d1)σ/(2√T)
-            + r K e<sup>−rT</sup>N(−d2)]
-            = ${greeks.putTheta.toFixed(4)}</p>
-          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup>N(d2)×0.01
-            = ${greeks.callRho.toFixed(4)}</p>
-          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup>N(−d2)×0.01
-            = ${greeks.putRho.toFixed(4)}</p>
+          <p><strong>Delta Call</strong> = N(d₁) = ${greeks.callDelta.toFixed(4)}</p>
+          <p><strong>Delta Put</strong> = N(d₁) - 1 = ${greeks.putDelta.toFixed(4)}</p>
+          <p><strong>Gamma</strong> = N'(d₁)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
+          <p><strong>Vega</strong> = S√T×N'(d₁)×0.01 = ${greeks.vega.toFixed(4)}</p>
+          <p><strong>Theta Call</strong> = [-(S×N'(d₁)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d₂) + qS×e<sup>-qT</sup>×N(d₁)] = ${greeks.callTheta.toFixed(4)}</p>
+          <p><strong>Theta Put</strong> = [-(S×N'(d₁)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d₂) - qS×e<sup>-qT</sup>×N(-d₁)] = ${greeks.putTheta.toFixed(4)}</p>
+          <p><strong>Rho Call</strong> = K×T×e<sup>-rT</sup>×N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
+          <p><strong>Rho Put</strong> = -K×T×e<sup>-rT</sup>×N(-d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
         `;
+    
+        safeSetText('callPrice', call.toFixed(4));
+        safeSetText('putPrice', put.toFixed(4));
+        safeSetHTML('calculationsContent', steps);
+    
+        safeSetText('callDelta', greeks.callDelta.toFixed(4));
+        safeSetText('callGamma', greeks.gamma.toFixed(4));
+        safeSetText('callVega', greeks.vega.toFixed(4));
+        safeSetText('callTheta', greeks.callTheta.toFixed(4));
+        safeSetText('callRho', greeks.callRho.toFixed(4));
+    
+        safeSetText('putDelta', greeks.putDelta.toFixed(4));
+        safeSetText('putGamma', greeks.gamma.toFixed(4));
+        safeSetText('putVega', greeks.vega.toFixed(4));
+        safeSetText('putTheta', greeks.putTheta.toFixed(4));
+        safeSetText('putRho', greeks.putRho.toFixed(4));
+    
         safeSetHTML('greeksCalculationsContent', greekSteps);
-
-      } catch (e) {
-        alert("Error: " + e.message);
+      } catch (error) {
+        alert('Errore: ' + error.message);
+        resetAllResults();
+        return;
       }
     }
 
