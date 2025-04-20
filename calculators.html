@@ -2456,119 +2456,206 @@
     
     function calculatePrices() {
       try {
-        const S = parseFloat(document.getElementById('spot').value);
-        const K = parseFloat(document.getElementById('strike').value);
-        const T = parseFloat(document.getElementById('time').value);
-        const r = (parseFloat(document.getElementById('rate').value) || 0) / 100;
-        const sigma = (parseFloat(document.getElementById('vol').value) || 0) / 100;
-        const q = (parseFloat(document.getElementById('div').value) || 0) / 100;
-        if (isNaN(S) || isNaN(K) || isNaN(T) || isNaN(sigma) || S <= 0 || K <= 0 || T <= 0 || sigma <= 0) {
-          throw new Error("Inserisci tutti i valori maggiori di zero per effettuare il calcolo");
+        // 1. Read inputs and validate
+        const S     = parseFloat(document.getElementById('spot').value);
+        const K     = parseFloat(document.getElementById('strike').value);
+        const T     = parseFloat(document.getElementById('time').value);
+        const r     = (parseFloat(document.getElementById('rate').value) || 0) / 100;
+        const sigma = (parseFloat(document.getElementById('vol').value)  || 0) / 100;
+        const q     = (parseFloat(document.getElementById('div').value)  || 0) / 100;
+
+        if ([S, K, T, sigma].some(v => isNaN(v) || v <= 0)) {
+          throw new Error("Please enter all values (S, K, T, σ) greater than zero.");
         }
-        const d1 = (Math.log(S / K) + (r - q + (sigma**2)/2) * T) / (sigma * Math.sqrt(T));
-        const d2 = d1 - sigma * Math.sqrt(T);
-        const call = S * Math.exp(-q * T) * normalCDF(d1) - K * Math.exp(-r * T) * normalCDF(d2);
-        const put = K * Math.exp(-r * T) * normalCDF(-d2) - S * Math.exp(-q * T) * normalCDF(-d1);
-        const greeks = calculateGreeks(S, K, T, r, sigma, q, d1, d2);
-    
+
+        // 2. Compute d₁ and d₂
+        //    d₁ = [ ln(S/K) + (r − q + ½σ²) T ] ÷ (σ √T)
+        //    d₂ = d₁ − σ √T
+        const sqrtT = Math.sqrt(T);
+        const drift = r - q;
+        const d1 = ( Math.log(S / K)
+                  + (drift + 0.5 * sigma * sigma) * T )
+                  / (sigma * sqrtT);
+        const d2 = d1 - sigma * sqrtT;
+
+        // 3. Price formulas
+        //    Call = S e^(−qT) N(d₁) − K e^(−rT) N(d₂)
+        //    Put  = K e^(−rT) N(−d₂) − S e^(−qT) N(−d₁)
+        const dfS = S * Math.exp(-q * T);
+        const dfK = K * Math.exp(-r * T);
+        const callPrice = dfS * normalCDF(d1) - dfK * normalCDF(d2);
+        const putPrice  = dfK * normalCDF(-d2) - dfS * normalCDF(-d1);
+
+        // 4. Display numeric prices
+        safeSetText('callPrice', callPrice.toFixed(4));
+        safeSetText('putPrice',  putPrice .toFixed(4));
+
+        // 5. Build “Calculations” HTML
         const steps = `
-          <p><strong>d1</strong> = [ln(${S.toFixed(4)}/${K.toFixed(4)}) + ( ${(r - q).toFixed(4)} + ${(sigma**2/2).toFixed(4)} )× ${T.toFixed(4)}] ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-          <p><strong>d₂</strong> = ${d1.toFixed(4)} - ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
-          <p><strong>Call</strong> = ${S.toFixed(4)}×e<sup>-${(q * T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) - ${K.toFixed(4)}×e<sup>-${(r * T).toFixed(4)}</sup>×N(${d2.toFixed(4)}) = ${call.toFixed(4)}</p>
-          <p><strong>Put</strong> = ${K.toFixed(4)}×e<sup>-${(r * T).toFixed(4)}</sup>×N(-${d2.toFixed(4)}) - ${S.toFixed(4)}×e<sup>-${(q * T).toFixed(4)}</sup>×N(-${d1.toFixed(4)}) = ${put.toFixed(4)}</p>
+          <h4>Step 1: Compute d₁ and d₂</h4>
+          <p><strong>d₁</strong> = [ ln(S/K) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
+          <p>= [ ln(${S.toFixed(4)}/${K.toFixed(4)}) 
+              + (${r.toFixed(4)} − ${q.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
+            ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
+            = ${d1.toFixed(4)}</p>
+          <p><strong>d₂</strong> = d₁ − σ√T
+            = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+            = ${d2.toFixed(4)}</p>
+
+          <h4>Step 2: Call & Put Prices</h4>
+          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d₁) − K e<sup>−rT</sup> N(d₂)</p>
+          <p>= ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
+            − ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
+            = ${callPrice.toFixed(4)}</p>
+          <p><strong>Put</strong> = K e<sup>−rT</sup> N(−d₂) − S e<sup>−qT</sup> N(−d₁)</p>
+          <p>= ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
+            − ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(−${d1.toFixed(4)})
+            = ${putPrice.toFixed(4)}</p>
         `;
-        const greekSteps = `
-          <p><strong>Delta Call</strong> = N(d1) = ${greeks.callDelta.toFixed(4)}</p>
-          <p><strong>Delta Put</strong> = N(d1) - 1 = ${greeks.putDelta.toFixed(4)}</p>
-          <p><strong>Gamma</strong> = N'(d1)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
-          <p><strong>Vega</strong> = S√T×N'(d1)×0.01 = ${greeks.vega.toFixed(4)}</p>
-          <p><strong>Theta Call</strong> = [-(S×N'(d1)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d₂) + qS×e<sup>-qT</sup>×N(d1)] = ${greeks.callTheta.toFixed(4)}</p>
-          <p><strong>Theta Put</strong> = [-(S×N'(d1)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d₂) - qS×e<sup>-qT</sup>×N(-d1)] = ${greeks.putTheta.toFixed(4)}</p>
-          <p><strong>Rho Call</strong> = K×T×e<sup>-rT</sup>×N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
-          <p><strong>Rho Put</strong> = -K×T×e<sup>-rT</sup>×N(-d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
-        `;
-    
-        safeSetText('callPrice', call.toFixed(4));
-        safeSetText('putPrice', put.toFixed(4));
         safeSetHTML('calculationsContent', steps);
-    
+
+        // 6. Compute Greeks via your existing helper
+        const greeks = calculateGreeks(S, K, T, r, sigma, q, d1, d2);
+
+        // 7. Display numeric Greeks
         safeSetText('callDelta', greeks.callDelta.toFixed(4));
-        safeSetText('callGamma', greeks.gamma.toFixed(4));
-        safeSetText('callVega', greeks.vega.toFixed(4));
+        safeSetText('putDelta',  greeks.putDelta .toFixed(4));
+        safeSetText('callGamma', greeks.gamma    .toFixed(4));
+        safeSetText('callVega',  greeks.vega     .toFixed(4));
         safeSetText('callTheta', greeks.callTheta.toFixed(4));
-        safeSetText('callRho', greeks.callRho.toFixed(4));
-    
-        safeSetText('putDelta', greeks.putDelta.toFixed(4));
-        safeSetText('putGamma', greeks.gamma.toFixed(4));
-        safeSetText('putVega', greeks.vega.toFixed(4));
-        safeSetText('putTheta', greeks.putTheta.toFixed(4));
-        safeSetText('putRho', greeks.putRho.toFixed(4));
-    
+        safeSetText('putTheta',  greeks.putTheta .toFixed(4));
+        safeSetText('callRho',   greeks.callRho  .toFixed(4));
+        safeSetText('putRho',    greeks.putRho   .toFixed(4));
+
+        // 8. Build “Greeks” HTML
+        const greekSteps = `
+          <p><strong>Δ Call</strong> = e<sup>−qT</sup>N(d₁)
+            = e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)})
+            = ${greeks.callDelta.toFixed(4)}</p>
+          <p><strong>Δ Put</strong>  = e<sup>−qT</sup>[N(d₁)−1]
+            = ${greeks.putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong>     = e<sup>−qT</sup>N′(d₁)/(Sσ√T)
+            = ${greeks.gamma.toFixed(4)}</p>
+          <p><strong>ν</strong>     = S e<sup>−qT</sup>√T N′(d₁)×0.01
+            = ${greeks.vega.toFixed(4)}</p>
+          <p><strong>θ Call</strong> = [−S q e<sup>−qT</sup>N(d₁)
+            − S e<sup>−qT</sup>N′(d₁)σ/(2√T)
+            − r K e<sup>−rT</sup>N(d₂)]
+            = ${greeks.callTheta.toFixed(4)}</p>
+          <p><strong>θ Put</strong>  = [−S q e<sup>−qT</sup>N(d₁)
+            + S e<sup>−qT</sup>N′(d₁)σ/(2√T)
+            + r K e<sup>−rT</sup>N(−d₂)]
+            = ${greeks.putTheta.toFixed(4)}</p>
+          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup>N(d₂)×0.01
+            = ${greeks.callRho.toFixed(4)}</p>
+          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup>N(−d₂)×0.01
+            = ${greeks.putRho.toFixed(4)}</p>
+        `;
         safeSetHTML('greeksCalculationsContent', greekSteps);
-      } catch (error) {
-        alert('Errore: ' + error.message);
-        resetAllResults();
-        return;
+
+      } catch (e) {
+        alert("Error: " + e.message);
       }
     }
+
     
     // Funzione per il calcolo delle Index Options (identica a quella delle Vanilla Options, con id differenziati)
     function calculateIndexOptions() {
       try {
-        const S = parseFloat(document.getElementById('iSpot').value);
-        const K = parseFloat(document.getElementById('iStrike').value);
-        const T = parseFloat(document.getElementById('iTime').value);
-        const r = (parseFloat(document.getElementById('iRate').value) || 0) / 100;
-        const sigma = (parseFloat(document.getElementById('iVol').value) || 0) / 100;
-        const q = (parseFloat(document.getElementById('iDiv').value) || 0) / 100;
-        if (isNaN(S) || isNaN(K) || isNaN(T) || isNaN(sigma) || S <= 0 || K <= 0 || T <= 0 || sigma <= 0) {
-          throw new Error("Inserisci tutti i valori maggiori di zero per effettuare il calcolo");
+        // 1. Read inputs and validate
+        const S     = parseFloat(document.getElementById('iSpot').value);
+        const K     = parseFloat(document.getElementById('iStrike').value);
+        const T     = parseFloat(document.getElementById('iTime').value);
+        const r     = (parseFloat(document.getElementById('iRate').value) || 0) / 100;
+        const sigma = (parseFloat(document.getElementById('iVol').value)   || 0) / 100;
+        const q     = (parseFloat(document.getElementById('iDiv').value)   || 0) / 100;
+
+        if ([S, K, T, sigma].some(v => isNaN(v) || v <= 0)) {
+          throw new Error("Please enter all values > 0 for S, K, T and σ.");
         }
-        const d1 = (Math.log(S / K) + (r - q + (sigma**2)/2) * T) / (sigma * Math.sqrt(T));
-        const d2 = d1 - sigma * Math.sqrt(T);
-        const call = S * Math.exp(-q * T) * normalCDF(d1) - K * Math.exp(-r * T) * normalCDF(d2);
-        const put = K * Math.exp(-r * T) * normalCDF(-d2) - S * Math.exp(-q * T) * normalCDF(-d1);
-        const greeks = calculateGreeks(S, K, T, r, sigma, q, d1, d2);
-    
-        const steps = `
-          <p><strong>d1</strong> = [ln(${S.toFixed(4)}/${K.toFixed(4)}) + ( ${(r - q).toFixed(4)} + ${(sigma**2/2).toFixed(4)} )× ${T.toFixed(4)}] ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-          <p><strong>d₂</strong> = ${d1.toFixed(4)} - ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
-          <p><strong>Call</strong> = ${S.toFixed(4)}×e<sup>-${(q * T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) - ${K.toFixed(4)}×e<sup>-${(r * T).toFixed(4)}</sup>×N(${d2.toFixed(4)}) = ${call.toFixed(4)}</p>
-          <p><strong>Put</strong> = ${K.toFixed(4)}×e<sup>-${(r * T).toFixed(4)}</sup>×N(-${d2.toFixed(4)}) - ${S.toFixed(4)}×e<sup>-${(q * T).toFixed(4)}</sup>×N(-${d1.toFixed(4)}) = ${put.toFixed(4)}</p>
-        `;
-        const greekSteps = `
-          <p><strong>Delta Call</strong> = N(d1) = ${greeks.callDelta.toFixed(4)}</p>
-          <p><strong>Delta Put</strong> = N(d1) - 1 = ${greeks.putDelta.toFixed(4)}</p>
-          <p><strong>Gamma</strong> = N'(d1)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
-          <p><strong>Vega</strong> = S√T×N'(d1)×0.01 = ${greeks.vega.toFixed(4)}</p>
-          <p><strong>Theta Call</strong> = [-(S×N'(d1)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d₂) + qS×e<sup>-qT</sup>×N(d1)] = ${greeks.callTheta.toFixed(4)}</p>
-          <p><strong>Theta Put</strong> = [-(S×N'(d1)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d₂) - qS×e<sup>-qT</sup>×N(-d1)] = ${greeks.putTheta.toFixed(4)}</p>
-          <p><strong>Rho Call</strong> = K×T×e<sup>-rT</sup>×N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
-          <p><strong>Rho Put</strong> = -K×T×e<sup>-rT</sup>×N(-d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
-        `;
-    
+
+        // 2. Compute d₁ and d₂
+        //    d₁ = [ ln(S/K) + (r − q + ½σ²) T ] ÷ (σ √T)
+        //    d₂ = d₁ − σ √T
+        const sqrtT = Math.sqrt(T);
+        const drift = r - q;
+        const d1 = (
+          Math.log(S / K)
+          + (drift + 0.5 * sigma * sigma) * T
+        ) / (sigma * sqrtT);
+        const d2 = d1 - sigma * sqrtT;
+
+        // 3. Price formulas
+        //    Call = S e^(−qT) N(d₁) − K e^(−rT) N(d₂)
+        //    Put  = K e^(−rT) N(−d₂) − S e^(−qT) N(−d₁)
+        const dfS  = S * Math.exp(-q * T);
+        const dfK  = K * Math.exp(-r * T);
+        const call = dfS * normalCDF(d1) - dfK * normalCDF(d2);
+        const put  = dfK * normalCDF(-d2) - dfS * normalCDF(-d1);
+
+        // 4. Display numeric prices
         safeSetText('iCallPrice', call.toFixed(4));
-        safeSetText('iPutPrice', put.toFixed(4));
+        safeSetText('iPutPrice',  put .toFixed(4));
+
+        // 5. Build “Calculations” HTML
+        const steps = `
+          <h4>Step 1: Compute d₁ and d₂</h4>
+          <p><strong>d₁</strong> = [ ln(S/K) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
+          <p>= [ ln(${S.toFixed(4)}/${K.toFixed(4)}) 
+              + (${r.toFixed(4)} − ${q.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
+            ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
+            = ${d1.toFixed(4)}</p>
+          <p><strong>d₂</strong> = d₁ − σ√T
+            = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+            = ${d2.toFixed(4)}</p>
+
+          <h4>Step 2: Call & Put Prices</h4>
+          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d₁) − K e<sup>−rT</sup> N(d₂)</p>
+          <p>= ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
+            − ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
+            = ${call.toFixed(4)}</p>
+          <p><strong>Put</strong> = K e<sup>−rT</sup> N(−d₂) − S e<sup>−qT</sup> N(−d₁)</p>
+          <p>= ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
+            − ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(−${d1.toFixed(4)})
+            = ${put.toFixed(4)}</p>
+        `;
         safeSetHTML('indexCalculationsContent', steps);
-    
+
+        // 6. Compute Greeks via existing helper
+        const greeks = calculateGreeks(S, K, T, r, sigma, q, d1, d2);
+
+        // 7. Display numeric Greeks
         safeSetText('iCallDelta', greeks.callDelta.toFixed(4));
-        safeSetText('iCallGamma', greeks.gamma.toFixed(4));
-        safeSetText('iCallVega', greeks.vega.toFixed(4));
+        safeSetText('iCallGamma', greeks.gamma    .toFixed(4));
+        safeSetText('iCallVega',  greeks.vega     .toFixed(4));
         safeSetText('iCallTheta', greeks.callTheta.toFixed(4));
-        safeSetText('iCallRho', greeks.callRho.toFixed(4));
-    
-        safeSetText('iPutDelta', greeks.putDelta.toFixed(4));
-        safeSetText('iPutGamma', greeks.gamma.toFixed(4));
-        safeSetText('iPutVega', greeks.vega.toFixed(4));
-        safeSetText('iPutTheta', greeks.putTheta.toFixed(4));
-        safeSetText('iPutRho', greeks.putRho.toFixed(4));
-    
+        safeSetText('iCallRho',   greeks.callRho .toFixed(4));
+
+        safeSetText('iPutDelta', greeks.putDelta .toFixed(4));
+        safeSetText('iPutGamma', greeks.gamma    .toFixed(4));
+        safeSetText('iPutVega',  greeks.vega     .toFixed(4));
+        safeSetText('iPutTheta', greeks.putTheta .toFixed(4));
+        safeSetText('iPutRho',   greeks.putRho  .toFixed(4));
+
+        // 8. Build “Greeks” HTML
+        const greekSteps = `
+          <h4>Greeks for Call & Put</h4>
+          <p><strong>Δ Call</strong> = e<sup>−qT</sup> N(d₁) = ${greeks.callDelta.toFixed(4)}</p>
+          <p><strong>Δ Put</strong>  = e<sup>−qT</sup>[N(d₁)−1] = ${greeks.putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong>     = N′(d₁)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
+          <p><strong>ν</strong>     = S√T N′(d₁)×0.01 = ${greeks.vega.toFixed(4)}</p>
+          <p><strong>θ Call</strong> = −[SσN′(d₁)/(2√T)] − rK e<sup>−rT</sup> N(d₂) + qS e<sup>−qT</sup> N(d₁) = ${greeks.callTheta.toFixed(4)}</p>
+          <p><strong>θ Put</strong>  = −[SσN′(d₁)/(2√T)] + rK e<sup>−rT</sup> N(−d₂) − qS e<sup>−qT</sup> N(−d₁) = ${greeks.putTheta.toFixed(4)}</p>
+          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup> N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
+          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup> N(−d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
+        `;
         safeSetHTML('indexGreeksCalculationsContent', greekSteps);
+
       } catch (error) {
-        alert('Errore: ' + error.message);
-        return;
+        alert("Error: " + error.message);
       }
     }
+
     
     function addVariableRateRow() {
       const container = document.getElementById('variableRatesContainer');
@@ -2965,7 +3052,7 @@
         var interval = parseInt(document.getElementById('cds-interval').value); // 1: annual, 2: semiannual, 4: quarterly
         var compounding = document.getElementById('cds-compounding').value; // "discrete" oppure "continuous"
 
-        // Il periodo base T1: ad es. per annual T1 = 1, per semiannual T1 = 0.5, ecc.
+        // Il periodo base T₁: ad es. per annual T₁ = 1, per semiannual T₁ = 0.5, ecc.
         var T1_default = 1 / interval;
 
         // Prelevo dinamicamente il primo valore della colonna "Years (T)" della tabella Buyer
@@ -3133,7 +3220,7 @@
         // Buyer Payments Table
         html += "<h4>Buyer Payments</h4>";
         html += "<table style='table-layout: fixed; width: 100%;'><thead><tr>";
-        html += "<th>Years (T)</th><th>SP</th><th>E[payment] (T1×SP×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
+        html += "<th>Years (T)</th><th>SP</th><th>E[payment] (T₁×SP×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
         html += "</tr></thead><tbody>";
         buyerData.forEach(function(row) {
           html += "<tr>";
@@ -3166,7 +3253,7 @@
         // Accrual Payments Table
         html += "<h4>Accrual Payments</h4>";
         html += "<table style='table-layout: fixed; width: 100%;'><thead><tr>";
-        html += "<th>Years (T)</th><th>PD</th><th>E[payment] (T1×PD×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
+        html += "<th>Years (T)</th><th>PD</th><th>E[payment] (T₁×PD×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
         html += "</tr></thead><tbody>";
         accrualData.forEach(function(row) {
           html += "<tr>";
@@ -3409,90 +3496,123 @@
     // Calcolo delle opzioni con dividendi discreti
     function calculateDiscreteDividendOptions() {
       try {
-        const S = parseFloat(document.getElementById('dSpot').value);
-        const K = parseFloat(document.getElementById('dStrike').value);
-        const T = parseFloat(document.getElementById('dTime').value);
-        const r = (parseFloat(document.getElementById('dRate').value) || 0) / 100;
-        const sigma = (parseFloat(document.getElementById('dVol').value) || 0) / 100;
-        
-        // Calcola S* sottraendo il valore attuale dei dividendi
+        // 1. Read inputs and validate
+        const S     = parseFloat(document.getElementById('dSpot').value);
+        const K     = parseFloat(document.getElementById('dStrike').value);
+        const T     = parseFloat(document.getElementById('dTime').value);
+        const r     = (parseFloat(document.getElementById('dRate').value) || 0) / 100;
+        const sigma = (parseFloat(document.getElementById('dVol' ).value) || 0) / 100;
+
+        if ([S, K, T, sigma].some(v => isNaN(v) || v <= 0)) {
+          throw new Error("Please enter positive S, K, T and σ.");
+        }
+
+        // 2. Compute PV of each discrete dividend
+        //    PVᵢ = Dᵢ × e^{−r tᵢ}
         let PVdiv = 0;
-        const dividends = [];
+        const divs = [];
         document.querySelectorAll('.dividend-row').forEach(row => {
-          const amount = parseFloat(row.querySelector('.dividend-amount').value) || 0;
-          const time = parseFloat(row.querySelector('.dividend-time').value) || 0;
-          if(amount > 0 && time > 0 && time <= T) {
-            const pv = amount * Math.exp(-r * time);
+          const D  = parseFloat(row.querySelector('.dividend-amount').value) || 0;
+          const t  = parseFloat(row.querySelector('.dividend-time'  ).value) || 0;
+          if (D > 0 && t > 0 && t <= T) {
+            const pv = D * Math.exp(-r * t);
             PVdiv += pv;
-            dividends.push({amount, time, pv});
+            divs.push({ D, t, pv });
           }
         });
-        
-        const SStar = S - PVdiv;
-        if (SStar <= 0) throw new Error("S* deve essere maggiore di zero");
-        
-        const d1 = (Math.log(SStar / K) + (r + (sigma**2)/2) * T) / (sigma * Math.sqrt(T));
-        const d2 = d1 - sigma * Math.sqrt(T);
-        
-        const call = SStar * normalCDF(d1) - K * Math.exp(-r * T) * normalCDF(d2);
-        const put = K * Math.exp(-r * T) * normalCDF(-d2) - SStar * normalCDF(-d1);
-        
-        const greeks = calculateGreeks(SStar, K, T, r, sigma, 0, d1, d2);
-        
-        // Aggiorna i risultati
+
+        // 3. Adjusted spot S* = S − Σ PV(divs)
+        const Sstar = S - PVdiv;
+        if (Sstar <= 0) throw new Error("Adjusted spot S* must be > 0.");
+
+        // 4. Compute d₁ and d₂ (Black–Scholes on S*)
+        //    d₁ = [ ln(S*/K) + (r + ½σ²) T ] ÷ (σ √T)
+        //    d₂ = d₁ − σ √T
+        const sqrtT = Math.sqrt(T);
+        const d1 = (
+          Math.log(Sstar / K)
+          + (r + 0.5 * sigma * sigma) * T
+        ) / (sigma * sqrtT);
+        const d2 = d1 - sigma * sqrtT;
+
+        // 5. Option prices on S*
+        //    Call = S* N(d₁) − K e^{−rT} N(d₂)
+        //    Put  = K e^{−rT} N(−d₂) − S* N(−d₁)
+        const dfK = K * Math.exp(-r * T);
+        const call = Sstar * normalCDF(d1) - dfK * normalCDF(d2);
+        const put  = dfK * normalCDF(-d2) - Sstar * normalCDF(-d1);
+
+        // 6. Greeks
+        const pdf1    = normalPDF(d1);
+        const callDelta = normalCDF(d1);
+        const putDelta  = normalCDF(d1) - 1;
+        const gamma     = pdf1 / (Sstar * sigma * sqrtT);
+        const vega      = Sstar * sqrtT * pdf1 * 0.01;
+        const callTheta = - (Sstar * pdf1 * sigma) / (2 * sqrtT)
+                          - r * dfK * normalCDF(d2);
+        const putTheta  = - (Sstar * pdf1 * sigma) / (2 * sqrtT)
+                          + r * dfK * normalCDF(-d2);
+        const callRho   = K * T * Math.exp(-r * T) * normalCDF(d2) * 0.01;
+        const putRho    = -K * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01;
+
+        // 7. Display numeric prices & Greeks
         safeSetText('dCallPrice', call.toFixed(4));
-        safeSetText('dPutPrice', put.toFixed(4));
-        
-        // Aggiorna i greci
-        safeSetText('dCallDelta', greeks.callDelta.toFixed(4));
-        safeSetText('dCallGamma', greeks.gamma.toFixed(4));
-        safeSetText('dCallVega', greeks.vega.toFixed(4));
-        safeSetText('dCallTheta', greeks.callTheta.toFixed(4));
-        safeSetText('dCallRho', greeks.callRho.toFixed(4));
-        
-        safeSetText('dPutDelta', greeks.putDelta.toFixed(4));
-        safeSetText('dPutGamma', greeks.gamma.toFixed(4));
-        safeSetText('dPutVega', greeks.vega.toFixed(4));
-        safeSetText('dPutTheta', greeks.putTheta.toFixed(4));
-        safeSetText('dPutRho', greeks.putRho.toFixed(4));
+        safeSetText('dPutPrice',  put .toFixed(4));
+        safeSetText('dCallDelta', callDelta.toFixed(4));
+        safeSetText('dPutDelta',  putDelta .toFixed(4));
+        safeSetText('dCallGamma', gamma.toFixed(4));
+        safeSetText('dCallVega',  vega .toFixed(4));
+        safeSetText('dCallTheta', callTheta.toFixed(4));
+        safeSetText('dPutTheta',  putTheta .toFixed(4));
+        safeSetText('dCallRho',   callRho .toFixed(4));
+        safeSetText('dPutRho',    putRho  .toFixed(4));
 
-        
-        // Mostra i calcoli
-        const divDetails = dividends.map(d => 
-          `${d.amount.toFixed(2)} at ${d.time.toFixed(2)} years: PV = ${d.amount.toFixed(2)} * e^(-${r.toFixed(4)} * ${d.time.toFixed(2)}) = ${d.pv.toFixed(4)}`
-        ).join('<br>');
+        // 8. Build “Calculations” HTML
+        const divLines = divs.map(d =>
+          `<li>D = ${d.D.toFixed(2)} at t=${d.t.toFixed(2)} → PV=${d.pv.toFixed(4)}</li>`
+        ).join('');
+        const calcHTML = `
+          <h4>Step 1: PV of Dividends</h4>
+          <ul>${divLines}</ul>
+          <p><strong>S*</strong> = ${S.toFixed(4)} − ${PVdiv.toFixed(4)} = ${Sstar.toFixed(4)}</p>
 
-        const steps = `
-          <p><strong>S* = Spot - Σ(PV Dividends)</strong></p>
-          ${divDetails}<br>
-          <strong>S* = ${S.toFixed(2)} - ${PVdiv.toFixed(4)} = ${SStar.toFixed(4)}</strong>
-          <p>d1 = [ln(${SStar.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + ${(sigma**2/2).toFixed(4)}) × ${T.toFixed(4)}] / (${sigma.toFixed(4)} × √${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-          <p>d2 = ${d1.toFixed(4)} - ${sigma.toFixed(4)} × √${T.toFixed(4)} = ${d2.toFixed(4)}</p>
-          <p><strong>Call Price</strong> = ${SStar.toFixed(4)} × N(${d1.toFixed(4)}) - ${K.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × N(${d2.toFixed(4)}) = ${call.toFixed(4)}</p>
-          <p><strong>Put Price</strong> = ${K.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × N(-${d2.toFixed(4)}) - ${SStar.toFixed(4)} × N(-${d1.toFixed(4)}) = ${put.toFixed(4)}</p>
+          <h4>Step 2: d₁ and d₂</h4>
+          <p>d₁ = [ ln(S*/K) + (r + ½σ²)×T ] ÷ (σ√T)</p>
+          <p>= [ ln(${Sstar.toFixed(4)}/${K.toFixed(4)}) 
+              + (${r.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
+            ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) 
+            = ${d1.toFixed(4)}</p>
+          <p>d₂ = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
+
+          <h4>Step 3: Call & Put Prices</h4>
+          <p><strong>Call</strong> = ${Sstar.toFixed(4)}×N(${d1.toFixed(4)}) 
+            − ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)}) 
+            = ${call.toFixed(4)}</p>
+          <p><strong>Put</strong>  = ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
+            − ${Sstar.toFixed(4)}×N(−${d1.toFixed(4)}) 
+            = ${put.toFixed(4)}</p>
         `;
+        safeSetHTML('discreteCalculationsContent', calcHTML);
 
-        safeSetHTML('discreteCalculationsContent', steps);
-
-        const greekSteps = `
-          <p><strong>Delta Call</strong> = N(d1) = ${greeks.callDelta.toFixed(4)}</p>
-          <p><strong>Delta Put</strong> = N(d1) - 1 = ${greeks.putDelta.toFixed(4)}</p>
-          <p><strong>Gamma Γ</strong> = N'(d1)/(S*σ√T) = ${normalPDF(d1).toFixed(4)} / (${SStar.toFixed(4)} × ${sigma.toFixed(4)} × √${T.toFixed(4)}) = ${greeks.gamma.toFixed(4)}</p>
-          <p><strong>Vega ν</strong> = S*√T×N'(d1)×0.01 = ${SStar.toFixed(4)} × √${T.toFixed(4)} × ${normalPDF(d1).toFixed(4)} × 0.01 = ${greeks.vega.toFixed(4)}</p>
-          <p><strong>Theta Call θ</strong> = [-(S*×N'(d1)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d₂)] = 
-          [ -(${SStar.toFixed(4)} × ${normalPDF(d1).toFixed(4)} × ${sigma.toFixed(4)}) / (2 × √${T.toFixed(4)})
-          - (${r.toFixed(4)} × ${K.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × ${normalCDF(d2).toFixed(4)}) ] = ${greeks.callTheta.toFixed(4)}</p>
-          <p><strong>Theta Put θ</strong> = [-(S*×N'(d1)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d₂)] = ${greeks.putTheta.toFixed(4)}</p>
-          <p><strong>Rho Call ρ</strong> = K×T×e<sup>-rT</sup>×N(d₂)×0.01 = ${K.toFixed(4)} × ${T.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × ${normalCDF(d2).toFixed(4)} × 0.01 = ${greeks.callRho.toFixed(4)}</p>
-          <p><strong>Rho Put ρ</strong> = -K×T×e<sup>-rT</sup>×N(-d₂)×0.01 = -${K.toFixed(4)} × ${T.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × ${normalCDF(-d2).toFixed(4)} × 0.01 = ${greeks.putRho.toFixed(4)}</p>
+        // 9. Build “Greeks” HTML
+        const greekHTML = `
+          <h4>Greeks (on S*)</h4>
+          <p><strong>Δ Call</strong> = N(d₁) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Δ Put</strong>  = N(d₁)−1 = ${putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong>      = pdf(d₁)/(S*σ√T) = ${gamma.toFixed(4)}</p>
+          <p><strong>ν</strong>      = S*√T·pdf(d₁)×0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>θ Call</strong> = −[S*σ pdf(d₁)/(2√T)] − rK e<sup>−rT</sup> N(d₂) = ${callTheta.toFixed(4)}</p>
+          <p><strong>θ Put</strong>  = −[S*σ pdf(d₁)/(2√T)] + rK e<sup>−rT</sup> N(−d₂) = ${putTheta.toFixed(4)}</p>
+          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup> N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup> N(−d₂)×0.01 = ${putRho.toFixed(4)}</p>
         `;
+        safeSetHTML('discreteGreeksContent', greekHTML);
 
-        safeSetHTML('discreteGreeksContent', greekSteps);
-
-      } catch(error) {
-        alert(error.message);
+      } catch (e) {
+        alert("Error: " + e.message);
       }
     }
+
 
     // Grafici per Discrete Dividend
     let dCallChart, dPutChart;
@@ -4227,147 +4347,208 @@
 
     // Funzione per il calcolo delle Currency Options (aggiornata)
     function calculateCurrencyPrices() {
-        try {
-            const S = parseFloat(document.getElementById('cSpot').value);
-            const K = parseFloat(document.getElementById('cStrike').value);
-            const T = parseFloat(document.getElementById('cTime').value);
-            const r = (parseFloat(document.getElementById('cRate').value) || 0) / 100;
-            const sigma = (parseFloat(document.getElementById('cVol').value) || 0) / 100;
-            const rf = (parseFloat(document.getElementById('fcRate').value) || 0) / 100;
+      try {
+        // 1. Read inputs and validate
+        const S     = parseFloat(document.getElementById('cSpot').value);
+        const K     = parseFloat(document.getElementById('cStrike').value);
+        const T     = parseFloat(document.getElementById('cTime').value);
+        const r     = (parseFloat(document.getElementById('cRate').value)  || 0) / 100;  // domestic rate
+        const rf    = (parseFloat(document.getElementById('fcRate').value) || 0) / 100;  // foreign rate
+        const sigma = (parseFloat(document.getElementById('cVol').value)   || 0) / 100;  // volatility
 
-            if (isNaN(S) || isNaN(K) || isNaN(T) || isNaN(sigma) || S <= 0 || K <= 0 || T <= 0 || sigma <= 0) {
-                throw new Error("Inserisci tutti i valori maggiori di zero per effettuare il calcolo");
-            }
-
-            const d1 = (Math.log(S / K) + (r - rf + (sigma ** 2) / 2) * T) / (sigma * Math.sqrt(T));
-            const d2 = d1 - sigma * Math.sqrt(T);
-            const call = S * Math.exp(-rf * T) * normalCDF(d1) - K * Math.exp(-r * T) * normalCDF(d2);
-            const put = K * Math.exp(-r * T) * normalCDF(-d2) - S * Math.exp(-rf * T) * normalCDF(-d1);
-
-            const greeks = calculateCurrencyGreeks(S, K, T, r, sigma, rf, d1, d2);
-
-            const steps = `
-                <p><strong>d1</strong> = [ln(${S.toFixed(4)}/${K.toFixed(4)}) + (${(r - rf).toFixed(4)} + ${(sigma**2/2).toFixed(4)})×${T.toFixed(4)}] ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-                <p><strong>d₂</strong> = ${d1.toFixed(4)} - ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
-                <p><strong>Call</strong> = ${S.toFixed(4)}×e<sup>-${(rf * T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) - ${K.toFixed(4)}×e<sup>-${(r * T).toFixed(4)}</sup>×N(${d2.toFixed(4)}) = ${call.toFixed(4)}</p>
-                <p><strong>Put</strong> = ${K.toFixed(4)}×e<sup>-${(r * T).toFixed(4)}</sup>×N(-${d2.toFixed(4)}) - ${S.toFixed(4)}×e<sup>-${(rf * T).toFixed(4)}</sup>×N(-${d1.toFixed(4)}) = ${put.toFixed(4)}</p>
-            `;
-
-            const greekSteps = `
-                <p><strong>Delta Call</strong> = N(d1) = ${greeks.callDelta.toFixed(4)}</p>
-                <p><strong>Delta Put</strong> = N(d1) - 1 = ${greeks.putDelta.toFixed(4)}</p>
-                <p><strong>Gamma</strong> = N'(d1)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
-                <p><strong>Vega</strong> = S√T×N'(d1)×0.01 = ${greeks.vega.toFixed(4)}</p>
-                <p><strong>Theta Call</strong> = [-(S×N'(d1)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d₂) + rfS×e<sup>-rfT</sup>×N(d1)] = ${greeks.callTheta.toFixed(4)}</p>
-                <p><strong>Theta Put</strong> = [-(S×N'(d1)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d₂) - rfS×e<sup>-rfT</sup>×N(-d1)] = ${greeks.putTheta.toFixed(4)}</p>
-                <p><strong>Rho Call</strong> = K×T×e<sup>-rT</sup>×N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
-                <p><strong>Rho Put</strong> = -K×T×e<sup>-rT</sup>×N(-d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
-            `;
-
-            safeSetText('cCallPrice', call.toFixed(4));
-            safeSetText('cPutPrice', put.toFixed(4));
-            safeSetHTML('currencyCalculationsContent', steps);
-            
-            safeSetText('cCallDelta', greeks.callDelta.toFixed(4));
-            safeSetText('cCallGamma', greeks.gamma.toFixed(4));
-            safeSetText('cCallVega', greeks.vega.toFixed(4));
-            safeSetText('cCallTheta', greeks.callTheta.toFixed(4));
-            safeSetText('cCallRho', greeks.callRho.toFixed(4));
-            
-            safeSetText('cPutDelta', greeks.putDelta.toFixed(4));
-            safeSetText('cPutGamma', greeks.gamma.toFixed(4));
-            safeSetText('cPutVega', greeks.vega.toFixed(4));
-            safeSetText('cPutTheta', greeks.putTheta.toFixed(4));
-            safeSetText('cPutRho', greeks.putRho.toFixed(4));
-            
-            safeSetHTML('currencyGreeksCalculationsContent', greekSteps);
-
-            if (document.getElementById('currencyGraph').style.display === 'block') {
-                renderCurrencyPayoffCharts();
-            }
-        } catch (error) {
-            alert('Errore: ' + error.message);
-            resetAllResults();
+        if ([S, K, T, sigma].some(v => isNaN(v) || v <= 0)) {
+          throw new Error("Please enter all values (S, K, T, σ) greater than zero");
         }
+
+        // 2. Compute d₁ and d₂ symbolically:
+        //    d₁ = [ ln(S/K) + (r − r_f + ½σ²) T ] ÷ (σ √T)
+        //    d₂ = d₁ − σ √T
+        const sqrtT = Math.sqrt(T);
+        const drift = r - rf;
+        const d1 = (
+          Math.log(S / K)
+          + (drift + 0.5 * sigma * sigma) * T
+        ) / (sigma * sqrtT);
+        const d2 = d1 - sigma * sqrtT;
+
+        // 3. Price formulas symbolically:
+        //    Call = S e^(−r_f T) N(d₁) − K e^(−r T) N(d₂)
+        //    Put  = K e^(−r T) N(−d₂) − S e^(−r_f T) N(−d₁)
+        const dfS = S * Math.exp(-rf * T);
+        const dfK = K * Math.exp(-r  * T);
+        const call = dfS * normalCDF(d1) - dfK * normalCDF(d2);
+        const put  = dfK * normalCDF(-d2) - dfS * normalCDF(-d1);
+
+        // 4. Greeks via helper
+        const greeks = calculateCurrencyGreeks(S, K, T, r, sigma, rf, d1, d2);
+
+        // 5. Render numeric prices
+        safeSetText('cCallPrice', call.toFixed(4));
+        safeSetText('cPutPrice',  put .toFixed(4));
+
+        // 6. Build “Calculations” HTML
+        const steps = `
+          <h4>Step 1: Compute d₁ and d₂</h4>
+          <p><strong>d₁</strong> = [ ln(S/K) + (r − r<sub>f</sub> + ½σ²)×T ] ÷ (σ√T)</p>
+          <p>= [ ln(${S.toFixed(4)}/${K.toFixed(4)}) 
+              + (${r.toFixed(4)} − ${rf.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
+            ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
+            = ${d1.toFixed(4)}</p>
+          <p><strong>d₂</strong> = d₁ − σ√T
+            = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+            = ${d2.toFixed(4)}</p>
+
+          <h4>Step 2: Call & Put Prices</h4>
+          <p><strong>Call</strong> = S e<sup>−r<sub>f</sub>T</sup>N(d₁) − K e<sup>−rT</sup>N(d₂)</p>
+          <p>= ${S.toFixed(4)}×e<sup>−${(rf*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
+            − ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
+            = ${call.toFixed(4)}</p>
+          <p><strong>Put</strong> = K e<sup>−rT</sup>N(−d₂) − S e<sup>−r<sub>f</sub>T</sup>N(−d₁)</p>
+          <p>= ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
+            − ${S.toFixed(4)}×e<sup>−${(rf*T).toFixed(4)}</sup>×N(−${d1.toFixed(4)})
+            = ${put.toFixed(4)}</p>
+        `;
+        safeSetHTML('currencyCalculationsContent', steps);
+
+        // 7. Render numeric Greeks
+        safeSetText('cCallDelta', greeks.callDelta.toFixed(4));
+        safeSetText('cCallGamma', greeks.gamma    .toFixed(4));
+        safeSetText('cCallVega',  greeks.vega     .toFixed(4));
+        safeSetText('cCallTheta', greeks.callTheta.toFixed(4));
+        safeSetText('cCallRho',   greeks.callRho  .toFixed(4));
+
+        safeSetText('cPutDelta', greeks.putDelta .toFixed(4));
+        safeSetText('cPutGamma', greeks.gamma    .toFixed(4));
+        safeSetText('cPutVega',  greeks.vega     .toFixed(4));
+        safeSetText('cPutTheta', greeks.putTheta .toFixed(4));
+        safeSetText('cPutRho',   greeks.putRho  .toFixed(4));
+
+        // 8. Build “Greeks” HTML
+        const greekSteps = `
+          <h4>Greeks</h4>
+          <p><strong>Δ<sub>Call</sub></strong> = N(d₁) = ${greeks.callDelta.toFixed(4)}</p>
+          <p><strong>Δ<sub>Put</sub></strong>  = N(d₁) − 1 = ${greeks.putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong>        = N′(d₁)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
+          <p><strong>ν</strong>        = S√T N′(d₁)×0.01 = ${greeks.vega.toFixed(4)}</p>
+          <p><strong>θ<sub>Call</sub></strong> = [−(SσN′(d₁))/(2√T) − rK e<sup>−rT</sup>N(d₂) + r<sub>f</sub>S e<sup>−r<sub>f</sub>T</sup>N(d₁)] = ${greeks.callTheta.toFixed(4)}</p>
+          <p><strong>θ<sub>Put</sub></strong>  = [−(SσN′(d₁))/(2√T) + rK e<sup>−rT</sup>N(−d₂) − r<sub>f</sub>S e<sup>−r<sub>f</sub>T</sup>N(−d₁)] = ${greeks.putTheta.toFixed(4)}</p>
+          <p><strong>ρ<sub>Call</sub></strong> = K T e<sup>−rT</sup>N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
+          <p><strong>ρ<sub>Put</sub></strong>  = −K T e<sup>−rT</sup>N(−d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
+        `;
+        safeSetHTML('currencyGreeksCalculationsContent', greekSteps);
+
+        // 9. Refresh chart if visible
+        if (document.getElementById('currencyGraph').style.display === 'block') {
+          renderCurrencyPayoffCharts();
+        }
+      }
+      catch (error) {
+        alert("Error: " + error.message);
+        resetAllResults();
+      }
     }
+
 
     // Futures Options Calculations
     function calculateFuturesOptions() {
-        try {
-            const S = parseFloat(document.getElementById('foSpot').value);
-            const K = parseFloat(document.getElementById('foStrike').value);
-            const T = parseFloat(document.getElementById('foTime').value);
-            const r = (parseFloat(document.getElementById('foRate').value) || 0) / 100;
-            const sigma = (parseFloat(document.getElementById('foVol').value) || 0) / 100;
-            const q = (parseFloat(document.getElementById('foDiv').value) || 0) / 100;
-            
-            if (isNaN(S) || isNaN(K) || isNaN(T) || isNaN(sigma) || S <= 0 || K <= 0 || T <= 0 || sigma <= 0) {
-                throw new Error("Please enter valid values (all > 0)");
-            }
+      try {
+        // 1. Read inputs and validate
+        const S     = parseFloat(document.getElementById('foSpot').value);
+        const K     = parseFloat(document.getElementById('foStrike').value);
+        const T     = parseFloat(document.getElementById('foTime').value);
+        const r     = (parseFloat(document.getElementById('foRate').value) || 0) / 100;
+        const sigma = (parseFloat(document.getElementById('foVol' ).value) || 0) / 100;
+        const q     = (parseFloat(document.getElementById('foDiv' ).value) || 0) / 100;
 
-            const F = S * Math.exp((r - q) * T);
-            const d1 = (Math.log(F / K) + (0.5 * sigma ** 2) * T) / (sigma * Math.sqrt(T));
-            const d2 = d1 - sigma * Math.sqrt(T);
-            
-            const call = Math.exp(-r * T) * (F * normalCDF(d1) - K * normalCDF(d2));
-            const put = Math.exp(-r * T) * (K * normalCDF(-d2) - F * normalCDF(-d1));
-
-            // Greeks calculations
-            const sqrtT = Math.sqrt(T);
-            const pdfd1 = normalPDF(d1);
-            
-            const callDelta = Math.exp(-r * T) * normalCDF(d1);
-            const putDelta = Math.exp(-r * T) * (normalCDF(d1) - 1);
-            const gamma = Math.exp(-r * T) * (normalPDF(d1) / (F * sigma * Math.sqrt(T)));
-            const vega = Math.exp(-r * T) * F * Math.sqrt(T) * normalPDF(d1) * 0.01;
-            const callTheta = (-(F * normalPDF(d1) * sigma * Math.exp(-r * T)) / (2 * Math.sqrt(T))) - r * call;
-            const putTheta = (-(F * normalPDF(d1) * sigma * Math.exp(-r * T)) / (2 * Math.sqrt(T))) - r * put;
-            const callRho = K * T * Math.exp(-r * T) * normalCDF(d2) * 0.01;
-            const putRho = -K * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01;
-
-            // Update results
-            safeSetText('foCallPrice', call.toFixed(4));
-            safeSetText('foPutPrice', put.toFixed(4));
-            
-            // Update Greeks
-            safeSetText('foCallDelta', callDelta.toFixed(4));
-            safeSetText('foCallGamma', gamma.toFixed(4));
-            safeSetText('foCallVega', vega.toFixed(4));
-            safeSetText('foCallTheta', callTheta.toFixed(4));
-            safeSetText('foCallRho', callRho.toFixed(4));
-            
-            safeSetText('foPutDelta', putDelta.toFixed(4));
-            safeSetText('foPutGamma', gamma.toFixed(4));
-            safeSetText('foPutVega', vega.toFixed(4));
-            safeSetText('foPutTheta', putTheta.toFixed(4));
-            safeSetText('foPutRho', putRho.toFixed(4));
-
-            // Show calculations
-            const steps = `
-                <p><strong>Futures Price (F)</strong> = S × e<sup>rT</sup> = ${S.toFixed(4)} × e<sup>${(r*T).toFixed(4)}</sup> = ${F.toFixed(4)}</p>
-                <p><strong>d1</strong> = [ln(${F.toFixed(4)}/${K.toFixed(4)}) + (0.5 × ${sigma.toFixed(4)}²) × ${T.toFixed(4)}] / (${sigma.toFixed(4)} × √${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-                <p><strong>d₂</strong> = ${d1.toFixed(4)} - ${sigma.toFixed(4)} × √${T.toFixed(4)} = ${d2.toFixed(4)}</p>
-                <p><strong>Call Price</strong> = e<sup>-${(r*T).toFixed(4)}</sup> × [${F.toFixed(4)} × N(${d1.toFixed(4)}) - ${K.toFixed(4)} × N(${d2.toFixed(4)})] = ${call.toFixed(4)}</p>
-                <p><strong>Put Price</strong> = e<sup>-${(r*T).toFixed(4)}</sup> × [${K.toFixed(4)} × N(-${d2.toFixed(4)}) - ${F.toFixed(4)} × N(-${d1.toFixed(4)})] = ${put.toFixed(4)}</p>
-            `;
-            safeSetHTML('foCalculationsContent', steps);
-
-            const greekSteps = `
-                <p><strong>Call Delta Δ:</strong> e<sup>-rT</sup> × N(d1) = e<sup>-${(r*T).toFixed(4)}</sup> × ${normalCDF(d1).toFixed(4)} = ${callDelta.toFixed(4)}</p>
-                <p><strong>Put Delta Δ:</strong> e<sup>-rT</sup> × (N(d1) - 1) = ${putDelta.toFixed(4)}</p>
-                <p><strong>Gamma Γ:</strong> e<sup>-rT</sup> × [N'(d1) / (Fσ√T)] = ${gamma.toFixed(4)}</p>
-                <p><strong>Vega ν:</strong> e<sup>-rT</sup> × F√T × N'(d1) × 0.01 = ${vega.toFixed(4)}</p>
-                <p><strong>Call Theta θ:</strong> [-(FσN'(d1)e<sup>-rT</sup> / (2√T)] - rC = ${callTheta.toFixed(4)}</p>
-                <p><strong>Put Theta θ:</strong> [-(FσN'(d1)e<sup>-rT</sup> / (2√T)] - rP = ${putTheta.toFixed(4)}</p>
-                <p><strong>Call Rho ρ:</strong> KTe<sup>-rT</sup>N(d₂) × 0.01 = ${callRho.toFixed(4)}</p>
-                <p><strong>Put Rho ρ:</strong> -KTe<sup>-rT</sup>N(-d₂) × 0.01 = ${putRho.toFixed(4)}</p>
-            `;
-            safeSetHTML('foGreeksContent', greekSteps);
-
-        } catch (error) {
-            alert('Error: ' + error.message);
+        if ([S, K, T, sigma].some(v => isNaN(v) || v <= 0)) {
+          throw new Error("Please enter valid values (all > 0)");
         }
+
+        // 2. Forward price formula
+        //    F = S × e^{(r − q)T}
+        const exponent = (r - q) * T;
+        const F = S * Math.exp(exponent);
+
+        // 3. Compute d₁ and d₂
+        //    d₁ = [ ln(F/K) + ½σ² T ] ÷ (σ √T)
+        //    d₂ = d₁ − σ √T
+        const sqrtT = Math.sqrt(T);
+        const d1    = (Math.log(F / K) + 0.5 * sigma * sigma * T) / (sigma * sqrtT);
+        const d2    = d1 - sigma * sqrtT;
+
+        // 4. Discounted option prices
+        //    Call = e^{−rT}[ F N(d₁) − K N(d₂) ]
+        //    Put  = e^{−rT}[ K N(−d₂) − F N(−d₁) ]
+        const df = Math.exp(-r * T);
+        const call = df * (F * normalCDF(d1) - K * normalCDF(d2));
+        const put  = df * (K * normalCDF(-d2) - F * normalCDF(-d1));
+
+        // 5. Greeks
+        const pdfd1    = normalPDF(d1);
+        const callDelta= df * normalCDF(d1);
+        const putDelta = df * (normalCDF(d1) - 1);
+        const gamma    = df * (pdfd1 / (F * sigma * sqrtT));
+        const vega     = df * F * sqrtT * pdfd1 * 0.01;
+        const callTheta= -(F * pdfd1 * sigma * df) / (2 * sqrtT) - r * call;
+        const putTheta = -(F * pdfd1 * sigma * df) / (2 * sqrtT) - r * put;
+        const callRho  =  K * T * df * normalCDF(d2) * 0.01;
+        const putRho   = -K * T * df * normalCDF(-d2) * 0.01;
+
+        // 6. Write numeric results
+        safeSetText('foCallPrice', call.toFixed(4));
+        safeSetText('foPutPrice',  put .toFixed(4));
+
+        safeSetText('foCallDelta', callDelta.toFixed(4));
+        safeSetText('foPutDelta',  putDelta .toFixed(4));
+        safeSetText('foCallGamma', gamma.toFixed(4));
+        safeSetText('foCallVega',  vega .toFixed(4));
+        safeSetText('foCallTheta', callTheta.toFixed(4));
+        safeSetText('foPutTheta',  putTheta .toFixed(4));
+        safeSetText('foCallRho',   callRho .toFixed(4));
+        safeSetText('foPutRho',    putRho  .toFixed(4));
+
+        // 7. Build “Calculations” HTML
+        const calcSteps = `
+          <h4>Step 1: Forward Price</h4>
+          <p><strong>F</strong> = S × e<sup>(r − q)T</sup></p>
+          <p>= ${S.toFixed(4)} × e<sup>(${r.toFixed(4)} − ${q.toFixed(4)})×${T.toFixed(4)}</sup>
+            = ${F.toFixed(4)}</p>
+
+          <h4>Step 2: Compute d₁ and d₂</h4>
+          <p>d₁ = [ ln(F/K) + ½σ² T ] ÷ (σ √T)</p>
+          <p>= [ ln(${F.toFixed(4)}/${K.toFixed(4)}) + ½×${sigma.toFixed(4)}²×${T.toFixed(4)} ]
+            ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
+          <p>d₂ = d₁ − σ √T = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
+
+          <h4>Step 3: Option Prices</h4>
+          <p><strong>Call</strong> = e<sup>−rT</sup>[ F N(d₁) − K N(d₂) ]</p>
+          <p>= e<sup>−${(r*T).toFixed(4)}</sup>[ ${F.toFixed(4)}×N(${d1.toFixed(4)}) − ${K.toFixed(4)}×N(${d2.toFixed(4)}) ]
+            = ${call.toFixed(4)}</p>
+          <p><strong>Put</strong> = e<sup>−rT</sup>[ K N(−d₂) − F N(−d₁) ]</p>
+          <p>= e<sup>−${(r*T).toFixed(4)}</sup>[ ${K.toFixed(4)}×N(−${d2.toFixed(4)}) − ${F.toFixed(4)}×N(−${d1.toFixed(4)}) ]
+            = ${put.toFixed(4)}</p>
+        `;
+        safeSetHTML('foCalculationsContent', calcSteps);
+
+        // 8. Build “Greeks” HTML
+        const greekSteps = `
+          <p><strong>Δ<sub>Call</sub></strong> = e<sup>−rT</sup>N(d₁)
+            = e<sup>−${(r*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Δ<sub>Put</sub></strong>  = e<sup>−rT</sup>[N(d₁) − 1] = ${putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong> = e<sup>−rT</sup>[N′(d₁)/(Fσ√T)] = ${gamma.toFixed(4)}</p>
+          <p><strong>ν</strong> = e<sup>−rT</sup>F√T N′(d₁)×0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>θ<sub>Call</sub></strong> = −[FσN′(d₁)e<sup>−rT</sup>/(2√T)] − rC = ${callTheta.toFixed(4)}</p>
+          <p><strong>θ<sub>Put</sub></strong>  = −[FσN′(d₁)e<sup>−rT</sup>/(2√T)] − rP = ${putTheta.toFixed(4)}</p>
+          <p><strong>ρ<sub>Call</sub></strong> = K T e<sup>−rT</sup>N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>ρ<sub>Put</sub></strong>  = −K T e<sup>−rT</sup>N(−d₂)×0.01 = ${putRho.toFixed(4)}</p>
+        `;
+        safeSetHTML('foGreeksContent', greekSteps);
+
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
     }
+
 
     let foCallChart, foPutChart;
     function renderFOPayoffCharts() {
@@ -4675,47 +4856,72 @@
     // Funzione per il calcolo delle Gap Option
     function calculateGapOption() {
       try {
-        // Recupera i valori dagli input
-        var S = parseFloat(document.getElementById('gap-S').value);
-        var x1 = parseFloat(document.getElementById('gap-x1').value);
-        var x2 = parseFloat(document.getElementById('gap-x2').value);
-        var r = parseFloat(document.getElementById('gap-r').value) / 100;
-        var q = parseFloat(document.getElementById('gap-q').value) / 100;
-        var T = parseFloat(document.getElementById('gap-T').value);
-        var vol = parseFloat(document.getElementById('gap-vol').value) / 100;
-        
-        if (isNaN(S) || isNaN(x1) || isNaN(x2) || isNaN(r) || isNaN(q) || isNaN(T) || isNaN(vol) ||
-            S <= 0 || x1 <= 0 || x2 <= 0 || T <= 0 || vol <= 0) {
+        // 1. Read inputs and validate
+        const S     = parseFloat(document.getElementById('gap-S'  ).value);
+        const x1    = parseFloat(document.getElementById('gap-x1' ).value);
+        const x2    = parseFloat(document.getElementById('gap-x2' ).value);
+        const r     = parseFloat(document.getElementById('gap-r'  ).value) / 100;
+        const q     = parseFloat(document.getElementById('gap-q'  ).value) / 100;
+        const T     = parseFloat(document.getElementById('gap-T'  ).value);
+        const sigma = parseFloat(document.getElementById('gap-vol').value) / 100;
+
+        if ([S, x1, x2, r, q, T, sigma].some(v => isNaN(v) || v <= 0)) {
           throw new Error("Please enter all values greater than zero.");
         }
-        
-        // Calcola d1 e d₂ (con dividend yield)
-        var d1 = (Math.log(S / x2) + (r - q + 0.5 * vol * vol) * T) / (vol * Math.sqrt(T));
-        var d2 = d1 - vol * Math.sqrt(T);
-        
-        // Calcolo del prezzo Gap Call e Gap Put
-        // Gap Call: c_gap = S·e^(-qT)*N(d1) - x₁·e^(-rT)*N(d₂)
-        // Gap Put:  p_gap = x₁·e^(-rT)*N(-d₂) - S·e^(-qT)*N(-d1)
-        var callPrice = S * Math.exp(-q * T) * normalCDF(d1) - x1 * Math.exp(-r * T) * normalCDF(d2);
-        var putPrice = x1 * Math.exp(-r * T) * normalCDF(-d2) - S * Math.exp(-q * T) * normalCDF(-d1);
-        
-        safeSetText('gap-call-price', callPrice.toFixed(4));
-        safeSetText('gap-put-price', putPrice.toFixed(4));
-        
-        var calcContent = "";
-        calcContent += "<p><strong>d1</strong> = [ln(S/x₂) + (r - q + 0.5σ²)T] / (σ√T) = " + d1.toFixed(4) + "</p>";
-        calcContent += "<p><strong>d₂</strong> = d1 - σ√T = " + d2.toFixed(4) + "</p>";
-        calcContent += "<p><strong>Gap Call</strong> = S·e<sup>-qT</sup>·N(d1) - x₁·e<sup>-rT</sup>·N(d₂) = " + callPrice.toFixed(4) + "</p>";
-        calcContent += "<p><strong>Gap Put</strong> = x₁·e<sup>-rT</sup>·N(-d₂) - S·e<sup>-qT</sup>·N(-d1) = " + putPrice.toFixed(4) + "</p>";
-        
-        safeSetHTML('gapCalculationsContent', calcContent);
-        // NOTA: Non viene modificato il display della sezione dei calcoli,
-        // in modo che rimanga nascosta finché non si clicca "Show Calculations"
-        
+
+        // 2. Compute d₁ and d₂
+        //    d₁ = [ ln(S/x₂) + (r − q + ½σ²) T ] ÷ (σ √T)
+        //    d₂ = d₁ − σ √T
+        const sqrtT = Math.sqrt(T);
+        const d1 = (
+          Math.log(S / x2)
+          + (r - q + 0.5 * sigma * sigma) * T
+        ) / (sigma * sqrtT);
+        const d2 = d1 - sigma * sqrtT;
+
+        // 3. Gap option prices
+        //    Gap Call: c_gap = S e^(−qT) N(d₁) − x₁ e^(−rT) N(d₂)
+        //    Gap Put:  p_gap = x₁ e^(−rT) N(−d₂) − S e^(−qT) N(−d₁)
+        const discDiv  = Math.exp(-q * T);
+        const discCash = Math.exp(-r * T);
+        const gapCall  = S  * discDiv  * normalCDF(d1)
+                      - x1 * discCash * normalCDF(d2);
+        const gapPut   = x1 * discCash * normalCDF(-d2)
+                      - S  * discDiv  * normalCDF(-d1);
+
+        // 4. Display numeric results
+        safeSetText('gap-call-price', gapCall.toFixed(4));
+        safeSetText('gap-put-price',  gapPut .toFixed(4));
+
+        // 5. Build step‑by‑step “Calculations” HTML
+        const calcHTML = `
+          <h4>Step 1: Compute d₁ and d₂</h4>
+          <p><strong>d₁</strong> = [ ln(S/x₂) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
+          <p>= [ ln(${S.toFixed(4)}/${x2.toFixed(4)}) 
+              + (${r.toFixed(4)} − ${q.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
+            ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
+            = ${d1.toFixed(4)}</p>
+          <p><strong>d₂</strong> = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+            = ${d2.toFixed(4)}</p>
+
+          <h4>Step 2: Gap Call & Put Formulas</h4>
+          <p><strong>Gap Call</strong> = S·e<sup>−qT</sup>·N(d₁) − x₁·e<sup>−rT</sup>·N(d₂)</p>
+          <p>= ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
+            − ${x1.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
+            = ${gapCall.toFixed(4)}</p>
+
+          <p><strong>Gap Put</strong>  = x₁·e<sup>−rT</sup>·N(−d₂) − S·e<sup>−qT</sup>·N(−d₁)</p>
+          <p>= ${x1.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(-${d2.toFixed(4)}) 
+            − ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(-${d1.toFixed(4)})
+            = ${gapPut.toFixed(4)}</p>
+        `;
+        safeSetHTML('gapCalculationsContent', calcHTML);
+
       } catch (e) {
         alert("Error: " + e.message);
       }
     }
+
 
     function calculateGapOptionGreeks() {
       try {
@@ -5753,87 +5959,142 @@
   }
 
   function calculateStraddle() {
-  // Recupera i valori di input
-  var S = parseFloat(document.getElementById('straddle-spot').value);
-  var X = parseFloat(document.getElementById('straddle-strike').value);
-  var T = parseFloat(document.getElementById('straddle-time').value);
-  var r = parseFloat(document.getElementById('straddle-rate').value) / 100;
-  var vol = parseFloat(document.getElementById('straddle-vol').value) / 100;
+    try {
+      // 1. Read inputs and validate
+      const S     = parseFloat(document.getElementById('straddle-spot').value);
+      const X     = parseFloat(document.getElementById('straddle-strike').value);
+      const T     = parseFloat(document.getElementById('straddle-time').value);
+      const r     = parseFloat(document.getElementById('straddle-rate').value) / 100;
+      const sigma = parseFloat(document.getElementById('straddle-vol' ).value) / 100;
 
-  if (isNaN(S) || isNaN(X) || isNaN(T) || isNaN(r) || isNaN(vol) ||
-      S <= 0 || X <= 0 || T <= 0 || vol <= 0) {
-    alert("Per favore, inserisci tutti i valori maggiori di zero per lo straddle.");
-    return;
+      if (![S, X, T, r, sigma].every(v => !isNaN(v) && v > 0)) {
+        throw new Error("Please enter all values greater than zero for the straddle.");
+      }
+
+      // 2. Compute d₁ and d₂ (Black‑Scholes)
+      //    d₁ = [ ln(S/X) + (r + ½σ²) T ] ÷ (σ √T)
+      //    d₂ = d₁ − σ √T
+      const sqrtT = Math.sqrt(T);
+      const d1 = (
+        Math.log(S / X)
+        + (r + 0.5 * sigma * sigma) * T
+      ) / (sigma * sqrtT);
+      const d2 = d1 - sigma * sqrtT;
+
+      // 3. European call & put prices
+      //    Call = S N(d₁) − X e^(−rT) N(d₂)
+      //    Put  = X e^(−rT) N(−d₂) − S N(−d₁)
+      const callPrice = S * normalCDF(d1)
+                      - X * Math.exp(-r * T) * normalCDF(d2);
+      const putPrice  = X * Math.exp(-r * T) * normalCDF(-d2)
+                      - S * normalCDF(-d1);
+
+      // 4. Straddle positions
+      const longStraddle  = callPrice + putPrice;
+      const shortStraddle = -longStraddle;
+
+      // 5. Display numeric prices
+      safeSetText('straddle-long-price',  longStraddle .toFixed(4));
+      safeSetText('straddle-short-price', shortStraddle.toFixed(4));
+
+      // 6. Build “Calculations” HTML
+      const calcSteps = `
+        <h4>Step 1: Compute d₁ and d₂</h4>
+        <p><strong>d₁</strong> = [ ln(S/X) + (r + ½σ²)×T ] ÷ (σ√T)</p>
+        <p>= [ ln(${S.toFixed(4)}/${X.toFixed(4)}) 
+            + (${r.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
+          ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
+          = ${d1.toFixed(4)}</p>
+        <p><strong>d₂</strong> = d₁ − σ√T
+          = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+          = ${d2.toFixed(4)}</p>
+
+        <h4>Step 2: Call & Put Prices</h4>
+        <p><strong>Call</strong> = S N(d₁) − X e<sup>−rT</sup> N(d₂)</p>
+        <p>= ${S.toFixed(4)}×N(${d1.toFixed(4)}) 
+          − ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
+          = ${callPrice.toFixed(4)}</p>
+        <p><strong>Put</strong> = X e<sup>−rT</sup> N(−d₂) − S N(−d₁)</p>
+        <p>= ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
+          − ${S.toFixed(4)}×N(−${d1.toFixed(4)})
+          = ${putPrice.toFixed(4)}</p>
+
+        <h4>Step 3: Straddle Prices</h4>
+        <p><strong>Long Straddle</strong> = Call + Put = ${callPrice.toFixed(4)} + ${putPrice.toFixed(4)} = ${longStraddle.toFixed(4)}</p>
+        <p><strong>Short Straddle</strong> = −Long = ${shortStraddle.toFixed(4)}</p>
+      `;
+      safeSetHTML('straddleCalculationsContent', calcSteps);
+
+      // 7. Greeks for the long straddle
+      //    Δ = N(d₁) − N(−d₁)
+      //    Γ = [N′(d₁) + N′(−d₁)] ÷ (Sσ√T)
+      //    ν = S√T [N′(d₁) + N′(−d₁)] ×0.01
+      //    θ = −[SσN′(d₁)/(2√T)] − r(Call+Put)
+      //    ρ = X T e^(−rT)[N(d₂) − N(−d₂)]×0.01
+      const pdf1   = normalPDF(d1);
+      const pdfm1  = normalPDF(-d1);
+      const cdf1   = normalCDF(d1);
+      const cdfm1  = normalCDF(-d1);
+      const cdf2   = normalCDF(d2);
+      const cdfm2  = normalCDF(-d2);
+
+      const longDelta = cdf1 - cdfm1;
+      const longGamma = (pdf1 + pdfm1) / (S * sigma * sqrtT);
+      const longVega  = S * sqrtT * (pdf1 + pdfm1) * 0.01;
+      const longTheta = - (S * pdf1 * sigma) / (2 * sqrtT)
+                      - r * (callPrice + putPrice);
+      const longRho   = X * T * Math.exp(-r * T) * (cdf2 - cdfm2) * 0.01;
+
+      // Short‑straddle Greeks are just the negatives
+      const shortDelta = -longDelta;
+      const shortGamma = -longGamma;
+      const shortVega  = -longVega;
+      const shortTheta = -longTheta;
+      const shortRho   = -longRho;
+
+      // 8. Display numeric Greeks
+      safeSetText('straddleLongDelta', longDelta.toFixed(4));
+      safeSetText('straddleLongGamma', longGamma.toFixed(4));
+      safeSetText('straddleLongVega',  longVega .toFixed(4));
+      safeSetText('straddleLongTheta', longTheta.toFixed(4));
+      safeSetText('straddleLongRho',   longRho  .toFixed(4));
+
+      safeSetText('straddleShortDelta', shortDelta.toFixed(4));
+      safeSetText('straddleShortGamma', shortGamma.toFixed(4));
+      safeSetText('straddleShortVega',  shortVega .toFixed(4));
+      safeSetText('straddleShortTheta', shortTheta.toFixed(4));
+      safeSetText('straddleShortRho',   shortRho  .toFixed(4));
+
+      // 9. Build “Greeks” HTML
+      const greekDetails = `
+        <h4>Long Straddle Greeks</h4>
+        <p><strong>Δ</strong> = N(d₁) − N(−d₁) 
+          = ${cdf1.toFixed(4)} − ${cdfm1.toFixed(4)} = ${longDelta.toFixed(4)}</p>
+        <p><strong>Γ</strong> = [N′(d₁) + N′(−d₁)] ÷ (Sσ√T) 
+          = (${pdf1.toFixed(4)} + ${pdfm1.toFixed(4)}) ÷ (${S.toFixed(4)}×${sigma.toFixed(4)}×√${T.toFixed(4)}) 
+          = ${longGamma.toFixed(4)}</p>
+        <p><strong>ν</strong> = S√T [N′(d₁)+N′(−d₁)]×0.01 
+          = ${S.toFixed(4)}×√${T.toFixed(4)}×(${pdf1.toFixed(4)}+${pdfm1.toFixed(4)})×0.01 
+          = ${longVega.toFixed(4)}</p>
+        <p><strong>θ</strong> = −[SσN′(d₁)/(2√T)] − r(Call+Put)
+          = ${longTheta.toFixed(4)}</p>
+        <p><strong>ρ</strong> = X T e<sup>−rT</sup>[N(d₂)−N(−d₂)]×0.01
+          = ${longRho.toFixed(4)}</p>
+
+        <h4>Short Straddle Greeks</h4>
+        <p><strong>Δ</strong> = ${shortDelta.toFixed(4)}</p>
+        <p><strong>Γ</strong> = ${shortGamma.toFixed(4)}</p>
+        <p><strong>ν</strong> = ${shortVega.toFixed(4)}</p>
+        <p><strong>θ</strong> = ${shortTheta.toFixed(4)}</p>
+        <p><strong>ρ</strong> = ${shortRho.toFixed(4)}</p>
+      `;
+      safeSetHTML('straddleGreeksCalculationsContent', greekDetails);
+
+    } catch (e) {
+      alert("Error: " + e.message);
+    }
   }
 
-  // Calcola d1 e d₂ secondo la formula di Black-Scholes
-  var d1 = (Math.log(S / X) + (r + 0.5 * vol * vol) * T) / (vol * Math.sqrt(T));
-  var d2 = d1 - vol * Math.sqrt(T);
-
-  // Calcola i prezzi della call e della put europee
-  var callPrice = S * normalCDF(d1) - X * Math.exp(-r * T) * normalCDF(d2);
-  var putPrice = X * Math.exp(-r * T) * normalCDF(-d2) - S * normalCDF(-d1);
-
-  // Prezzi dello straddle: long = call + put, short = - (call + put)
-  var longStraddle = callPrice + putPrice;
-  var shortStraddle = -longStraddle;
-
-  safeSetText('straddle-long-price', longStraddle.toFixed(4));
-  safeSetText('straddle-short-price', shortStraddle.toFixed(4));
-
-  // Visualizza i passaggi dei calcoli principali
-  var calcContent = "";
-  calcContent += "<p><strong>d1</strong> = [ln(" + S.toFixed(4) + "/" + X.toFixed(4) + ") + (" + r.toFixed(4) + " + 0.5×" + vol.toFixed(4) + "²)×" + T.toFixed(4) + "] ÷ (" + vol.toFixed(4) + "×√" + T.toFixed(4) + ") = " + d1.toFixed(4) + "</p>";
-  calcContent += "<p><strong>d₂</strong> = " + d1.toFixed(4) + " - " + vol.toFixed(4) + "×√" + T.toFixed(4) + " = " + d2.toFixed(4) + "</p>";
-  calcContent += "<p><strong>Call Price</strong> = " + S.toFixed(4) + "×N(" + d1.toFixed(4) + ") - " + X.toFixed(4) + "×e<sup>-" + (r * T).toFixed(4) + "</sup>×N(" + d2.toFixed(4) + ") = " + callPrice.toFixed(4) + "</p>";
-  calcContent += "<p><strong>Put Price</strong> = " + X.toFixed(4) + "×e<sup>-" + (r * T).toFixed(4) + "</sup>×N(-" + d2.toFixed(4) + ") - " + S.toFixed(4) + "×N(-" + d1.toFixed(4) + ") = " + putPrice.toFixed(4) + "</p>";
-  safeSetHTML('straddleCalculationsContent', calcContent);
-
-  // Calcola le greche per la posizione long dello straddle
-  var longDelta = normalCDF(d1) - normalCDF(-d1);
-  var longGamma = (normalPDF(d1) + normalPDF(-d1)) / (S * vol * Math.sqrt(T));
-  var longVega  = S * Math.sqrt(T) * (normalPDF(d1) + normalPDF(-d1)) * 0.01;
-  var longTheta = -((S * normalPDF(d1) * vol) / (2 * Math.sqrt(T))) - r * (callPrice + putPrice);
-  var longRho   = X * T * Math.exp(-r * T) * (normalCDF(d2) - normalCDF(-d2)) * 0.01;
-
-  // Le greche per la posizione short sono l'opposto
-  var shortDelta = -longDelta;
-  var shortGamma = -longGamma;
-  var shortVega  = -longVega;
-  var shortTheta = -longTheta;
-  var shortRho   = -longRho;
-
-  // Aggiorna gli elementi HTML con i valori delle greche
-  safeSetText('straddleLongDelta', longDelta.toFixed(4));
-  safeSetText('straddleLongGamma', longGamma.toFixed(4));
-  safeSetText('straddleLongVega', longVega.toFixed(4));
-  safeSetText('straddleLongTheta', longTheta.toFixed(4));
-  safeSetText('straddleLongRho', longRho.toFixed(4));
-
-  safeSetText('straddleShortDelta', shortDelta.toFixed(4));
-  safeSetText('straddleShortGamma', shortGamma.toFixed(4));
-  safeSetText('straddleShortVega', shortVega.toFixed(4));
-  safeSetText('straddleShortTheta', shortTheta.toFixed(4));
-  safeSetText('straddleShortRho', shortRho.toFixed(4));
-
-  // Costruisci una stringa con i dettagli dei calcoli delle greche
-  var greekDetails = "";
-  greekDetails += "<p><strong>Long Straddle Greeks:</strong></p>";
-  greekDetails += "<p>Δ = N(d1) - N(-d1) = " + longDelta.toFixed(4) + "</p>";
-  greekDetails += "<p>Γ = [N'(d1) + N'(-d1)] / (S×σ×√T) = " + longGamma.toFixed(4) + "</p>";
-  greekDetails += "<p>ν = S×√T×[N'(d1) + N'(-d1)]×0.01 = " + longVega.toFixed(4) + "</p>";
-  greekDetails += "<p>θ = -[(S×N'(d1)×σ)/(2√T) + r×(Call + Put)] = " + longTheta.toFixed(4) + "</p>";
-  greekDetails += "<p>ρ = X×T×e<sup>-rT</sup>×[N(d₂) - N(-d₂)]×0.01 = " + longRho.toFixed(4) + "</p>";
-
-  greekDetails += "<hr><p><strong>Short Straddle Greeks:</strong></p>";
-  greekDetails += "<p>Δ = " + shortDelta.toFixed(4) + "</p>";
-  greekDetails += "<p>Γ = " + shortGamma.toFixed(4) + "</p>";
-  greekDetails += "<p>ν = " + shortVega.toFixed(4) + "</p>";
-  greekDetails += "<p>θ = " + shortTheta.toFixed(4) + "</p>";
-  greekDetails += "<p>ρ = " + shortRho.toFixed(4) + "</p>";
-
-  safeSetHTML('straddleGreeksCalculationsContent', greekDetails);
-}
 
 
 
@@ -5974,90 +6235,111 @@
 
   function calculateForwardStartOptions() {
     try {
-      const S = parseFloat(document.getElementById('fsS').value);
-      const X = parseFloat(document.getElementById('fsX').value);
-      const T = parseFloat(document.getElementById('fsTime').value); // T₂ - T1
-      const r = (parseFloat(document.getElementById('fsRate').value) || 0) / 100;
-      const sigma = (parseFloat(document.getElementById('fsVol').value) || 0) / 100;
-      const q = (parseFloat(document.getElementById('fsDiv').value) || 0) / 100;
+      // 1. Read inputs and validate
+      const S     = parseFloat(document.getElementById('fsS'   ).value); // Spot at option start
+      const X     = parseFloat(document.getElementById('fsX'   ).value); // Strike set at start
+      const T     = parseFloat(document.getElementById('fsTime').value); // Time from start to maturity
+      const r     = (parseFloat(document.getElementById('fsRate').value) || 0) / 100;
+      const sigma = (parseFloat(document.getElementById('fsVol' ).value) || 0) / 100;
+      const q     = (parseFloat(document.getElementById('fsDiv' ).value) || 0) / 100;
 
-      if (isNaN(S) || isNaN(X) || isNaN(T) || isNaN(sigma) ||
-          S <= 0 || X <= 0 || T <= 0 || sigma <= 0) {
-        throw new Error("Inserisci tutti i valori maggiori di zero per effettuare il calcolo");
+      if ([S, X, T, sigma].some(v => isNaN(v) || v <= 0)) {
+        throw new Error("Please enter positive values for S, X, T and σ.");
       }
 
-      // Calcola d1 e d₂ secondo la formula di Black-Scholes
-      const d1 = (Math.log(S / X) + (r + (sigma * sigma) / 2) * T) / (sigma * Math.sqrt(T));
-      const d2 = d1 - sigma * Math.sqrt(T);
-
-      // Calcola i prezzi delle opzioni (Black-Scholes adattato)
-      const call = S * normalCDF(d1) - X * Math.exp(-r * T) * normalCDF(d2);
-      const put  = X * Math.exp(-r * T) * normalCDF(-d2) - S * normalCDF(-d1);
-
-      safeSetText('fsCallPrice', call.toFixed(4));
-      safeSetText('fsPutPrice', put.toFixed(4));
-
-      const steps = `
-        <p><strong>d1</strong> = [ln(${S.toFixed(4)}/${X.toFixed(4)}) + (${r.toFixed(4)} + ${(sigma * sigma / 2).toFixed(4)})×${T.toFixed(4)}] ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-        <p><strong>d₂</strong> = d1 - ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
-        <p><strong>Call Price</strong> = ${S.toFixed(4)}×N(d1) - ${X.toFixed(4)}×e^(-${r.toFixed(4)}×${T.toFixed(4)})×N(d₂) = ${call.toFixed(4)}</p>
-        <p><strong>Put Price</strong> = ${X.toFixed(4)}×e^(-${r.toFixed(4)}×${T.toFixed(4)})×N(-d₂) - ${S.toFixed(4)}×N(-d1) = ${put.toFixed(4)}</p>
-      `;
-      safeSetHTML('fsCalculations', `<h3>📝 Calculations:</h3>` + steps);
-
-      // Calcola le greche (simili a quelle delle opzioni vanilla)
+      // 2. Compute d₁ and d₂ (Black–Scholes)
+      //    d₁ = [ ln(S/X) + (r + ½σ²) T ] ÷ (σ √T)
+      //    d₂ = d₁ − σ √T
       const sqrtT = Math.sqrt(T);
-      const pdfd1 = normalPDF(d1);
-      const greeks = {
-        callDelta: normalCDF(d1),
-        putDelta: normalCDF(d1) - 1,
-        gamma: pdfd1 / (S * sigma * sqrtT),
-        vega: S * sqrtT * pdfd1 * 0.01,
-        callTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) - r * X * Math.exp(-r * T) * normalCDF(d2),
-        putTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) + r * X * Math.exp(-r * T) * normalCDF(-d2),
-        callRho: X * T * Math.exp(-r * T) * normalCDF(d2) * 0.01,
-        putRho: -X * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01
-      };
+      const d1 = (
+        Math.log(S / X)
+        + (r + 0.5 * sigma * sigma) * T
+      ) / (sigma * sqrtT);
+      const d2 = d1 - sigma * sqrtT;
 
-      // Aggiorna i valori nelle card delle greche (colonna Call)
-      safeSetText('fsCallDelta', greeks.callDelta.toFixed(4));
-      safeSetText('fsCallGamma', greeks.gamma.toFixed(4));
-      safeSetText('fsCallVega', greeks.vega.toFixed(4));
-      safeSetText('fsCallTheta', greeks.callTheta.toFixed(4));
-      safeSetText('fsCallRho', greeks.callRho.toFixed(4));
+      // 3. Price formulas for forward‑start (vanilla BS form)
+      //    Call = S N(d₁) − X e^(−rT) N(d₂)
+      //    Put  = X e^(−rT) N(−d₂) − S N(−d₁)
+      const dfX = X * Math.exp(-r * T);
+      const call = S * normalCDF(d1) - dfX * normalCDF(d2);
+      const put  = dfX * normalCDF(-d2) - S * normalCDF(-d1);
 
-      // Aggiorna i valori nelle card delle greche (colonna Put)
-      safeSetText('fsPutDelta', greeks.putDelta.toFixed(4));
-      safeSetText('fsPutGamma', greeks.gamma.toFixed(4));
-      safeSetText('fsPutVega', greeks.vega.toFixed(4));
-      safeSetText('fsPutTheta', greeks.putTheta.toFixed(4));
-      safeSetText('fsPutRho', greeks.putRho.toFixed(4));
+      // 4. Greeks (vanilla BS-style on original S)
+      const pdf1       = normalPDF(d1);
+      const callDelta  = normalCDF(d1);
+      const putDelta   = normalCDF(d1) - 1;
+      const gamma      = pdf1 / (S * sigma * sqrtT);
+      const vega       = S * sqrtT * pdf1 * 0.01;
+      const callTheta  = - (S * pdf1 * sigma) / (2 * sqrtT)
+                        - r * dfX * normalCDF(d2);
+      const putTheta   = - (S * pdf1 * sigma) / (2 * sqrtT)
+                        + r * dfX * normalCDF(-d2);
+      const callRho    = X * T * Math.exp(-r * T) * normalCDF(d2) * 0.01;
+      const putRho     = -X * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01;
 
-      // Mostra i dettagli dei calcoli delle greche in un blocco sottostante
-      const greekSteps = `
-        <p><strong>Call Greeks Calculations:</strong></p>
-        <p>Δ = N(d1) = ${greeks.callDelta.toFixed(4)}</p>
-        <p>Γ = N'(d1)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
-        <p>ν = S√T×N'(d1)×0.01 = ${greeks.vega.toFixed(4)}</p>
-        <p>θ = [-(S×N'(d1)×σ)/(2√T) - rX×e^(-rT)×N(d₂)] = ${greeks.callTheta.toFixed(4)}</p>
-        <p>ρ = X×T×e^(-rT)×N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
-        <hr>
-        <p><strong>Put Greeks Calculations:</strong></p>
-        <p>Δ = N(d1) - 1 = ${greeks.putDelta.toFixed(4)}</p>
-        <p>Γ = N'(d1)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
-        <p>ν = S√T×N'(d1)×0.01 = ${greeks.vega.toFixed(4)}</p>
-        <p>θ = [-(S×N'(d1)×σ)/(2√T) + rX×e^(-rT)×N(-d₂)] = ${greeks.putTheta.toFixed(4)}</p>
-        <p>ρ = -X×T×e^(-rT)×N(-d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
+      // 5. Render numeric prices & Greeks
+      safeSetText('fsCallPrice', call.toFixed(4));
+      safeSetText('fsPutPrice',  put .toFixed(4));
+      safeSetText('fsCallDelta', callDelta.toFixed(4));
+      safeSetText('fsPutDelta',  putDelta .toFixed(4));
+      safeSetText('fsCallGamma', gamma.toFixed(4));
+      safeSetText('fsCallVega',  vega .toFixed(4));
+      safeSetText('fsCallTheta', callTheta.toFixed(4));
+      safeSetText('fsPutTheta',  putTheta .toFixed(4));
+      safeSetText('fsCallRho',   callRho .toFixed(4));
+      safeSetText('fsPutRho',    putRho  .toFixed(4));
+
+      // 6. Build “Calculations” HTML
+      const calcHTML = `
+        <h4>Step 1: Compute d₁ and d₂</h4>
+        <p><strong>d₁</strong> = [ ln(S/X) + (r + ½σ²)×T ] ÷ (σ√T)</p>
+        <p>= [ ln(${S.toFixed(4)}/${X.toFixed(4)}) 
+            + (${r.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
+          ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) 
+          = ${d1.toFixed(4)}</p>
+        <p><strong>d₂</strong> = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+          = ${d2.toFixed(4)}</p>
+
+        <h4>Step 2: Call & Put Prices</h4>
+        <p><strong>Call</strong> = S N(d₁) − X e<sup>−rT</sup> N(d₂)</p>
+        <p>= ${S.toFixed(4)}×N(${d1.toFixed(4)}) 
+          − ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
+          = ${call.toFixed(4)}</p>
+
+        <p><strong>Put</strong> = X e<sup>−rT</sup> N(−d₂) − S N(−d₁)</p>
+        <p>= ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
+          − ${S.toFixed(4)}×N(−${d1.toFixed(4)})
+          = ${put.toFixed(4)}</p>
       `;
-      safeSetHTML('fsGreeksCalculationsContent', greekSteps);
+      safeSetHTML('fsCalculations', `<h3>📝 Calculations:</h3>` + calcHTML);
 
+      // 7. Build “Greeks” HTML
+      const greekHTML = `
+        <h4>Call Greeks</h4>
+        <p>Δ = N(d₁) = ${callDelta.toFixed(4)}</p>
+        <p>Γ = pdf(d₁)/(Sσ√T) = ${gamma.toFixed(4)}</p>
+        <p>ν = S√T·pdf(d₁)×0.01 = ${vega.toFixed(4)}</p>
+        <p>θ = −[Sσpdf(d₁)/(2√T)] − rX e<sup>−rT</sup>N(d₂) = ${callTheta.toFixed(4)}</p>
+        <p>ρ = X T e<sup>−rT</sup>N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
+        <hr>
+        <h4>Put Greeks</h4>
+        <p>Δ = N(d₁) − 1 = ${putDelta.toFixed(4)}</p>
+        <p>Γ = pdf(d₁)/(Sσ√T) = ${gamma.toFixed(4)}</p>
+        <p>ν = S√T·pdf(d₁)×0.01 = ${vega.toFixed(4)}</p>
+        <p>θ = −[Sσpdf(d₁)/(2√T)] + rX e<sup>−rT</sup>N(−d₂) = ${putTheta.toFixed(4)}</p>
+        <p>ρ = −X T e<sup>−rT</sup>N(−d₂)×0.01 = ${putRho.toFixed(4)}</p>
+      `;
+      safeSetHTML('fsGreeksCalculationsContent', greekHTML);
+
+      // 8. Refresh chart if visible
       if (document.getElementById('fsGraph').style.display === 'block') {
         renderFSChart();
       }
     } catch (error) {
-      alert('Errore: ' + error.message);
+      alert("Error: " + error.message);
     }
   }
+
 
 
   function renderFSChart() {
