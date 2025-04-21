@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #01796F;
+      --background: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+      --card-radius: 8px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow-x: hidden; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    /* Cookie Banner & Modal */
+    .cookie-banner, .cookie-modal { position: fixed; left: 0; right: 0; z-index: 1000; }
+    .cookie-banner {
+      bottom: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cookie-banner p { flex: 1 1 60%; margin-right: 1rem; }
+    .cookie-banner button { margin: 0.25rem; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+    #accept-all { background: var(--primary); color: #fff; }
+    #decline-all { background: #ddd; }
+    #cookie-settings { background: transparent; color: var(--primary); }
+    .cookie-modal { top: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; }
+    .cookie-modal-content {
+      background: var(--card-bg);
+      max-width: 400px;
+      margin: 5% auto;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      position: relative;
+    }
+    .cookie-modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+    .cookie-modal-content label { display: block; margin-bottom: 0.75rem; }
+    .cookie-modal-content input[type="checkbox"] { margin-right: 0.5rem; }
+    #save-settings, #close-modal { margin-top: 1rem; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; }
+    #save-settings { background: var(--primary); color: #fff; }
+    #close-modal { background: #ddd; }
+    /* Navbar, Main, Footer */
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: var(--background); border-bottom: 1px solid #e0e0e0; }
+    .brand { font-size: 1.25rem; font-weight: 700; color: #000; text-decoration: none; }
+    .nav-link { margin-left: 1.5rem; font-weight: 500; color: #333; text-decoration: none; }
+    .nav-link:hover { color: var(--primary); }
+    main {
+      max-width: 720px;
+      background: var(--card-bg);
+      margin: 2rem auto 3rem;
+      padding: 1.5rem 2rem;
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+    }
+    main h1 { font-size: 1.75rem; color: var(--primary); margin-bottom: 1rem; text-align: center; }
+    main h2 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--primary); }
+    main p, main li { font-size: 1rem; margin-bottom: 0.75rem; }
+    main ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .site-footer { background: var(--card-bg); border-top: 1px solid #eaeaea; padding: 2rem; }
+    .footer-container { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .footer-left, .footer-right { flex: 1; }
+    .footer-brand { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .footer-text { font-size: 0.9rem; color: #555; line-height: 1.4; margin-bottom: 1rem; }
+    .footer-right ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 0; margin: 0; }
+    .footer-right a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s ease; }
+    .footer-right a:hover { color: var(--primary); }
+    @media (max-width: 600px) {
+      .cookie-modal-content { width: 90%; }
+      main { padding: 1rem; margin: 1rem; width: auto; }
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.25rem; }
+      p, li { font-size: 0.875rem; }
+      .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/index.html" class="brand">Black & Scholes Calculator</a>
+    <div>
+      <a href="/calculators.html" class="nav-link">Calculators</a>
+      <a href="/theory.html" class="nav-link">Theory</a>
+    </div>
+  </nav>
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie consent banner">
+    <p>We use cookies to remember your settings, analyze traffic, and provide personalized ads. Please select your preferences.</p>
+    <div>
+      <button id="accept-all">Accept All</button>
+      <button id="decline-all">Decline All</button>
+      <button id="cookie-settings">Settings</button>
+    </div>
+  </div>
+  <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+    <div class="cookie-modal-content">
+      <h2 id="cookie-modal-title">Cookie Preferences</h2>
+      <form id="cookie-form">
+        <label><input type="checkbox" id="toggle-preferences"> Preferences Cookies</label>
+        <label><input type="checkbox" id="toggle-statistics"> Statistics Cookies</label>
+        <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
+        <button type="button" id="save-settings">Save Settings</button>
+      </form>
+      <button id="close-modal">Close</button>
+    </div>
+  </div>
+  <main>
+    <h1>About Us</h1>
+    <p><strong>Last updated:</strong> April 21, 2025</p>
+    <p>This website is operated by a private individual and finance student. It is provided free of charge for educational and personal use, with no commercial purpose or monetization.</p>
+    <h2>Mission</h2>
+    <p>As a university student specializing in finance, my mission is to share knowledge and practical tools to help fellow students and enthusiasts understand and apply financial concepts and derivative pricing models.</p>
+    <h2>What We Do</h2>
+    <ul>
+      <li>Provide interactive calculators for pricing derivatives and financial instruments.</li>
+      <li>Offer explanatory theory pages covering the mathematical foundations and practical applications.</li>
+      <li>Share notes and resources to support learning in finance and quantitative methods.</li>
+    </ul>
+    <h2>Disclaimer</h2>
+    <p>The content and tools on this site are for informational and educational purposes only and do not constitute financial advice. No warranty is made regarding the accuracy or completeness of the information provided. Use at your own risk.</p>
+    <h2>Contact</h2>
+    <p>For questions, feedback, or further information, please contact me at <a href="mailto:postmaster@calculatorblackscholes.com">your.email@example.com</a>.</p>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h3 class="footer-brand">Black & Scholes Calculator</h3>
+        <p class="footer-text">© 2025 Black & Scholes Calculator. All rights reserved.</p>
+        <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
+      </div>
+      <div class="footer-right">
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="cookie-policy.html">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+  <script src="cookie-consent.js"></script>
+</body>
+</html>
