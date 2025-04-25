@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management</title>
-  <link rel="canonical" href="https://calculatorblackscholes.com/theory.html" />
-  <meta name="description" content="Learn everything about vanilla options: how they work, how they are priced using the Black-Scholes model, and how to manage risk using the Greeks.">
-  <meta name="keywords" content="vanilla options, option pricing, Black-Scholes model, call option, put option, option Greeks, delta, gamma, theta, vega, rho, options trading, financial derivatives">
+  <title>Derivatives Theory</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
 
@@ -435,88 +432,70 @@
   <script>
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
-      "theory": {
-        title: "Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management",
+      "cds": {
+        title: "Theory on Credit Default Swaps",
         content: `
-        <section>
-          <h2>What Are Vanilla Options?</h2>
-          <p>
-            Vanilla options are the most common and standard types of financial options. They provide the buyer with the right, but not the obligation, to <strong>buy (call option)</strong> or <strong>sell (put option)</strong> an underlying asset at a specified strike price before or at a specific expiration date. These options are widely used in trading, hedging, and portfolio management strategies.
-          </p>
-        </section>
-        <section>
-          <h2>Vanilla Option Types and Features</h2>
-          <p>
-            Vanilla options come in two main types: <strong>European-style options</strong>, which can only be exercised at expiration, and <strong>American-style options</strong>, which can be exercised any time before expiration. The key components of a vanilla option contract include:
-          </p>
-          <ul>
-            <li><strong>Strike Price:</strong> The fixed price at which the underlying asset can be bought or sold.</li>
-            <li><strong>Expiration Date:</strong> The final date on which the option can be exercised.</li>
-            <li><strong>Option Premium:</strong> The cost paid by the buyer to acquire the option.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>How Vanilla Options Are Priced</h2>
-          <p>
-            The pricing of vanilla options—especially European-style—is commonly done using the <strong>Black-Scholes option pricing model</strong>. This mathematical model uses risk-neutral valuation principles and assumes that the price of the underlying asset follows a lognormal distribution. The total value of an option includes:
-          </p>
-          <ul>
-            <li><strong>Intrinsic Value:</strong> The difference between the asset’s current price and the strike price.</li>
-            <li><strong>Time Value:</strong> The premium associated with the time remaining until expiration.</li>
-          </ul>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Call Option:</strong><br>
-            C = S · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
-            d<sub>1</sub> = [ln(S/K) + (r + σ²/2)T] / (σ√T)<br>
-            d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Put Option:</strong><br>
-            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · N(-d<sub>1</sub>)
-          </p>
-          <p>
-            When pricing options on dividend-paying stocks or American-style vanilla options, adjustments to the Black-Scholes formula are required. The model’s accuracy depends on parameters such as volatility, interest rates, and the behavior of the underlying asset.
-          </p>
-        </section>
-        <section>
-          <h2>Understanding the Greeks in Vanilla Options</h2>
-          <p>
-            The <strong>Greeks</strong> are essential risk management tools used to analyze how option prices react to changes in market conditions. Each Greek represents a different sensitivity:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Measures how much the option price changes in response to a change in the underlying asset's price.</li>
-            <li><strong>Gamma:</strong> Measures the rate of change of Delta; shows how Delta evolves as the asset price changes.</li>
-            <li><strong>Theta:</strong> Indicates how the value of the option erodes over time (time decay).</li>
-            <li><strong>Vega:</strong> Reflects how much the option price changes with a change in implied volatility.</li>
-            <li><strong>Rho:</strong> Shows sensitivity to changes in interest rates.</li>
-          </ul>
-        </section>
-        <section>
-          <h2>Risk Management and Hedging with Vanilla Options</h2>
-          <p>
-            Traders often use <strong>hedging strategies</strong> to control risk exposure when trading vanilla options. A common method is <strong>delta hedging</strong>, which involves adjusting the position in the underlying asset to offset changes in the option’s delta. These strategies help reduce risk but require ongoing monitoring and rebalancing as market conditions change.
-          </p>
-        </section>
-        <section>
-          <h2>Common Use Cases and Real-World Applications</h2>
-          <p>
-            Vanilla options are used across financial markets for purposes like:
-          </p>
-          <ul>
-            <li>Speculating on market direction (bullish or bearish strategies).</li>
-            <li>Protecting portfolios against downside risk (e.g., <strong>protective puts</strong>).</li>
-            <li>Generating income through <strong>covered call writing</strong>.</li>
-          </ul>
-          <p>
-            Their simplicity and versatility make vanilla options ideal for both beginner and professional traders.
-          </p>
-        </section>
-        <section>
-          <h2>Summary</h2>
-          <p>
-            Vanilla options are the backbone of options trading. Understanding their pricing using the <strong>Black-Scholes model</strong>, and how they respond to changes in market conditions via the Greeks, is crucial for any trader or investor looking to use options effectively. They also serve as the basis for more advanced derivatives and option strategies.
-          </p>
-        </section>
+          <section>
+            <h2>Introduction</h2>
+            <p>
+              Credit Default Swaps (CDS) are financial derivatives that allow investors to transfer credit risk from one party to another. In a CDS contract, the protection buyer makes periodic premium payments to the protection seller in exchange for compensation if a predefined credit event occurs, such as a default, restructuring, or bankruptcy of the reference entity.
+            </p>
+          </section>
+          <section>
+            <h2>Definitions and Characteristics</h2>
+            <p>
+              The key elements and features of a CDS include:
+            </p>
+            <ul>
+              <li><strong>Reference Entity:</strong> The borrower or issuer whose credit risk is being transferred.</li>
+              <li><strong>Protection Buyer:</strong> Pays a periodic premium (spread) to secure protection against credit events.</li>
+              <li><strong>Protection Seller:</strong> Commits to compensate the buyer if a credit event occurs.</li>
+              <li><strong>Credit Event:</strong> Defined triggers such as default, missed payments, or restructuring that activate the contract.</li>
+              <li><strong>Notional Amount:</strong> The principal amount on which premiums and compensation calculations are based.</li>
+              <li><strong>Maturity:</strong> The duration over which the CDS contract is active.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Pricing and Valuation</h2>
+            <p>
+              Pricing a CDS involves estimating the probability of a credit event (default) and the expected recovery rate if such an event occurs. Under a risk‑neutral framework, the premium (or spread) reflects these probabilities and is determined such that the present value of the premium payments equals the expected loss from the credit event. More advanced models use hazard rates, survival probabilities, and discount factors to derive the fair CDS spread.
+            </p>
+            <p style="text-align: center; font-style: italic;">
+              Basic CDS Pricing (Simplified):<br>
+              Spread ≈ (Default Probability × (1 - Recovery Rate)) / [1 - (Default Probability × Recovery Rate)]
+            </p>
+            <p>
+              In practice, calibration to market data is essential to incorporate current credit spreads, recovery assumptions, and liquidity conditions.
+            </p>
+          </section>
+          <section>
+            <h2>The Greeks and Sensitivity Analysis</h2>
+            <p>
+              Unlike options, CDS contracts do not have traditional Greeks. However, sensitivity measures are still crucial:
+            </p>
+            <ul>
+              <li><strong>Sensitivity to Credit Spreads:</strong> How the value of the CDS changes with widening or tightening of the credit spread.</li>
+              <li><strong>DV01 (Dollar Value of a 1 bp Move):</strong> Reflects the change in the CDS’s value for a one‑basis‑point shift in the credit spread.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Hedging Strategies and Risks</h2>
+            <p>
+              CDS contracts are used both for hedging and for speculative purposes. They enable investors holding fixed-income assets to hedge against potential credit losses, while traders may take positions to profit from changes in perceived credit risk. However, CDS contracts involve risks such as counterparty risk, basis risk (mismatch between the CDS and the underlying exposure), and liquidity risk.
+            </p>
+          </section>
+          <section>
+            <h2>Practical Examples and Applications</h2>
+            <p>
+              For instance, an investor holding a portfolio of corporate bonds might purchase CDS protection to hedge against the default risk of one or more issuers. Alternatively, a trader might sell CDS protection to capture premium income, betting that the credit quality of the reference entities will improve.
+            </p>
+          </section>
+          <section>
+            <h2>Conclusions</h2>
+            <p>
+              Credit Default Swaps are indispensable instruments for transferring and managing credit risk. Their valuation relies on assessing default probabilities and recovery rates within a risk‑neutral framework, while their use in hedging and speculation highlights the importance of managing counterparty and liquidity risks.
+            </p>
+          </section>
         `
       }
     };

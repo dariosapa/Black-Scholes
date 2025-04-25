@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management</title>
-  <link rel="canonical" href="https://calculatorblackscholes.com/theory.html" />
-  <meta name="description" content="Learn everything about vanilla options: how they work, how they are priced using the Black-Scholes model, and how to manage risk using the Greeks.">
-  <meta name="keywords" content="vanilla options, option pricing, Black-Scholes model, call option, put option, option Greeks, delta, gamma, theta, vega, rho, options trading, financial derivatives">
+  <title>Options with Discrete Dividends – Pricing Adjustments and Risk Sensitivity</title>
+    <meta name="description" content="Learn how discrete dividend payments impact option pricing. Understand how to adjust the Black-Scholes model, evaluate risk with Greeks, and apply effective hedging strategies.">
+    <meta name="keywords" content="options with dividends, discrete dividends, dividend-adjusted options, option pricing model, Black-Scholes adjustment, dividend impact, option Greeks, risk management">
+    <link rel="canonical" href="https://calculatorblackscholes.com/discrete-div.html" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
 
@@ -435,87 +435,81 @@
   <script>
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
-      "theory": {
-        title: "Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management",
+      "discrete-div": {
+        title: "Options with Discrete Dividends – Pricing Adjustments and Risk Sensitivity",
         content: `
         <section>
-          <h2>What Are Vanilla Options?</h2>
-          <p>
-            Vanilla options are the most common and standard types of financial options. They provide the buyer with the right, but not the obligation, to <strong>buy (call option)</strong> or <strong>sell (put option)</strong> an underlying asset at a specified strike price before or at a specific expiration date. These options are widely used in trading, hedging, and portfolio management strategies.
-          </p>
+        <h2>What Are Options with Discrete Dividends?</h2>
+        <p>
+            Options on dividend-paying stocks require specific pricing adjustments because dividend payouts reduce the underlying asset’s value. <strong>Options with discrete dividends</strong> explicitly factor in scheduled cash dividends before expiration, affecting both pricing and risk metrics.
+        </p>
         </section>
         <section>
-          <h2>Vanilla Option Types and Features</h2>
-          <p>
-            Vanilla options come in two main types: <strong>European-style options</strong>, which can only be exercised at expiration, and <strong>American-style options</strong>, which can be exercised any time before expiration. The key components of a vanilla option contract include:
-          </p>
-          <ul>
-            <li><strong>Strike Price:</strong> The fixed price at which the underlying asset can be bought or sold.</li>
-            <li><strong>Expiration Date:</strong> The final date on which the option can be exercised.</li>
-            <li><strong>Option Premium:</strong> The cost paid by the buyer to acquire the option.</li>
-          </ul>
+        <h2>Key Features of Options on Dividend-Paying Stocks</h2>
+        <p>
+            These contracts operate similarly to vanilla options but are modified to include the impact of known dividend payments. Main characteristics include:
+        </p>
+        <ul>
+            <li><strong>Discrete Dividends:</strong> Fixed, scheduled cash payments distributed before option maturity.</li>
+            <li><strong>Ex-Dividend Date Impact:</strong> The underlying stock price typically drops by the dividend amount on the ex-date.</li>
+            <li><strong>Adjusted Pricing:</strong> The present value of expected dividends is subtracted from the stock price for accurate valuation.</li>
+        </ul>
         </section>
         <section>
-          <h2>How Vanilla Options Are Priced</h2>
-          <p>
-            The pricing of vanilla options—especially European-style—is commonly done using the <strong>Black-Scholes option pricing model</strong>. This mathematical model uses risk-neutral valuation principles and assumes that the price of the underlying asset follows a lognormal distribution. The total value of an option includes:
-          </p>
-          <ul>
-            <li><strong>Intrinsic Value:</strong> The difference between the asset’s current price and the strike price.</li>
-            <li><strong>Time Value:</strong> The premium associated with the time remaining until expiration.</li>
-          </ul>
-          <p style="text-align: center; font-style: italic;">
+        <h2>How to Price Options with Discrete Dividends</h2>
+        <p>
+            To value these options, the Black-Scholes model is adapted by adjusting the underlying price. The adjusted stock price (<strong>S<sub>adj</sub></strong>) is calculated as:
+        </p>
+        <p style="text-align: center; font-style: italic;">
+            Adjusted Stock Price: S<sub>adj</sub> = S - PV(Dividends)
+        </p>
+        <p>
+            The modified Black-Scholes formulas are then applied using <strong>S<sub>adj</sub></strong>:
+        </p>
+        <p style="text-align: center; font-style: italic;">
             <strong>Call Option:</strong><br>
-            C = S · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
-            d<sub>1</sub> = [ln(S/K) + (r + σ²/2)T] / (σ√T)<br>
+            C = S<sub>adj</sub> · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
+            d<sub>1</sub> = [ln(S<sub>adj</sub>/K) + (r + σ²/2)T] / (σ√T)<br>
             d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
+        </p>
+        <p style="text-align: center; font-style: italic;">
             <strong>Put Option:</strong><br>
-            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · N(-d<sub>1</sub>)
-          </p>
-          <p>
-            When pricing options on dividend-paying stocks or American-style vanilla options, adjustments to the Black-Scholes formula are required. The model’s accuracy depends on parameters such as volatility, interest rates, and the behavior of the underlying asset.
-          </p>
+            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S<sub>adj</sub> · N(-d<sub>1</sub>)
+        </p>
+        <p>
+            This adjustment ensures that the option valuation reflects the expected drop in the asset’s price, improving accuracy when dividends are anticipated.
+        </p>
         </section>
         <section>
-          <h2>Understanding the Greeks in Vanilla Options</h2>
-          <p>
-            The <strong>Greeks</strong> are essential risk management tools used to analyze how option prices react to changes in market conditions. Each Greek represents a different sensitivity:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Measures how much the option price changes in response to a change in the underlying asset's price.</li>
-            <li><strong>Gamma:</strong> Measures the rate of change of Delta; shows how Delta evolves as the asset price changes.</li>
-            <li><strong>Theta:</strong> Indicates how the value of the option erodes over time (time decay).</li>
-            <li><strong>Vega:</strong> Reflects how much the option price changes with a change in implied volatility.</li>
-            <li><strong>Rho:</strong> Shows sensitivity to changes in interest rates.</li>
-          </ul>
+        <h2>Impact on Greeks and Risk Sensitivities</h2>
+        <p>
+            The <strong>Greeks</strong> (Delta, Gamma, Theta, Vega, Rho) remain fundamental in assessing option sensitivity but are affected by the dividend-adjusted stock price:
+        </p>
+        <ul>
+            <li><strong>Delta:</strong> Measures sensitivity to changes in <strong>S<sub>adj</sub></strong>.</li>
+            <li><strong>Gamma:</strong> Tracks the rate of change of Delta, influenced by dividend-induced price shifts.</li>
+            <li><strong>Theta:</strong> Reflects time decay; may accelerate near ex-dividend dates.</li>
+            <li><strong>Vega:</strong> Assesses volatility exposure with dividend effects accounted for.</li>
+            <li><strong>Rho:</strong> Sensitivity to interest rates remains, but applied to the adjusted underlying value.</li>
+        </ul>
         </section>
         <section>
-          <h2>Risk Management and Hedging with Vanilla Options</h2>
-          <p>
-            Traders often use <strong>hedging strategies</strong> to control risk exposure when trading vanilla options. A common method is <strong>delta hedging</strong>, which involves adjusting the position in the underlying asset to offset changes in the option’s delta. These strategies help reduce risk but require ongoing monitoring and rebalancing as market conditions change.
-          </p>
+        <h2>Hedging Dividend-Paying Options</h2>
+        <p>
+            Hedging strategies must be adapted for dividend events. Traders often rebalance positions before the ex-dividend date to maintain delta neutrality. Failure to adjust may result in exposure to price gaps caused by dividend payouts.
+        </p>
         </section>
         <section>
-          <h2>Common Use Cases and Real-World Applications</h2>
-          <p>
-            Vanilla options are used across financial markets for purposes like:
-          </p>
-          <ul>
-            <li>Speculating on market direction (bullish or bearish strategies).</li>
-            <li>Protecting portfolios against downside risk (e.g., <strong>protective puts</strong>).</li>
-            <li>Generating income through <strong>covered call writing</strong>.</li>
-          </ul>
-          <p>
-            Their simplicity and versatility make vanilla options ideal for both beginner and professional traders.
-          </p>
+        <h2>Practical Examples and Use Cases</h2>
+        <p>
+            For instance, a trader holding call options on a stock expected to pay dividends may observe a reduced option premium. By applying dividend-adjusted models, they can better evaluate fair value and optimize their hedging strategy.
+        </p>
         </section>
         <section>
-          <h2>Summary</h2>
-          <p>
-            Vanilla options are the backbone of options trading. Understanding their pricing using the <strong>Black-Scholes model</strong>, and how they respond to changes in market conditions via the Greeks, is crucial for any trader or investor looking to use options effectively. They also serve as the basis for more advanced derivatives and option strategies.
-          </p>
+        <h2>Conclusion</h2>
+        <p>
+            Options with discrete dividends require adjustments to traditional models. By incorporating the present value of scheduled dividends into pricing and risk analysis, traders and investors can achieve more accurate valuations and better manage dividend-related risks.
+        </p>
         </section>
         `
       }

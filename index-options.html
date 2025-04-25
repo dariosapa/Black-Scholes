@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management</title>
-  <link rel="canonical" href="https://calculatorblackscholes.com/theory.html" />
-  <meta name="description" content="Learn everything about vanilla options: how they work, how they are priced using the Black-Scholes model, and how to manage risk using the Greeks.">
-  <meta name="keywords" content="vanilla options, option pricing, Black-Scholes model, call option, put option, option Greeks, delta, gamma, theta, vega, rho, options trading, financial derivatives">
+  <title>Index Options – Theory, Pricing Models, Greeks and Hedging Strategies</title>
+  <meta name="description" content="Learn how index options work, including Black-Scholes pricing with dividend yield, key Greeks (delta, gamma, theta), and hedging strategies for broad market exposure.">
+  <meta name="keywords" content="index options, European-style options, index options pricing, Black-Scholes with dividend yield, S&P 500 options, hedging strategies, Greeks for index options, options on indices, cash-settled options">
+  <link rel="canonical" href="https://calculatorblackscholes.com/index-options.html" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
 
@@ -435,87 +435,91 @@
   <script>
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
-      "theory": {
-        title: "Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management",
+      "index-options": {
+        title: "Index Options – Theory, Pricing Models, Greeks and Hedging Strategies",
         content: `
         <section>
-          <h2>What Are Vanilla Options?</h2>
-          <p>
-            Vanilla options are the most common and standard types of financial options. They provide the buyer with the right, but not the obligation, to <strong>buy (call option)</strong> or <strong>sell (put option)</strong> an underlying asset at a specified strike price before or at a specific expiration date. These options are widely used in trading, hedging, and portfolio management strategies.
-          </p>
+        <h2>What Are Index Options?</h2>
+        <p>
+            Index options are financial derivatives that derive their value from a stock market index, such as the S&P 500, NASDAQ 100, or FTSE 100. These options allow investors and traders to gain exposure to the performance of a broad market segment, without having to trade individual stocks. Most index options are <strong>European-style</strong> and are <strong>cash-settled</strong> at expiration.
+        </p>
         </section>
+
         <section>
-          <h2>Vanilla Option Types and Features</h2>
-          <p>
-            Vanilla options come in two main types: <strong>European-style options</strong>, which can only be exercised at expiration, and <strong>American-style options</strong>, which can be exercised any time before expiration. The key components of a vanilla option contract include:
-          </p>
-          <ul>
-            <li><strong>Strike Price:</strong> The fixed price at which the underlying asset can be bought or sold.</li>
-            <li><strong>Expiration Date:</strong> The final date on which the option can be exercised.</li>
-            <li><strong>Option Premium:</strong> The cost paid by the buyer to acquire the option.</li>
-          </ul>
+        <h2>Key Features and Characteristics of Index Options</h2>
+        <p>
+            An index option provides the right, but not the obligation, to buy (call option) or sell (put option) a market index at a predetermined strike price on the option’s expiration date. Important characteristics include:
+        </p>
+        <ul>
+            <li><strong>Underlying Asset:</strong> A broad-based market index composed of multiple stocks (e.g., S&P 500, Euro Stoxx 50).</li>
+            <li><strong>Cash Settlement:</strong> Payout is made in cash based on the difference between the strike price and the index value at expiration—there is no delivery of individual stocks.</li>
+            <li><strong>European Style:</strong> These options can only be exercised at expiration, simplifying pricing and reducing early exercise concerns.</li>
+            <li><strong>Dividend Yield:</strong> A continuous dividend yield is used in pricing models to reflect aggregate dividends from the index components.</li>
+        </ul>
         </section>
+
         <section>
-          <h2>How Vanilla Options Are Priced</h2>
-          <p>
-            The pricing of vanilla options—especially European-style—is commonly done using the <strong>Black-Scholes option pricing model</strong>. This mathematical model uses risk-neutral valuation principles and assumes that the price of the underlying asset follows a lognormal distribution. The total value of an option includes:
-          </p>
-          <ul>
-            <li><strong>Intrinsic Value:</strong> The difference between the asset’s current price and the strike price.</li>
-            <li><strong>Time Value:</strong> The premium associated with the time remaining until expiration.</li>
-          </ul>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Call Option:</strong><br>
-            C = S · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
-            d<sub>1</sub> = [ln(S/K) + (r + σ²/2)T] / (σ√T)<br>
+        <h2>How Index Options Are Priced</h2>
+        <p>
+            The pricing of European index options is typically based on a modified <strong>Black-Scholes model</strong> that accounts for continuous dividend yields. This model assumes that the index follows a lognormal distribution and incorporates both the risk-free rate and the dividend yield.
+        </p>
+        <p style="text-align: center; font-style: italic;">
+            <strong>Call Option Pricing Formula:</strong><br>
+            C = S · e<sup>-qT</sup> · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
+            d<sub>1</sub> = [ln(S/K) + (r - q + σ²/2)T] / (σ√T)<br>
             d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Put Option:</strong><br>
-            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · N(-d<sub>1</sub>)
-          </p>
-          <p>
-            When pricing options on dividend-paying stocks or American-style vanilla options, adjustments to the Black-Scholes formula are required. The model’s accuracy depends on parameters such as volatility, interest rates, and the behavior of the underlying asset.
-          </p>
+        </p>
+        <p style="text-align: center; font-style: italic;">
+            <strong>Put Option Pricing Formula:</strong><br>
+            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · e<sup>-qT</sup> · N(-d<sub>1</sub>)
+        </p>
+        <p>
+            Where: <br>
+            S = Index level, K = Strike price, r = Risk-free interest rate, q = Dividend yield, σ = Volatility, T = Time to maturity.
+        </p>
         </section>
+
         <section>
-          <h2>Understanding the Greeks in Vanilla Options</h2>
-          <p>
-            The <strong>Greeks</strong> are essential risk management tools used to analyze how option prices react to changes in market conditions. Each Greek represents a different sensitivity:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Measures how much the option price changes in response to a change in the underlying asset's price.</li>
-            <li><strong>Gamma:</strong> Measures the rate of change of Delta; shows how Delta evolves as the asset price changes.</li>
-            <li><strong>Theta:</strong> Indicates how the value of the option erodes over time (time decay).</li>
-            <li><strong>Vega:</strong> Reflects how much the option price changes with a change in implied volatility.</li>
-            <li><strong>Rho:</strong> Shows sensitivity to changes in interest rates.</li>
-          </ul>
+        <h2>The Greeks for Index Options</h2>
+        <p>
+            The <strong>Greeks</strong> help traders understand how index options respond to changes in market factors. Key sensitivities include:
+        </p>
+        <ul>
+            <li><strong>Delta:</strong> Measures the option price's sensitivity to changes in the index level.</li>
+            <li><strong>Gamma:</strong> Captures how Delta changes with movements in the index.</li>
+            <li><strong>Theta:</strong> Quantifies the time decay of the option’s value as it approaches expiration.</li>
+            <li><strong>Vega:</strong> Measures the effect of changes in implied volatility on the option’s value.</li>
+            <li><strong>Rho:</strong> Reflects the impact of changes in the risk-free interest rate.</li>
+        </ul>
         </section>
+
         <section>
-          <h2>Risk Management and Hedging with Vanilla Options</h2>
-          <p>
-            Traders often use <strong>hedging strategies</strong> to control risk exposure when trading vanilla options. A common method is <strong>delta hedging</strong>, which involves adjusting the position in the underlying asset to offset changes in the option’s delta. These strategies help reduce risk but require ongoing monitoring and rebalancing as market conditions change.
-          </p>
+        <h2>Hedging and Risk Management with Index Options</h2>
+        <p>
+            Index options are popular tools for managing market-wide risk. Investors use them to:
+        </p>
+        <ul>
+            <li>Hedge against potential downturns in broad equity markets by purchasing index puts.</li>
+            <li>Enhance yield via income strategies such as covered call writing.</li>
+            <li>Balance portfolio beta by adjusting exposure to systemic risk factors.</li>
+        </ul>
+        <p>
+            However, traders must also account for volatility changes, liquidity conditions, and macroeconomic events that affect entire markets.
+        </p>
         </section>
+
         <section>
-          <h2>Common Use Cases and Real-World Applications</h2>
-          <p>
-            Vanilla options are used across financial markets for purposes like:
-          </p>
-          <ul>
-            <li>Speculating on market direction (bullish or bearish strategies).</li>
-            <li>Protecting portfolios against downside risk (e.g., <strong>protective puts</strong>).</li>
-            <li>Generating income through <strong>covered call writing</strong>.</li>
-          </ul>
-          <p>
-            Their simplicity and versatility make vanilla options ideal for both beginner and professional traders.
-          </p>
+        <h2>Real-World Applications and Examples</h2>
+        <p>
+            For instance, an asset manager may buy <strong>S&P 500 put options</strong> to protect a diversified equity portfolio against sudden market drops. Meanwhile, a hedge fund might purchase index calls to speculate on bullish market trends using leverage.
+        </p>
         </section>
+
         <section>
-          <h2>Summary</h2>
-          <p>
-            Vanilla options are the backbone of options trading. Understanding their pricing using the <strong>Black-Scholes model</strong>, and how they respond to changes in market conditions via the Greeks, is crucial for any trader or investor looking to use options effectively. They also serve as the basis for more advanced derivatives and option strategies.
-          </p>
+        <h2>Conclusion</h2>
+        <p>
+            Index options provide efficient exposure to broad market movements and are essential instruments for both speculative and hedging strategies. Their cash-settled, European-style structure simplifies exercise procedures, while pricing models incorporate dividend yield adjustments and market sensitivities via the Greeks.
+        </p>
         </section>
         `
       }

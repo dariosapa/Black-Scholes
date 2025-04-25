@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management</title>
-  <link rel="canonical" href="https://calculatorblackscholes.com/theory.html" />
-  <meta name="description" content="Learn everything about vanilla options: how they work, how they are priced using the Black-Scholes model, and how to manage risk using the Greeks.">
-  <meta name="keywords" content="vanilla options, option pricing, Black-Scholes model, call option, put option, option Greeks, delta, gamma, theta, vega, rho, options trading, financial derivatives">
+  <title>Swaptions – Pricing, Black’s Model, Hedging Strategies & Risk Management</title>
+  <meta name="description" content="Explore swaptions: learn how payer and receiver swaptions work, how they're priced using Black’s model, and how they help manage interest rate risk.">
+  <meta name="keywords" content="swaptions, payer swaption, receiver swaption, swaption pricing, Black’s model, interest rate derivatives, forward swap rate, swaption Greeks, swaption hedging, interest rate options, annuity factor, swap volatility">
+  <link rel="canonical" href="https://calculatorblackscholes.com/swaption.html" />
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
 
@@ -435,87 +436,80 @@
   <script>
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
-      "theory": {
-        title: "Vanilla Options – Complete Guide to Pricing, Greeks, and Risk Management",
+      "swaption": {
+        title: "Swaptions – Definition, Pricing, Types & Risk Management",
         content: `
         <section>
-          <h2>What Are Vanilla Options?</h2>
-          <p>
-            Vanilla options are the most common and standard types of financial options. They provide the buyer with the right, but not the obligation, to <strong>buy (call option)</strong> or <strong>sell (put option)</strong> an underlying asset at a specified strike price before or at a specific expiration date. These options are widely used in trading, hedging, and portfolio management strategies.
-          </p>
+            <h2>What Is a Swaption?</h2>
+            <p>
+            A swaption, or swap option, is a financial derivative that grants the holder the right—but not the obligation—to enter into an interest rate swap agreement at a pre-specified fixed rate on a future date. Swaptions are widely used for hedging interest rate exposure and speculating on future rate movements.
+            </p>
         </section>
         <section>
-          <h2>Vanilla Option Types and Features</h2>
-          <p>
-            Vanilla options come in two main types: <strong>European-style options</strong>, which can only be exercised at expiration, and <strong>American-style options</strong>, which can be exercised any time before expiration. The key components of a vanilla option contract include:
-          </p>
-          <ul>
-            <li><strong>Strike Price:</strong> The fixed price at which the underlying asset can be bought or sold.</li>
-            <li><strong>Expiration Date:</strong> The final date on which the option can be exercised.</li>
-            <li><strong>Option Premium:</strong> The cost paid by the buyer to acquire the option.</li>
-          </ul>
+            <h2>Types and Key Characteristics</h2>
+            <p>
+            Swaptions are typically categorized based on the direction of the underlying swap and the style of exercise:
+            </p>
+            <ul>
+            <li><strong>Payer Swaption:</strong> Gives the right to pay fixed and receive floating. Used to hedge against rising rates.</li>
+            <li><strong>Receiver Swaption:</strong> Gives the right to receive fixed and pay floating. Useful when expecting falling rates.</li>
+            <li><strong>European Style:</strong> Exercise allowed only at expiration (most common style).</li>
+            <li><strong>American Style:</strong> Allows early exercise at any time before expiry (less common).</li>
+            <li><strong>Underlying Swap:</strong> Defined by its notional amount, strike rate, and tenor (swap duration).</li>
+            </ul>
         </section>
         <section>
-          <h2>How Vanilla Options Are Priced</h2>
-          <p>
-            The pricing of vanilla options—especially European-style—is commonly done using the <strong>Black-Scholes option pricing model</strong>. This mathematical model uses risk-neutral valuation principles and assumes that the price of the underlying asset follows a lognormal distribution. The total value of an option includes:
-          </p>
-          <ul>
-            <li><strong>Intrinsic Value:</strong> The difference between the asset’s current price and the strike price.</li>
-            <li><strong>Time Value:</strong> The premium associated with the time remaining until expiration.</li>
-          </ul>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Call Option:</strong><br>
-            C = S · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
-            d<sub>1</sub> = [ln(S/K) + (r + σ²/2)T] / (σ√T)<br>
-            d<sub>2</sub> = d<sub>1</sub> - σ√T
-          </p>
-          <p style="text-align: center; font-style: italic;">
-            <strong>Put Option:</strong><br>
-            P = K · e<sup>-rT</sup> · N(-d<sub>2</sub>) - S · N(-d<sub>1</sub>)
-          </p>
-          <p>
-            When pricing options on dividend-paying stocks or American-style vanilla options, adjustments to the Black-Scholes formula are required. The model’s accuracy depends on parameters such as volatility, interest rates, and the behavior of the underlying asset.
-          </p>
+            <h2>How Swaptions Are Priced – Black’s Model</h2>
+            <p>
+            Swaptions are commonly valued using Black’s model, adapted from Black-Scholes. The model assumes a lognormal distribution for the forward swap rate. Key inputs include the forward swap rate (F), strike rate (K), volatility (σ), time to expiry (T), and the annuity factor (A):
+            </p>
+            <p style="text-align: center; font-style: italic;">
+            Swaption Value = A · [F · N(d<sub>1</sub>) − K · N(d<sub>2</sub>)]<br>
+            d<sub>1</sub> = [ln(F/K) + 0.5 · σ²T] / (σ√T)<br>
+            d<sub>2</sub> = d<sub>1</sub> − σ√T
+            </p>
+            <p>
+            The annuity factor A reflects the present value of the fixed leg cash flows. Accurate volatility estimation and rate curve construction are essential for precise swaption pricing.
+            </p>
         </section>
         <section>
-          <h2>Understanding the Greeks in Vanilla Options</h2>
-          <p>
-            The <strong>Greeks</strong> are essential risk management tools used to analyze how option prices react to changes in market conditions. Each Greek represents a different sensitivity:
-          </p>
-          <ul>
-            <li><strong>Delta:</strong> Measures how much the option price changes in response to a change in the underlying asset's price.</li>
-            <li><strong>Gamma:</strong> Measures the rate of change of Delta; shows how Delta evolves as the asset price changes.</li>
-            <li><strong>Theta:</strong> Indicates how the value of the option erodes over time (time decay).</li>
-            <li><strong>Vega:</strong> Reflects how much the option price changes with a change in implied volatility.</li>
-            <li><strong>Rho:</strong> Shows sensitivity to changes in interest rates.</li>
-          </ul>
+            <h2>Swaption Greeks and Risk Sensitivities</h2>
+            <p>
+            Like vanilla options, swaptions exhibit sensitivities known as Greeks:
+            </p>
+            <ul>
+            <li><strong>Delta:</strong> Measures sensitivity to changes in the forward swap rate.</li>
+            <li><strong>Vega:</strong> Reflects sensitivity to volatility shifts in the swap market.</li>
+            <li><strong>Theta:</strong> Time decay as expiration approaches.</li>
+            <li><strong>Rho:</strong> Sensitivity to shifts in the discount (risk-free) interest rate.</li>
+            </ul>
         </section>
         <section>
-          <h2>Risk Management and Hedging with Vanilla Options</h2>
-          <p>
-            Traders often use <strong>hedging strategies</strong> to control risk exposure when trading vanilla options. A common method is <strong>delta hedging</strong>, which involves adjusting the position in the underlying asset to offset changes in the option’s delta. These strategies help reduce risk but require ongoing monitoring and rebalancing as market conditions change.
-          </p>
+            <h2>Risk Management and Hedging with Swaptions</h2>
+            <p>
+            Swaptions are key tools in interest rate risk management. Hedging strategies involve:
+            </p>
+            <ul>
+            <li><strong>Dynamic Delta Hedging:</strong> Adjusting positions as interest rates move.</li>
+            <li><strong>Model Risk Mitigation:</strong> Ensuring appropriate model calibration for pricing accuracy.</li>
+            <li><strong>Liquidity Considerations:</strong> OTC nature of swaptions can limit liquidity compared to standardized instruments.</li>
+            </ul>
         </section>
         <section>
-          <h2>Common Use Cases and Real-World Applications</h2>
-          <p>
-            Vanilla options are used across financial markets for purposes like:
-          </p>
-          <ul>
-            <li>Speculating on market direction (bullish or bearish strategies).</li>
-            <li>Protecting portfolios against downside risk (e.g., <strong>protective puts</strong>).</li>
-            <li>Generating income through <strong>covered call writing</strong>.</li>
-          </ul>
-          <p>
-            Their simplicity and versatility make vanilla options ideal for both beginner and professional traders.
-          </p>
+            <h2>Practical Use Cases</h2>
+            <p>
+            Examples include:
+            </p>
+            <ul>
+            <li>A corporation locking in future fixed-rate funding by purchasing a payer swaption.</li>
+            <li>An asset manager expecting falling rates may buy a receiver swaption to benefit from increased swap value.</li>
+            </ul>
         </section>
         <section>
-          <h2>Summary</h2>
-          <p>
-            Vanilla options are the backbone of options trading. Understanding their pricing using the <strong>Black-Scholes model</strong>, and how they respond to changes in market conditions via the Greeks, is crucial for any trader or investor looking to use options effectively. They also serve as the basis for more advanced derivatives and option strategies.
-          </p>
+            <h2>Conclusion</h2>
+            <p>
+            Swaptions provide flexible, powerful tools for managing interest rate exposure. Their pricing through Black’s model and strategic use in hedging or speculation makes them indispensable instruments in the interest rate derivatives market.
+            </p>
         </section>
         `
       }
