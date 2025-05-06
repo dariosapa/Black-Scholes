@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ================================
+       COOKIE BANNER & MODAL STYLES
+       ================================ */
+       :root {
+      --primary: #01796F;
+      --background: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+      --card-radius: 8px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .cookie-banner, .cookie-modal { position: fixed; left: 0; right: 0; z-index: 1000; }
+    .cookie-banner {
+      bottom: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+    }
+    .cookie-banner p { flex: 1 1 60%; margin-right: 1rem; }
+    .cookie-banner button {
+      margin: 0.25rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px;
+      cursor: pointer; font-weight: 600;
+    }
+    #accept-all { background: var(--primary); color: #fff; }
+    #decline-all { background: #ddd; }
+    #cookie-settings { background: transparent; color: var(--primary); }
+    .cookie-modal {
+      top: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+    }
+    .cookie-modal-content {
+      background: var(--card-bg);
+      max-width: 400px;
+      margin: 5% auto;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      position: relative;
+    }
+    .cookie-modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+    .cookie-modal-content label { display: block; margin-bottom: 0.75rem; }
+    .cookie-modal-content input[type="checkbox"] { margin-right: 0.5rem; }
+    #save-settings, #close-modal {
+      margin-top: 1rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px; cursor: pointer;
+    }
+    #save-settings { background: var(--primary); color: #fff; }
+    #close-modal { background: #ddd; }
+    :root {
+      --primary: #01796F;
+      --secondary: #01796F;
+      --accent: #01796F;
+      --background: #F8FAFC;
+      --text: #000;
+      --card: #fff;
+    }
+    body {
+      font-family:'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      transition: all 0.3s;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background: #fff;
+      color: var(--text);
+      padding: 2rem 0;
+      text-align: center;
+      border-bottom: 1px solid #eaeaea;
+    }
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      color: white;
+      padding: 5px;
+    }
+    .calculator-selector {
+      margin-top: 20px;
+      position: relative;
+      top: -10px;
+      left: -10px;
+    }
+    #derivativeType {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--secondary);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 16px;
+      appearance: none;
+      cursor: pointer;
+    }
+    optgroup {
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    option {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .calculator-selector::after {
+      content: '▼';
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--secondary);
+    }
+    .calculator {
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-top: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      display: none;
+    }
+    .calculator.active {
+      display: block;
+    }
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      max-width: 330px;
+      padding: 12px;
+      border: 2px solid #E2E8F0;
+      border-radius: 8px;
+      font-size: 16px;
+      background: var(--background);
+      color: var(--text);
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .result-card {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: var(--background);
+    }
+    .result-card h3 {
+      margin-bottom: 0.5rem;
+      color: #000;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    body.dark-mode .result-card h3 {
+      color: #fff;
+    }
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      color: var(--primary);
+    }
+    button.calculate-btn {
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+    .calculations {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--background);
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+    }
+    .calculations h3 {
+      margin-bottom: 1rem;
+      color: var(--secondary);
+    }
+    .calculations p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    .calculations sup {
+      font-size: 0.8em;
+      vertical-align: super;
+    }
+    .greeks-columns {
+      display: flex;
+      gap: 2rem;
+    }
+    .greeks-column {
+      flex: 1;
+    }
+    .greeks-column .result-card {
+      margin-bottom: 0;
+    }
+    body.dark-mode {
+      --background: #fff;
+      --text: #000;
+      --card: #fff;
+      --secondary: #01796F;
+    }
+    body.dark-mode .calculations,
+    body.dark-mode .result-card {
+      background: var(--card);
+    }
+
+    body.dark-mode .result-card h3 {
+      color: #fff;
+    }
+    body.dark-mode .dark-mode-toggle {
+      color: #F1F5F9;
+    }
+    .toggle-buttons-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .toggle-buttons-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .toggle-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 16px;
+      width: 100%;
+    }
+    .toggle-btn.active {
+      background: var(--accent);
+    }
+    /* Grafico Futures: altezza a 600px */
+    #futureGraph {
+      margin-top: 2rem;
+      height: 600px;
+      position: relative;
+      display: none;
+    }
+    /* Grafici Vanilla e Currency: wrapper con dimensione fissa */
+    .graph-container {
+      margin-top: 2rem;
+      display: none;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .chart-wrapper {
+      height: 400px;
+      background: transparent !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+    }
+    body.dark-mode .chart-wrapper {
+      background: var(--card);
+    }
+    .dividend-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 1rem;
+      align-items: auto;
+      background: var(--background);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .dividend-row .input-group {
+      margin-bottom: 0;
+    }
+
+    .dividend-row label {
+      color: var(--secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .dividend-row input {
+      width: 100%;
+      padding: 4px;
+      border: 2px solid #E2E8F0;
+      border-radius: 8px;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    .dividend-row button {
+      justify-self: end; 
+      align-self: end;
+      margin: 0.25rem 0 0 0.5rem;
+    }
+ 
+    .remove-dividend {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .early-exercise-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--background);
+    border-radius: 8px;
+    }
+
+    .calculation-step {
+        margin: 1rem 0;
+    }
+
+    .calculation-step ul {
+        margin: 0.5rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .optimal {
+        color: #10B981;
+        font-weight: 600;
+    }
+
+    .not-optimal {
+        color: #EF4444;
+        font-weight: 600;
+    }
+
+    .variable-rate-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 50px; /* Larghezza dedicata al pulsante */
+      gap: 1rem;
+      align-items: center; /* Allineamento verticale centrale */
+      padding: 0.5rem 1rem;
+    }
+
+    .remove-variable-rate {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-left: auto;
+      align-self: center; 
+      margin-top: 2px;
+      position: relative;
+      top: 2px;
+    }
+
+    .variable-rate-row .input-group {
+      margin-bottom: 0;
+    }
+
+    .variable-rate-row input {
+      padding: 6px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .variable-rate-row label {
+      color: var(--secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .remove-variable-rate {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: var(--background);
+    }
+    /* Nuovo CSS per la griglia delle greche */
+    .greeks-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .greeks-category {
+      background: var(--background);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .greeks-category h4 {
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .greeks-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .result-card h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    #straddleChart {
+      height: 400px;
+    }
+
+    .chart-title {
+        color: var(--secondary);
+        text-align: center;
+        margin: 0.5rem 0 1rem 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .chart-wrapper {
+        height: 300px;
+        background: var(--background);
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .charts-grid .chart-wrapper:nth-child(3),
+    .charts-grid .chart-wrapper:nth-child(4) {
+        margin-top: 40px;
+    }
+
+    #chooserChart {
+        background: rgba(255,255,255,0.9);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 15px;
+    }
+
+    #fsGraph {
+      height: 400px; /* oppure un'altezza che preferisci */
+    }
+
+    .navbar {
+      display: flex;
+      height: 47px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #F8FAFC;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .navbar-left,
+    .navbar-center,
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    /* Il brand ora punta a homepage.html */
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #000;
+      text-decoration: none;
+    }
+    
+    .navbar-left .brand:hover {
+      text-decoration: underline;
+    }
+
+    .navbar-center .calculator-selector,
+    .navbar-center .calculator-selector select,
+    
+    /* Nei link della navbar: Calculators e Theory */
+    .nav-link {
+      font-weight: 500;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    .nav-link:hover {
+      color: #01796F;
+    }
+
+    
+    /* Stili che assicurano che il blocco della tendina abbia le stesse dimensioni della search bar */
+    .calculator-selector {
+      display: inline-block;
+      width: 300px; /* imposta la larghezza come quella della search bar originale */
+    }
+    .calculator-selector select {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      appearance: none;
+      background: #fff;
+    }
+    .navbar-right .nav-link {
+      text-decoration: none;
+      margin-left: 20px;
+      color: #333;
+      font-size: 1rem;
+    }
+
+  
+
+    /* Imposta un layout mobile-first per il container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+    }
+
+    /* Esempio di grid responsiva */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    sub {
+      font-size: 0.8em;
+      vertical-align: sub;
+      line-height: 1;
+    }
+
+    .cookie-settings-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .footer-brand a {
+      color: inherit;         /* eredita il colore del .footer-brand */
+      text-decoration: none;  /* rimuove la sottolineatura */
+      font-weight: 700;       /* mantiene il peso del font */
+    }
+
+    .footer-brand a:hover {
+      color: var(--primary);  /* cambia colore on hover se vuoi */
+    }
+
+    @media (min-width: 600px) {
+      #binary-calculator .results {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+
+
+    @media (max-width: 600px) {
+      /* Contenitore principale: adattabile e con padding */
+      .container {
+        width: 90%;
+        max-width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      /* Griglia degli input: disposizione in una singola colonna */
+      .input-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .input-group,
+      .input-group label,
+      .input-group input,
+      .input-group select {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Bottoni e gruppi di bottoni: disposizione verticale */
+      .toggle-buttons-2,
+      .toggle-buttons-3 {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .toggle-btn,
+      button.calculate-btn {
+        font-size: 14px;
+        padding: 12px 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Impostazioni generali per le sezioni delle Greche (per altri calcolatori) */
+      .greeks-grid,
+      .greeks-columns {
+        display: block;
+        width: 100%;
+      }
+      .greeks-grid > * {
+        margin-bottom: 0.5rem;
+      }
+      .greeks-column h3,
+      .greeks-column p {
+        font-size: 14px;
+        margin: 0.25rem 0;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+
+      /* --- Specifiche per il Calcolatore delle Binary Options --- */
+      /* Forza la sezione delle greche in modalità verticale, ottenendo 4 card separate */
+      #binary-calculator .greeks-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100%;
+        gap: 1rem;
+      }
+      /* Ogni elemento figlio interno a .greeks-category diventa una card separata */
+      #binary-calculator .greeks-category {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin-bottom: 1rem;
+        border: none;
+      }
+      #binary-calculator .greeks-category > * {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        font-size: 14px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+      #binary-calculator .greeks-category > *:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Riduzione delle dimensioni delle card dei payoff (Cash Or Nothing, Asset Or Nothing) */
+      #binary-calculator .result-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        font-size: 14px;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+
+      /* Grafici delle Binary Options: griglia a colonna singola con altezza fissa */
+      #binary-calculator .charts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+      }
+      #binary-calculator .chart-wrapper {
+        width: 100%;
+        padding: 0.5rem;
+        height: 415px; /* Altezza fissa per evitare espansioni indesiderate */
+        overflow: hidden;
+        box-sizing: border-box;
+      }
+      #binary-calculator .chart-wrapper canvas {
+        width: 100% !important;
+        height: 350px !important;
+        display: block;
+      }
+
+      /* Altri grafici generici: altezza minima per evitare compressioni eccessive */
+      .chart-wrapper {
+        width: 100%;
+        height: auto;
+        padding: 0.5rem;
+        min-height: 300px;
+        box-sizing: border-box;
+      }
+      .chart-wrapper canvas {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 300px;
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      /* Regole per le tabelle: rendi le tabelle scrollabili se necessario */
+      table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      #cds-pd-table {
+        font-size: 14px;
+      }
+
+      /* Regole per i calcoli in generale (sezione "calcoli" e calcoli delle greche) */
+      .calculations, 
+      .calculations * {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+
+      .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+
+    /* Navbar responsiva */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap; /* Permette di andare a capo se necessario */
+      justify-content: space-between;
+      padding: 1rem;
+    }
+    /* Rimuovo eventuali interazioni indesiderate (tooltip/legenda) */
+    canvas { cursor: default; }
+    /* -------------------------- */
+    /*         FOOTER            */
+    /* -------------------------- */
+    .site-footer {
+      background-color: #fff;
+      border-top: 1px solid #eaeaea;
+      padding: 2rem;
+    }
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      max-width: 10000px;
+      margin: 0 auto;
+    }
+    .footer-left,
+    .footer-right {
+      flex: 1;
+    }
+    .footer-brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
+    .footer-text {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .footer-right ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-right a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .footer-right a:hover {
+      color: #01796F;
+    }
+  </style>
+  <!-- Plugin per disegnare in grassetto la linea orizzontale a y=0 -->
+  <script>
+    Chart.register({
+      id: 'zeroLinePlugin',
+      afterDraw: (chart, args, options) => {
+        const ctx = chart.ctx;
+        const yScale = chart.scales.y;
+        const yZero = yScale.getPixelForValue(0);
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(chart.chartArea.left, yZero);
+        ctx.lineTo(chart.chartArea.right, yZero);
+        ctx.lineWidth = options.lineWidth || 2;
+        ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#ffffff' : (options.color || 'black');
+        ctx.stroke();
+        ctx.restore();
+      }
+    });
+  </script>
+</head>
+  <body>
+  
+    <!-- COOKIE BANNER -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
+      <p>
+        We use cookies to remember your settings, analyze traffic, and provide personalized ads. 
+        Please select your preferences or read our
+        <a href="cookie-policy.html" class="cookie-policy-link" target="_blank" rel="noopener">Cookie Policy</a>.
+      </p>
+      <div>
+        <button id="accept-all">Accept All</button>
+        <button id="decline-all">Decline All</button>
+        <button id="cookie-settings">Settings</button>
+      </div>
+    </div>
+  
+    <!-- COOKIE SETTINGS MODAL -->
+    <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+      <div class="cookie-modal-content">
+        <h2 id="cookie-modal-title">Cookie Preferences</h2>
+        <form id="cookie-form">
+          <label><input type="checkbox" id="toggle-preferences"> Preferences Cookies</label>
+          <label><input type="checkbox" id="toggle-statistics"> Statistics Cookies</label>
+          <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
+          <button type="button" id="save-settings">Save Settings</button>
+        </form>
+        <button id="close-modal">Close</button>
+      </div>
+    </div>
+  
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <!-- Brand (sinistra) -->
+      <div class="navbar-left">
+        <a href="index.html" class="brand">Black &amp; Scholes Calculator</a>
+      </div>
+
+      <!-- Center: Derivative Selector -->
+      <div class="navbar-center">
+        <div class="calculator-selector">
+          <select id="derivativeType">
+            <option value="">Select a derivative...</option>
+            <option value="theory">Vanilla Options</option>
+            <option value="futures">Futures & Forwards</option>
+            <option value="futures-options">Options on Futures/Forwards</option>
+            <option value="discrete-div">Options with Discrete Dividends</option>
+            <option value="american">American Options</option>
+            <option value="index-options">Index Options</option>
+            <option value="currency">Currency Options</option>
+            <option value="swap">Interest Rate Swaps</option>
+            <option value="swaption">Swaptions</option>
+            <option value="cds">Credit Default Swaps</option>
+            <option value="gap-options">Gap Options</option>
+            <option value="binary">Binary Options</option>
+            <option value="chooser-options">Chooser Options</option>
+            <option value="straddle">Straddle Strategy</option>
+            <option value="forward-start-options">Forward Start Options</option>
+          </select>
+        </div>      
+      </div>
+
+      <!-- Nav links (destra) -->
+    <div class="navbar-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="theory.html" class="nav-link">Theory</a>
+    </div>
+  </nav>
+  
+  </header>
+  <main class="container">
+    <!-- Binary Option Calculator -->
+    <div id="binary-calculator" class="calculator active">
+        <h2>Binary Options Calculator</h2>
+        <div class="input-grid">
+          <div class="input-group">
+            <label>Underlying Price (S)</label>
+            <input type="number" id="binary-S" step="0.0001" value="">
+          </div>
+          <div class="input-group">
+            <label>Strike Price (K)</label>
+            <input type="number" id="binary-K" step="0.0001" value="">
+          </div>
+          <div class="input-group">
+            <label>Cash Payoff (Q)</label>
+            <input type="number" id="binary-Q" step="0.01" value="">
+          </div>
+          <div class="input-group">
+            <label>Risk-Free Rate (%)</label>
+            <input type="number" id="binary-r" step="0.01" value="">
+          </div>
+          <div class="input-group">
+            <label>Maturity (years)</label>
+            <input type="number" id="binary-T" step="0.01" value="">
+          </div>
+          <div class="input-group">
+            <label>Volatility (%)</label>
+            <input type="number" id="binary-vol" step="0.01" value="">
+          </div>
+        </div>
+        <button class="calculate-btn" onclick="calculateBinaryOption()">Calculate Price</button>
+        
+        <!-- Pulsanti per mostrare le sezioni -->
+        <div class="toggle-buttons-3">
+          <button class="toggle-btn" onclick="toggleSection('binaryCalculations', this)">Show Calculations</button>
+          <button class="toggle-btn" onclick="toggleSection('binaryGreeks', this)">Show Greeks</button>
+          <button class="toggle-btn" onclick="toggleSection('binaryGraph', this)">Show Graph</button>
+        </div>
+        
+        <div class="results">
+          <div class="result-card">
+            <h3>Cash Call</h3>
+            <div class="price" id="cash-call-price">0.0000</div>
+          </div>
+          <div class="result-card">
+            <h3>Cash Put</h3>
+            <div class="price" id="cash-put-price">0.0000</div>
+          </div>
+          <div class="result-card">
+            <h3>Asset Call</h3>
+            <div class="price" id="asset-call-price">0.0000</div>
+          </div>
+          <div class="result-card">
+            <h3>Asset Put</h3>
+            <div class="price" id="asset-put-price">0.0000</div>
+          </div>
+        </div>
+        
+        <!-- Sezione per i Calcoli (nascosta di default) -->
+        <div class="calculations" id="binaryCalculations" style="display:none;">
+          <h3>📝 Calculations:</h3>
+          <div id="binaryCalculationsContent"></div>
+        </div>
+        
+        <!-- Sezione per le Greeks (nascosta di default) -->
+        <!-- Sezione Greche modificata -->
+        <div id="binaryGreeks" class="calculations" style="display:none;">
+          <div class="greeks-grid">
+              <!-- Cash Options Greeks -->
+              <div class="greeks-category">
+                  <h4>Cash Options Greeks</h4>
+                  <div class="greeks-row">
+                      <div class="greeks-column">
+                          <div class="result-card">
+                              <h3>Cash Call Greeks</h3>
+                              <p><strong>Delta Δ:</strong> <span class="price" id="cashCallDelta">0.0000</span></p>
+                              <p><strong>Gamma Γ:</strong> <span class="price" id="cashCallGamma">0.0000</span></p>
+                              <p><strong>Vega ν:</strong> <span class="price" id="cashCallVega">0.0000</span></p>
+                              <p><strong>Theta θ:</strong> <span class="price" id="cashCallTheta">0.0000</span></p>
+                              <p><strong>Rho ρ:</strong> <span class="price" id="cashCallRho">0.0000</span></p>
+                          </div>
+                      </div>
+                      <div class="greeks-column">
+                          <div class="result-card">
+                              <h3>Cash Put Greeks</h3>
+                              <p><strong>Delta Δ:</strong> <span class="price" id="cashPutDelta">0.0000</span></p>
+                              <p><strong>Gamma Γ:</strong> <span class="price" id="cashPutGamma">0.0000</span></p>
+                              <p><strong>Vega ν:</strong> <span class="price" id="cashPutVega">0.0000</span></p>
+                              <p><strong>Theta θ:</strong> <span class="price" id="cashPutTheta">0.0000</span></p>
+                              <p><strong>Rho ρ:</strong> <span class="price" id="cashPutRho">0.0000</span></p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+  
+              <!-- Asset Options Greeks -->
+              <div class="greeks-category">
+                  <h4>Asset Options Greeks</h4>
+                  <div class="greeks-row">
+                      <div class="greeks-column">
+                          <div class="result-card">
+                              <h3>Asset Call Greeks</h3>
+                              <p><strong>Delta Δ:</strong> <span class="price" id="assetCallDelta">0.0000</span></p>
+                              <p><strong>Gamma Γ:</strong> <span class="price" id="assetCallGamma">0.0000</span></p>
+                              <p><strong>Vega ν:</strong> <span class="price" id="assetCallVega">0.0000</span></p>
+                              <p><strong>Theta θ:</strong> <span class="price" id="assetCallTheta">0.0000</span></p>
+                              <p><strong>Rho ρ:</strong> <span class="price" id="assetCallRho">0.0000</span></p>
+                          </div>
+                      </div>
+                      <div class="greeks-column">
+                          <div class="result-card">
+                              <h3>Asset Put Greeks</h3>
+                              <p><strong>Delta Δ:</strong> <span class="price" id="assetPutDelta">0.0000</span></p>
+                              <p><strong>Gamma Γ:</strong> <span class="price" id="assetPutGamma">0.0000</span></p>
+                              <p><strong>Vega ν:</strong> <span class="price" id="assetPutVega">0.0000</span></p>
+                              <p><strong>Theta θ:</strong> <span class="price" id="assetPutTheta">0.0000</span></p>
+                              <p><strong>Rho ρ:</strong> <span class="price" id="assetPutRho">0.0000</span></p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div id="binaryGreeksContent"></div>
+        </div>
+        
+        <!-- Sezione Grafici Binary Options -->
+        <div id="binaryGraph" class="graph-container" style="display:none;">
+          <div class="charts-grid">
+              <!-- Prima riga: Cash Options -->
+              <div class="chart-wrapper">
+                  <h4 class="chart-title">Cash Call Payoff</h4>
+                  <canvas id="cashCallChart"></canvas>
+              </div>
+              <div class="chart-wrapper">
+                  <h4 class="chart-title">Cash Put Payoff</h4>
+                  <canvas id="cashPutChart"></canvas>
+              </div>
+              
+              <!-- Seconda riga: Asset Options -->
+              <div class="chart-wrapper">
+                  <h4 class="chart-title">Asset Call Payoff</h4>
+                  <canvas id="assetCallChart"></canvas>
+              </div>
+              <div class="chart-wrapper">
+                  <h4 class="chart-title">Asset Put Payoff</h4>
+                  <canvas id="assetPutChart"></canvas>
+              </div>
+          </div>
+        </div>
+
+      
+    
+    </div>
+  <script>
+
+   // Plugin per disegnare in grassetto la linea orizzontale a y=0 (già registrato in <head>)
+    Chart.register({
+      id: 'zeroLinePlugin',
+      afterDraw: (chart, args, options) => {
+        const ctx = chart.ctx;
+        const yScale = chart.scales.y;
+        const yZero = yScale.getPixelForValue(0);
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(chart.chartArea.left, yZero);
+        ctx.lineTo(chart.chartArea.right, yZero);
+        ctx.lineWidth = options.lineWidth || 2;
+        ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#ffffff' : (options.color || 'black');
+        ctx.stroke();
+        ctx.restore();
+      }
+    });
+    
+    // Funzioni helper per aggiornare il DOM
+    function safeSetText(id, text) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = text; }
+    }
+    function safeSetHTML(id, html) {
+      const el = document.getElementById(id);
+      if (el) { el.innerHTML = html; }
+    }
+    function resetAllResults() {
+      document.querySelectorAll('.price').forEach(el => {
+        el.textContent = '0.0000';
+      });
+      safeSetHTML('futureCalculationsContent', '');
+      safeSetHTML('calculationsContent', '');
+      safeSetHTML('greeksCalculationsContent', '');
+      safeSetHTML('swapCalculationsContent', '');
+      safeSetHTML('cdsCalculationsContent', '');
+    } 
+
+    function handleCalculatorSelection() {
+      const selectedValue = document.getElementById('derivativeType').value;
+      document.querySelectorAll('.calculator').forEach(calc => { 
+        calc.classList.remove('active');
+        calc.style.display = 'none';
+      });
+      document.querySelectorAll('.graph-container').forEach(graph => { 
+        graph.style.display = 'none';
+      });
+      const targetCalculator = document.getElementById(`${selectedValue}-calculator`);
+      if (targetCalculator) {
+        targetCalculator.classList.add('active');
+        targetCalculator.style.display = 'block';
+      }
+    }
+    
+    function toggleSection(sectionId, button) {
+      const section = document.getElementById(sectionId);
+      const wasVisible = section.style.display === 'block';
+      document.querySelectorAll('.graph-container').forEach(g => g.style.display = 'none');
+      section.style.display = wasVisible ? 'none' : 'block';
+      if (!wasVisible) {
+        if (sectionId === 'vanillaGraph') renderPayoffCharts();
+        if (sectionId === 'currencyGraph') renderCurrencyPayoffCharts();
+        if (sectionId === 'futureGraph') renderFutureChart();
+        if (sectionId === 'indexGraph') renderIndexPayoffCharts();
+        if (sectionId === 'discreteGraph') renderDiscretePayoffCharts();
+        if (sectionId === 'foGraph') renderFOPayoffCharts();
+        if (sectionId === 'americanGraph') renderAmericanPayoffCharts();
+        if (sectionId === 'gapGraph') renderGapOptionChart();
+        if (sectionId === 'gapGreeks') calculateGapOptionGreeks();
+        if (sectionId === 'binaryGreeks') calculateBinaryOptionGreeks();
+        if (sectionId === 'binaryGraph') renderBinaryOptionChart();
+        if (sectionId === 'chooserGreeks') calculateChooserGreeksCalculations();
+        if (sectionId === 'chooserGraph') renderChooserGraph();
+        if (sectionId === 'straddleGraph') renderStraddleChart();
+        if (sectionId === 'fsGraph') renderFSChart();
+      }
+      button.classList.toggle('active', !wasVisible);
+    }
+
+    function normalCDF(x) {
+      const t = 1 / (1 + 0.2316419 * Math.abs(x));
+      const d = 0.3989423 * Math.exp(-x * x / 2);
+      let prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+      return x > 0 ? 1 - prob : prob;
+    }
+    function normalPDF(x) {
+      return (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x);
+    }
+    
+    // Funzione per il calcolo dei greci nelle opzioni Vanilla
+    function calculateGreeks(S, K, T, r, sigma, q, d1, d2) {
+      const sqrtT = Math.sqrt(T);
+      const pdfd1 = normalPDF(d1);
+      return {
+        callDelta: normalCDF(d1),
+        putDelta: normalCDF(d1) - 1,
+        gamma: pdfd1 / (S * sigma * sqrtT),
+        vega: S * sqrtT * pdfd1 * 0.01,
+        callTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) - (r * K * Math.exp(-r * T) * normalCDF(d2)) + (q * S * Math.exp(-q * T) * normalCDF(d1)),
+        putTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) + (r * K * Math.exp(-r * T) * normalCDF(-d2)) - (q * S * Math.exp(-q * T) * normalCDF(-d1)),
+        callRho: K * T * Math.exp(-r * T) * normalCDF(d2) * 0.01,
+        putRho: -K * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01
+      };
+    }
+
+    // Calcola il prezzo delle Binary Options (cash-or-nothing)
+    function calculateBinaryOption() {
+      try {
+        const S = parseFloat(document.getElementById('binary-S').value);
+        const K = parseFloat(document.getElementById('binary-K').value);
+        const Q = parseFloat(document.getElementById('binary-Q').value);
+        const r = (parseFloat(document.getElementById('binary-r').value) || 0) / 100;
+        const T = parseFloat(document.getElementById('binary-T').value);
+        const vol = (parseFloat(document.getElementById('binary-vol').value) || 0) / 100;
+        
+        if (isNaN(S) || isNaN(K) || isNaN(Q) || isNaN(T) || isNaN(vol) ||
+            S <= 0 || K <= 0 || Q <= 0 || T <= 0 || vol <= 0) {
+          throw new Error("Please enter all values greater than zero");
+        }
+        
+        const d1 = (Math.log(S / K) + (r + 0.5 * vol * vol) * T) / (vol * Math.sqrt(T));
+        const d2 = d1 - vol * Math.sqrt(T);
+        
+        // Cash-or-Nothing Prices
+        const cashCallPrice = Q * Math.exp(-r * T) * normalCDF(d2);
+        const cashPutPrice = Q * Math.exp(-r * T) * normalCDF(-d2);
+        
+        // Asset-or-Nothing Prices
+        const assetCallPrice = S * normalCDF(d1);
+        const assetPutPrice = S * normalCDF(-d1);
+        
+        safeSetText('cash-call-price', cashCallPrice.toFixed(4));
+        safeSetText('cash-put-price', cashPutPrice.toFixed(4));
+        safeSetText('asset-call-price', assetCallPrice.toFixed(4));
+        safeSetText('asset-put-price', assetPutPrice.toFixed(4));
+        
+        const calcDetails = `
+          <p><strong>d1</strong> = [ln(${S.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + 0.5×${vol.toFixed(4)}²)×${T.toFixed(4)}] / (${vol.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
+          <p><strong>d₂</strong> = d1 - ${vol.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
+          <h4>Cash-or-Nothing Options:</h4>
+          <p><strong>Cash Call</strong> = Q × e^(-rT) × N(d₂) = ${Q.toFixed(4)} × e^(-${(r*T).toFixed(4)}) × ${normalCDF(d2).toFixed(4)} = ${cashCallPrice.toFixed(4)}</p>
+          <p><strong>Cash Put</strong> = Q × e^(-rT) × N(-d₂) = ${Q.toFixed(4)} × e^(-${(r*T).toFixed(4)}) × ${normalCDF(-d2).toFixed(4)} = ${cashPutPrice.toFixed(4)}</p>
+          <h4>Asset-or-Nothing Options:</h4>
+          <p><strong>Asset Call</strong> = S × N(d1) = ${S.toFixed(4)} × ${normalCDF(d1).toFixed(4)} = ${assetCallPrice.toFixed(4)}</p>
+          <p><strong>Asset Put</strong> = S × N(-d1) = ${S.toFixed(4)} × ${normalCDF(-d1).toFixed(4)} = ${assetPutPrice.toFixed(4)}</p>
+        `;
+
+        if (document.getElementById('binaryGraph').style.display === 'block') {
+            renderBinaryOptionChart();
+        }
+
+        calculateBinaryOptionGreeks();
+        safeSetHTML('binaryCalculationsContent', calcDetails);
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    }
+
+    function calculateBinaryOptionGreeks() {
+      try {
+        // 1. Read inputs and validate
+        const S   = parseFloat(document.getElementById('binary-S').value);
+        const K   = parseFloat(document.getElementById('binary-K').value);
+        const Q   = parseFloat(document.getElementById('binary-Q').value);
+        const r   = (parseFloat(document.getElementById('binary-r').value) || 0) / 100;
+        const T   = parseFloat(document.getElementById('binary-T').value);
+        const vol = (parseFloat(document.getElementById('binary-vol').value) || 0) / 100;
+
+        if ([S,K,Q,T,vol].some(v => isNaN(v) || v <= 0)) {
+          throw new Error("Please enter all values greater than zero");
+        }
+
+        // 2. Compute d1, d2
+        const sqrtT = Math.sqrt(T);
+        const d1     = (Math.log(S/K) + (r + 0.5*vol*vol)*T) / (vol*sqrtT);
+        const d2     = d1 - vol*sqrtT;
+
+        // 3. Helpers
+        const N       = x => normalCDF(x);
+        const pdf     = x => normalPDF(x);
+        const df      = Math.exp(-r*T);
+        const pdf2    = pdf(d2);
+        const pdf1    = pdf(d1);
+        const cashF   = Q * df;
+        const dfS     = Math.exp(-r*T);  // for asset-or-nothing
+
+        // 4. Cash‑or‑Nothing Greeks
+        // Delta
+        const cashCallDelta = cashF * pdf2 / (S * vol * sqrtT);
+        // Gamma = ∂Δ/∂S = Δ * [ -d2/(S·σ√T) - 1/S ]
+        const cashCallGamma = cashCallDelta * ( -d2/(S*vol*sqrtT) - 1/S );
+        // Vega
+        const cashCallVega  = cashF * pdf2 * (d2/(vol) );
+        // Theta = −r*C + ∂C/∂T  ≈ −r·(Qe^{-rT}N(d2)) − cashF·pdf2·(d2/(2T))
+        // but use the standard closed‐form for cash‑binary:
+        const cashCallTheta = -r * cashF * N(d2) - (cashF * pdf2 * vol) / (2 * sqrtT);
+        // Rho = ∂C/∂r = Q·T·e^{-rT}·N(d2)
+        const cashCallRho   = Q * T * df * N(d2);
+
+        // Put (parity)
+        const cashPutDelta = -cashCallDelta;
+        const cashPutGamma =  cashCallGamma;
+        const cashPutVega  =  cashCallVega;
+        const cashPutTheta = -r * cashF * N(-d2) - (cashF * pdf2 * vol) / (2 * sqrtT);
+        const cashPutRho   = -Q * T * df * N(-d2);
+
+        // 5. Asset‑or‑Nothing Greeks
+        // Value: S e^{-rT} N(d1)
+        // Delta = e^{-rT}[ N(d1) + φ(d1)/(σ√T) ]
+        const assetCallDelta = dfS * ( N(d1) + pdf1/(vol*sqrtT) );
+        // Gamma = e^{-rT} φ(d1)/(Sσ√T) [1 - d1/(σ√T)]
+        const assetCallGamma = dfS * pdf1/(S*vol*sqrtT) * (1 - d1/(vol*sqrtT));
+        // Vega = S e^{-rT} φ(d1) [√T/σ - d1/σ] × 0.01
+        const assetCallVega  = dfS * S * pdf1 * ((sqrtT/vol - d1/vol)) * 0.01;
+        // Theta = −r·S e^{-rT} N(d1) − (σ S e^{-rT} φ(d1))/(2√T)
+        const assetCallTheta = -r * dfS * S * N(d1)
+                              - (dfS * S * pdf1 * vol) / (2 * sqrtT);
+        // Rho = −T·S e^{-rT} N(d1)
+        const assetCallRho   = -T * dfS * S * N(d1);
+
+        // Put (parity)
+        // Delta = e^{-rT}[ N(d1) + φ(d1)/(σ√T) ] − e^{-rT}
+        const assetPutDelta = assetCallDelta - dfS;
+        const assetPutGamma = assetCallGamma;
+        const assetPutVega  = assetCallVega;
+        const assetPutTheta = -r * dfS * S * N(-d1)
+                              - (dfS * S * pdf1 * vol) / (2 * sqrtT);
+        const assetPutRho   = -T * dfS * S * N(-d1);
+
+        // 6. Display
+        safeSetText('cashCallDelta', cashCallDelta.toFixed(4));
+        safeSetText('cashCallGamma', cashCallGamma.toFixed(4));
+        safeSetText('cashCallVega',  cashCallVega .toFixed(4));
+        safeSetText('cashCallTheta', cashCallTheta.toFixed(4));
+        safeSetText('cashCallRho',   cashCallRho   .toFixed(4));
+
+        safeSetText('cashPutDelta',  cashPutDelta .toFixed(4));
+        safeSetText('cashPutGamma',  cashPutGamma .toFixed(4));
+        safeSetText('cashPutVega',   cashPutVega  .toFixed(4));
+        safeSetText('cashPutTheta',  cashPutTheta .toFixed(4));
+        safeSetText('cashPutRho',    cashPutRho   .toFixed(4));
+
+        safeSetText('assetCallDelta', assetCallDelta.toFixed(4));
+        safeSetText('assetCallGamma', assetCallGamma.toFixed(4));
+        safeSetText('assetCallVega',  assetCallVega .toFixed(4));
+        safeSetText('assetCallTheta', assetCallTheta.toFixed(4));
+        safeSetText('assetCallRho',   assetCallRho   .toFixed(4));
+
+        safeSetText('assetPutDelta',  assetPutDelta .toFixed(4));
+        safeSetText('assetPutGamma',  assetPutGamma .toFixed(4));
+        safeSetText('assetPutVega',   assetPutVega  .toFixed(4));
+        safeSetText('assetPutTheta',  assetPutTheta .toFixed(4));
+        safeSetText('assetPutRho',    assetPutRho   .toFixed(4));
+
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    }
+
+
+    // Renderizza i grafici per il payoff delle Binary Options
+    function renderBinaryOptionChart() {
+        try {
+            // Recupera i valori dagli input
+            const S = parseFloat(document.getElementById('binary-S').value);
+            const K = parseFloat(document.getElementById('binary-K').value);
+            const Q = parseFloat(document.getElementById('binary-Q').value);
+            const cashCallPrice = parseFloat(document.getElementById('cash-call-price').textContent) || 0;
+            const cashPutPrice = parseFloat(document.getElementById('cash-put-price').textContent) || 0;
+            const assetCallPrice = parseFloat(document.getElementById('asset-call-price').textContent) || 0;
+            const assetPutPrice = parseFloat(document.getElementById('asset-put-price').textContent) || 0;
+
+            // Crea un array di prezzi con transizioni nette attorno allo strike price
+            const numSteps = 30;
+            const minPrice = Math.max(S * 0.5, 0);
+            const maxPrice = S * 1.5;
+            let prices = [];
+            
+            // Genera punti principali
+            for (let i = 0; i < numSteps; i++) {
+                prices.push(minPrice + (i * (maxPrice - minPrice)) / (numSteps - 1));
+            }
+            
+            // Aggiungi punti critici attorno allo strike per transizioni nette
+            prices.push(K - 0.001, K, K + 0.001);
+            prices = [...new Set(prices)].sort((a, b) => a - b);
+
+            // Configurazione colori dinamica
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const textColor = isDarkMode ? '#F1F5F9' : '#1E293B';
+            const gridColor = isDarkMode ? '#334155' : '#E2E8F0';
+            const bgColor = isDarkMode ? '#1E293B' : '#FFFFFF';
+            const longColor = isDarkMode ? '#818CF8' : '#3B82F6'; // Blu
+            const shortColor = isDarkMode ? '#F87171' : '#EF4444'; // Rosso
+
+            // Opzioni comuni per tutti i grafici
+            const commonOptions = {
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: textColor,
+                            font: { family: 'Inter', size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        bodyColor: textColor,
+                        backgroundColor: bgColor,
+                        borderColor: gridColor,
+                        borderWidth: 1
+                    },
+                    title: {
+                        display: true,
+                        color: textColor,
+                        font: { family: 'Inter', size: 16, weight: '600' },
+                        padding: 10
+                    },
+                    zeroLinePlugin: {
+                        lineWidth: 2,
+                        color: isDarkMode ? '#F1F5F9' : '#1E293B'
+                    }
+                },
+                elements: {
+                    line: {
+                        tension: 0,
+                        borderWidth: 2
+                    },
+                    point: {
+                        radius: 3,
+                        hoverRadius: 5
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            text: 'Underlying Price',
+                            display: true,
+                            color: textColor,
+                            font: { family: 'Inter', size: 14, weight: '600' }
+                        },
+                        grid: {
+                            color: gridColor,
+                            drawTicks: false
+                        },
+                        ticks: {
+                            color: textColor,
+                            maxTicksLimit: 8,
+                            font: { family: 'Inter', size: 12 }
+                        },
+                        border: {
+                            color: textColor,
+                            width: 2
+                        }
+                    },
+                    y: {
+                        title: {
+                            text: 'Profit/Loss',
+                            display: true,
+                            color: textColor,
+                            font: { family: 'Inter', size: 14, weight: '600' }
+                        },
+                        grid: {
+                            color: gridColor,
+                            drawTicks: false
+                        },
+                        ticks: {
+                            color: textColor,
+                            maxTicksLimit: 5,
+                            font: { family: 'Inter', size: 12 }
+                        },
+                        border: {
+                            color: textColor,
+                            width: 2
+                        }
+                    }
+                }
+            };
+
+            // Funzione helper per creare i grafici
+            const createChart = (canvasId, title, longData, shortData) => {
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                
+                // Distruggi eventuali istanze precedenti
+                if (window[canvasId + 'Chart']) window[canvasId + 'Chart'].destroy();
+                
+                return new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: prices.map(p => p.toFixed(2)),
+                        datasets: [
+                            {
+                                label: 'Long Position',
+                                data: longData,
+                                borderColor: longColor,
+                                backgroundColor: bgColor,
+                                borderWidth: 2
+                            },
+                            {
+                                label: 'Short Position',
+                                data: shortData,
+                                borderColor: shortColor,
+                                backgroundColor: bgColor,
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        ...commonOptions,
+                        plugins: {
+                            ...commonOptions.plugins,
+                            title: {
+                                ...commonOptions.plugins.title,
+                                text: title
+                            }
+                        }
+                    }
+                });
+            };
+
+            // Calcola i payoff corretti
+            const cashCallLong = prices.map(p => (p >= K ? Q - cashCallPrice : -cashCallPrice));
+            const cashCallShort = prices.map(p => (p >= K ? cashCallPrice - Q : cashCallPrice));
+            
+            const cashPutLong = prices.map(p => (p <= K ? Q - cashPutPrice : -cashPutPrice));
+            const cashPutShort = prices.map(p => (p <= K ? cashPutPrice - Q : cashPutPrice));
+            
+            const assetCallLong = prices.map(p => (p >= K ? p - assetCallPrice : -assetCallPrice));
+            const assetCallShort = prices.map(p => (p >= K ? assetCallPrice - p : assetCallPrice));
+            
+            const assetPutLong = prices.map(p => (p <= K ? p - assetPutPrice : -assetPutPrice));
+            const assetPutShort = prices.map(p => (p <= K ? assetPutPrice - p : assetPutPrice));
+
+            // Crea i grafici
+            window.cashCallChart = createChart('cashCallChart', 'Cash Call Payoff', cashCallLong, cashCallShort);
+            window.cashPutChart = createChart('cashPutChart', 'Cash Put Payoff', cashPutLong, cashPutShort);
+            window.assetCallChart = createChart('assetCallChart', 'Asset Call Payoff', assetCallLong, assetCallShort);
+            window.assetPutChart = createChart('assetPutChart', 'Asset Put Payoff', assetPutLong, assetPutShort);
+
+        } catch (error) {
+            console.error('Error rendering binary charts:', error);
+            alert(`Chart Error: ${error.message}`);
+        }
+    }
+
+    // Rileva automaticamente la pagina corrente e seleziona il dropdown
+    window.onload = function() {
+        const path     = window.location.pathname;
+        const file     = path.split("/").pop();                       // es: "futures-options-calculator.html"
+        const match    = file.replace('-calculator.html', '');        // es: "futures-options"
+        const selector = document.getElementById('derivativeType');
+        if (selector && match) {
+        selector.value = match;             // imposta il dropdown sul valore giusto
+        handleCalculatorSelection();        // mostra la sezione corrispondente
+        }
+    };
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const selector = document.getElementById('derivativeType');
+      selector.addEventListener('change', function () {
+        const value = this.value;
+        if (value) {
+          const targetPage = `${value}-calculator.html`;
+          window.location.href = targetPage;
+        }
+    });
+    });
+
+
+    </script>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-left">
+          <h3 class="footer-brand">
+          <a href="index.html">Black &amp; Scholes Calculator</a>
+          </h3>
+          <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
+          <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
+        </div>
+        <div class="footer-right">
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="cookie-policy.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script src="cookie-consent.js"></script>
+
+    </body>
+    </html>

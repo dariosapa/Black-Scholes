@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ================================
+       COOKIE BANNER & MODAL STYLES
+       ================================ */
+       :root {
+      --primary: #01796F;
+      --background: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+      --card-radius: 8px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .cookie-banner, .cookie-modal { position: fixed; left: 0; right: 0; z-index: 1000; }
+    .cookie-banner {
+      bottom: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+    }
+    .cookie-banner p { flex: 1 1 60%; margin-right: 1rem; }
+    .cookie-banner button {
+      margin: 0.25rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px;
+      cursor: pointer; font-weight: 600;
+    }
+    #accept-all { background: var(--primary); color: #fff; }
+    #decline-all { background: #ddd; }
+    #cookie-settings { background: transparent; color: var(--primary); }
+    .cookie-modal {
+      top: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+    }
+    .cookie-modal-content {
+      background: var(--card-bg);
+      max-width: 400px;
+      margin: 5% auto;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      position: relative;
+    }
+    .cookie-modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+    .cookie-modal-content label { display: block; margin-bottom: 0.75rem; }
+    .cookie-modal-content input[type="checkbox"] { margin-right: 0.5rem; }
+    #save-settings, #close-modal {
+      margin-top: 1rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px; cursor: pointer;
+    }
+    #save-settings { background: var(--primary); color: #fff; }
+    #close-modal { background: #ddd; }
+    :root {
+      --primary: #01796F;
+      --secondary: #01796F;
+      --accent: #01796F;
+      --background: #F8FAFC;
+      --text: #000;
+      --card: #fff;
+    }
+    body {
+      font-family:'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      transition: all 0.3s;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background: #fff;
+      color: var(--text);
+      padding: 2rem 0;
+      text-align: center;
+      border-bottom: 1px solid #eaeaea;
+    }
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      color: white;
+      padding: 5px;
+    }
+    .calculator-selector {
+      margin-top: 20px;
+      position: relative;
+      top: -10px;
+      left: -10px;
+    }
+    #derivativeType {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--secondary);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 16px;
+      appearance: none;
+      cursor: pointer;
+    }
+    optgroup {
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    option {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .calculator-selector::after {
+      content: '▼';
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--secondary);
+    }
+    .calculator {
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-top: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      display: none;
+    }
+    .calculator.active {
+      display: block;
+    }
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      max-width: 330px;
+      padding: 12px;
+      border: 2px solid #E2E8F0;
+      border-radius: 8px;
+      font-size: 16px;
+      background: var(--background);
+      color: var(--text);
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .result-card {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: var(--background);
+    }
+    .result-card h3 {
+      margin-bottom: 0.5rem;
+      color: #000;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    body.dark-mode .result-card h3 {
+      color: #fff;
+    }
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      color: var(--primary);
+    }
+    button.calculate-btn {
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+    .calculations {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--background);
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+    }
+    .calculations h3 {
+      margin-bottom: 1rem;
+      color: var(--secondary);
+    }
+    .calculations p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    .calculations sup {
+      font-size: 0.8em;
+      vertical-align: super;
+    }
+    .greeks-columns {
+      display: flex;
+      gap: 2rem;
+    }
+    .greeks-column {
+      flex: 1;
+    }
+    .greeks-column .result-card {
+      margin-bottom: 0;
+    }
+    body.dark-mode {
+      --background: #fff;
+      --text: #000;
+      --card: #fff;
+      --secondary: #01796F;
+    }
+    body.dark-mode .calculations,
+    body.dark-mode .result-card {
+      background: var(--card);
+    }
+
+    body.dark-mode .result-card h3 {
+      color: #fff;
+    }
+    body.dark-mode .dark-mode-toggle {
+      color: #F1F5F9;
+    }
+    .toggle-buttons-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .toggle-buttons-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .toggle-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 16px;
+      width: 100%;
+    }
+    .toggle-btn.active {
+      background: var(--accent);
+    }
+    /* Grafico Futures: altezza a 600px */
+    #futureGraph {
+      margin-top: 2rem;
+      height: 600px;
+      position: relative;
+      display: none;
+    }
+    /* Grafici Vanilla e Currency: wrapper con dimensione fissa */
+    .graph-container {
+      margin-top: 2rem;
+      display: none;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .chart-wrapper {
+      height: 400px;
+      background: transparent !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+    }
+    body.dark-mode .chart-wrapper {
+      background: var(--card);
+    }
+    .dividend-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 1rem;
+      align-items: auto;
+      background: var(--background);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .dividend-row .input-group {
+      margin-bottom: 0;
+    }
+
+    .dividend-row label {
+      color: var(--secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .dividend-row input {
+      width: 100%;
+      padding: 4px;
+      border: 2px solid #E2E8F0;
+      border-radius: 8px;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    .dividend-row button {
+      justify-self: end; 
+      align-self: end;
+      margin: 0.25rem 0 0 0.5rem;
+    }
+ 
+    .remove-dividend {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .early-exercise-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--background);
+    border-radius: 8px;
+    }
+
+    .calculation-step {
+        margin: 1rem 0;
+    }
+
+    .calculation-step ul {
+        margin: 0.5rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .optimal {
+        color: #10B981;
+        font-weight: 600;
+    }
+
+    .not-optimal {
+        color: #EF4444;
+        font-weight: 600;
+    }
+
+    .variable-rate-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 50px; /* Larghezza dedicata al pulsante */
+      gap: 1rem;
+      align-items: center; /* Allineamento verticale centrale */
+      padding: 0.5rem 1rem;
+    }
+
+    .remove-variable-rate {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-left: auto;
+      align-self: center; 
+      margin-top: 2px;
+      position: relative;
+      top: 2px;
+    }
+
+    .variable-rate-row .input-group {
+      margin-bottom: 0;
+    }
+
+    .variable-rate-row input {
+      padding: 6px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .variable-rate-row label {
+      color: var(--secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .remove-variable-rate {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: var(--background);
+    }
+    /* Nuovo CSS per la griglia delle greche */
+    .greeks-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .greeks-category {
+      background: var(--background);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .greeks-category h4 {
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .greeks-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .result-card h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    #straddleChart {
+      height: 400px;
+    }
+
+    .chart-title {
+        color: var(--secondary);
+        text-align: center;
+        margin: 0.5rem 0 1rem 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .chart-wrapper {
+        height: 300px;
+        background: var(--background);
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .charts-grid .chart-wrapper:nth-child(3),
+    .charts-grid .chart-wrapper:nth-child(4) {
+        margin-top: 40px;
+    }
+
+    #chooserChart {
+        background: rgba(255,255,255,0.9);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 15px;
+    }
+
+    #fsGraph {
+      height: 400px; /* oppure un'altezza che preferisci */
+    }
+
+    .navbar {
+      display: flex;
+      height: 47px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #F8FAFC;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .navbar-left,
+    .navbar-center,
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    /* Il brand ora punta a homepage.html */
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #000;
+      text-decoration: none;
+    }
+    
+    .navbar-left .brand:hover {
+      text-decoration: underline;
+    }
+
+    .navbar-center .calculator-selector,
+    .navbar-center .calculator-selector select,
+    
+    /* Nei link della navbar: Calculators e Theory */
+    .nav-link {
+      font-weight: 500;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    .nav-link:hover {
+      color: #01796F;
+    }
+
+    
+    /* Stili che assicurano che il blocco della tendina abbia le stesse dimensioni della search bar */
+    .calculator-selector {
+      display: inline-block;
+      width: 300px; /* imposta la larghezza come quella della search bar originale */
+    }
+    .calculator-selector select {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      appearance: none;
+      background: #fff;
+    }
+    .navbar-right .nav-link {
+      text-decoration: none;
+      margin-left: 20px;
+      color: #333;
+      font-size: 1rem;
+    }
+
+  
+
+    /* Imposta un layout mobile-first per il container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+    }
+
+    /* Esempio di grid responsiva */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    sub {
+      font-size: 0.8em;
+      vertical-align: sub;
+      line-height: 1;
+    }
+
+    .cookie-settings-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .footer-brand a {
+      color: inherit;         /* eredita il colore del .footer-brand */
+      text-decoration: none;  /* rimuove la sottolineatura */
+      font-weight: 700;       /* mantiene il peso del font */
+    }
+
+    .footer-brand a:hover {
+      color: var(--primary);  /* cambia colore on hover se vuoi */
+    }
+
+    #futureGraph .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    #futureGraph .result-card {
+      background: var(--background);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #futureGraph .chart-title {
+      color: var(--secondary);
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    #futureGraph .chart-wrapper {
+      width: 100%;
+      height: 300px;
+      background: transparent;
+      padding: 0;
+    }
+    #futureGraph .chart-wrapper canvas {
+      width: 100% !important;
+      height: 300px !important;
+      display: block;
+    }
+
+
+
+
+    @media (max-width: 600px) {
+    /* Contenitore principale */
+    .container {
+      width: 95%;
+      max-width: 100%;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    /* Input: colonna singola */
+    .input-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .input-group,
+    .input-group label,
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Bottoni */
+    .toggle-buttons-2,
+    .toggle-buttons-3 {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .toggle-btn,
+    button.calculate-btn {
+      font-size: 14px;
+      padding: 10px 18px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Sezioni delle greche */
+    .greeks-grid,
+    .greeks-columns {
+      display: block;
+      width: 100%;
+    }
+    .greeks-grid > * {
+      margin-bottom: 0.5rem;
+    }
+    .greeks-column h3,
+    .greeks-column p {
+      font-size: 13px;
+      margin: 0.2rem 0;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    /* Charts generali */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .chart-wrapper {
+      width: 100%;
+      height: auto;
+      min-height: 250px;
+      max-height: 380px;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .chart-wrapper canvas {
+      width: 100% !important;
+      height: 280px !important;
+      display: block;
+    }
+
+    /* Futures - Griglia */
+    #futureGraph .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    /* Futures - Card dei grafici */
+    #futureGraph .result-card {
+      padding: 1rem;
+      background: var(--background);
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Futures - Grafici dentro la card */
+    #futureGraph .chart-wrapper {
+      width: 100%;
+      height: auto;
+      min-height: 250px;
+      max-height: 380px;
+      overflow: hidden;
+      box-sizing: border-box;
+      background: none;
+      padding: 0;
+      box-shadow: none;
+    }
+    #futureGraph .chart-wrapper canvas {
+      width: 100% !important;
+      height: 280px !important;
+      display: block;
+    }
+
+    /* Binary Options */
+    #binary-calculator .charts-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #binary-calculator .chart-wrapper {
+      width: 100%;
+      height: auto;
+      min-height: 250px;
+      max-height: 380px;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    #binary-calculator .chart-wrapper canvas {
+      width: 100% !important;
+      height: 280px !important;
+      display: block;
+    }
+
+    /* Tabelle scrollabili */
+    table {
+      width: 100%;
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+    #cds-pd-table {
+      font-size: 13px;
+    }
+
+    /* Calcoli */
+    .calculations, 
+    .calculations * {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    /* Footer */
+    .footer-container {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px 0;
+    }
+  }
+
+
+
+
+    /* Navbar responsiva */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap; /* Permette di andare a capo se necessario */
+      justify-content: space-between;
+      padding: 1rem;
+    }
+    /* Rimuovo eventuali interazioni indesiderate (tooltip/legenda) */
+    canvas { cursor: default; }
+    /* -------------------------- */
+    /*         FOOTER            */
+    /* -------------------------- */
+    .site-footer {
+      background-color: #fff;
+      border-top: 1px solid #eaeaea;
+      padding: 2rem;
+    }
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      max-width: 10000px;
+      margin: 0 auto;
+    }
+    .footer-left,
+    .footer-right {
+      flex: 1;
+    }
+    .footer-brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
+    .footer-text {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .footer-right ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-right a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .footer-right a:hover {
+      color: #01796F;
+    }
+  </style>
+  </head>
+  <body>
+  
+    <!-- COOKIE BANNER -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
+      <p>
+        We use cookies to remember your settings, analyze traffic, and provide personalized ads. 
+        Please select your preferences or read our
+        <a href="cookie-policy.html" class="cookie-policy-link" target="_blank" rel="noopener">Cookie Policy</a>.
+      </p>
+      <div>
+        <button id="accept-all">Accept All</button>
+        <button id="decline-all">Decline All</button>
+        <button id="cookie-settings">Settings</button>
+      </div>
+    </div>
+  
+    <!-- COOKIE SETTINGS MODAL -->
+    <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+      <div class="cookie-modal-content">
+        <h2 id="cookie-modal-title">Cookie Preferences</h2>
+        <form id="cookie-form">
+          <label><input type="checkbox" id="toggle-preferences"> Preferences Cookies</label>
+          <label><input type="checkbox" id="toggle-statistics"> Statistics Cookies</label>
+          <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
+          <button type="button" id="save-settings">Save Settings</button>
+        </form>
+        <button id="close-modal">Close</button>
+      </div>
+    </div>
+  
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <!-- Brand (sinistra) -->
+      <div class="navbar-left">
+        <a href="index.html" class="brand">Black &amp; Scholes Calculator</a>
+      </div>
+
+      <!-- Center: Derivative Selector -->
+      <div class="navbar-center">
+        <div class="calculator-selector">
+          <select id="derivativeType">
+            <option value="">Select a derivative...</option>
+            <option value="theory">Vanilla Options</option>
+            <option value="futures">Futures & Forwards</option>
+            <option value="futures-options">Options on Futures/Forwards</option>
+            <option value="discrete-div">Options with Discrete Dividends</option>
+            <option value="american">American Options</option>
+            <option value="index-options">Index Options</option>
+            <option value="currency">Currency Options</option>
+            <option value="swap">Interest Rate Swaps</option>
+            <option value="swaption">Swaptions</option>
+            <option value="cds">Credit Default Swaps</option>
+            <option value="gap-options">Gap Options</option>
+            <option value="binary">Binary Options</option>
+            <option value="chooser-options">Chooser Options</option>
+            <option value="straddle">Straddle Strategy</option>
+            <option value="forward-start-options">Forward Start Options</option>
+          </select>
+        </div>      
+      </div>
+
+      <!-- Nav links (destra) -->
+    <div class="navbar-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="theory.html" class="nav-link">Theory</a>
+    </div>
+  </nav>
+  
+  </header>
+  <main class="container">
+    <!-- American Options Calculator -->
+
+    <div id="american-calculator" class="calculator">
+        <h2>American Options Calculator</h2>
+        <div class="input-grid">
+          <div class="input-group">
+            <label>Spot Price</label>
+            <input type="number" id="aSpot" step="0.0001" value="">
+          </div>
+          <div class="input-group">
+            <label>Strike Price</label>
+            <input type="number" id="aStrike" step="0.0001" value="">
+          </div>
+          <div class="input-group">
+            <label>Maturity (years)</label>
+            <input type="number" id="aTime" step="0.01" value="">
+          </div>
+          <div class="input-group">
+            <label>Risk-Free Rate (%)</label>
+            <input type="number" id="aRate" step="0.01" value="">
+          </div>
+          <div class="input-group">
+            <label>Volatility (%)</label>
+            <input type="number" id="aVol" step="0.01" value="">
+          </div>
+        </div>
+        <div id="aDividendContainer">
+          <div class="dividend-row">
+            <div class="input-group">
+              <label>Dividend Amount</label>
+              <input type="number" class="dividend-amount" step="0.01">
+            </div>
+            <div class="input-group">
+              <label>Years to Dividend</label>
+              <input type="number" class="dividend-time" step="0.01">
+            </div>
+            <button class="remove-dividend" onclick="removeDividendRow(this)">×</button>
+          </div>
+        </div>
+        <button class="calculate-btn" onclick="addDividendRow('aDividendContainer')">Add Dividend</button>
+        <button class="calculate-btn" onclick="calculateAmericanOptions()">Calculate Price</button>
+        <div class="toggle-buttons-3">
+          <button class="toggle-btn" onclick="toggleSection('americanCalculations', this)">Show Calculations</button>
+          <button class="toggle-btn" onclick="toggleSection('americanGreeks', this)">Show Greeks</button>
+          <button class="toggle-btn" onclick="toggleSection('americanGraph', this)">Show Graph</button>
+        </div>
+        <div class="results">
+          <div class="result-card">
+            <h3>American Call</h3>
+            <div class="price" id="aCallPrice">0.0000</div>
+          </div>
+          <div class="result-card">
+            <h3>American Put</h3>
+            <div class="price" id="aPutPrice">0.0000</div>
+          </div>
+        </div>
+        <div id="americanCalculations" class="calculations" style="display:none;">
+          <h3>📝 Calculations:</h3>
+          <div id="americanCalculationsContent"></div>
+        </div>
+        <div id="americanGreeks" class="calculations" style="display:none;">
+          <div class="greeks-columns">
+            <div class="greeks-column">
+              <div class="result-card">
+                <h3>Call Greeks</h3>
+                <p><strong>Delta Δ:</strong> <span class="price" id="aCallDelta">0.0000</span></p>
+                <p><strong>Gamma Γ:</strong> <span class="price" id="aCallGamma">0.0000</span></p>
+                <p><strong>Vega ν:</strong> <span class="price" id="aCallVega">0.0000</span></p>
+                <p><strong>Theta θ:</strong> <span class="price" id="aCallTheta">0.0000</span></p>
+                <p><strong>Rho ρ:</strong> <span class="price" id="aCallRho">0.0000</span></p>
+              </div>
+            </div>
+            <div class="greeks-column">
+              <div class="result-card">
+                <h3>Put Greeks</h3>
+                <p><strong>Delta Δ:</strong> <span class="price" id="aPutDelta">0.0000</span></p>
+                <p><strong>Gamma Γ:</strong> <span class="price" id="aPutGamma">0.0000</span></p>
+                <p><strong>Vega ν:</strong> <span class="price" id="aPutVega">0.0000</span></p>
+                <p><strong>Theta θ:</strong> <span class="price" id="aPutTheta">0.0000</span></p>
+                <p><strong>Rho ρ:</strong> <span class="price" id="aPutRho">0.0000</span></p>
+              </div>
+            </div>
+          </div>
+          <h3>📝 Greeks Calculations:</h3>
+          <div id="americanGreeksContent"></div>
+        </div>
+        <div id="americanGraph" class="graph-container" style="display:none;">
+          <div class="charts-grid">
+            <div class="chart-wrapper">
+              <canvas id="aCallChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="aPutChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+      
+    
+    </div>
+  <script>
+
+   // Plugin per disegnare in grassetto la linea orizzontale a y=0 (già registrato in <head>)
+    Chart.register({
+      id: 'zeroLinePlugin',
+      afterDraw: (chart, args, options) => {
+        const ctx = chart.ctx;
+        const yScale = chart.scales.y;
+        const yZero = yScale.getPixelForValue(0);
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(chart.chartArea.left, yZero);
+        ctx.lineTo(chart.chartArea.right, yZero);
+        ctx.lineWidth = options.lineWidth || 2;
+        ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#ffffff' : (options.color || 'black');
+        ctx.stroke();
+        ctx.restore();
+      }
+    });
+    
+    // Funzioni helper per aggiornare il DOM
+    function safeSetText(id, text) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = text; }
+    }
+    function safeSetHTML(id, html) {
+      const el = document.getElementById(id);
+      if (el) { el.innerHTML = html; }
+    }
+    function resetAllResults() {
+      document.querySelectorAll('.price').forEach(el => {
+        el.textContent = '0.0000';
+      });
+      safeSetHTML('futureCalculationsContent', '');
+      safeSetHTML('calculationsContent', '');
+      safeSetHTML('greeksCalculationsContent', '');
+      safeSetHTML('swapCalculationsContent', '');
+      safeSetHTML('cdsCalculationsContent', '');
+    } 
+
+    function handleCalculatorSelection() {
+      const selectedValue = document.getElementById('derivativeType').value;
+      document.querySelectorAll('.calculator').forEach(calc => { 
+        calc.classList.remove('active');
+        calc.style.display = 'none';
+      });
+      document.querySelectorAll('.graph-container').forEach(graph => { 
+        graph.style.display = 'none';
+      });
+      const targetCalculator = document.getElementById(`${selectedValue}-calculator`);
+      if (targetCalculator) {
+        targetCalculator.classList.add('active');
+        targetCalculator.style.display = 'block';
+      }
+    }
+    
+    function toggleSection(sectionId, button) {
+      const section = document.getElementById(sectionId);
+      const wasVisible = section.style.display === 'block';
+      document.querySelectorAll('.graph-container').forEach(g => g.style.display = 'none');
+      section.style.display = wasVisible ? 'none' : 'block';
+      if (!wasVisible) {
+        if (sectionId === 'vanillaGraph') renderPayoffCharts();
+        if (sectionId === 'currencyGraph') renderCurrencyPayoffCharts();
+        if (sectionId === 'futureGraph') renderFutureChart();
+        if (sectionId === 'indexGraph') renderIndexPayoffCharts();
+        if (sectionId === 'discreteGraph') renderDiscretePayoffCharts();
+        if (sectionId === 'foGraph') renderFOPayoffCharts();
+        if (sectionId === 'americanGraph') renderAmericanPayoffCharts();
+        if (sectionId === 'gapGraph') renderGapOptionChart();
+        if (sectionId === 'gapGreeks') calculateGapOptionGreeks();
+        if (sectionId === 'binaryGreeks') calculateBinaryOptionGreeks();
+        if (sectionId === 'binaryGraph') renderBinaryOptionChart();
+        if (sectionId === 'chooserGreeks') calculateChooserGreeksCalculations();
+        if (sectionId === 'chooserGraph') renderChooserGraph();
+        if (sectionId === 'straddleGraph') renderStraddleChart();
+        if (sectionId === 'fsGraph') renderFSChart();
+      }
+      button.classList.toggle('active', !wasVisible);
+    }
+
+    function normalCDF(x) {
+      const t = 1 / (1 + 0.2316419 * Math.abs(x));
+      const d = 0.3989423 * Math.exp(-x * x / 2);
+      let prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+      return x > 0 ? 1 - prob : prob;
+    }
+    function normalPDF(x) {
+      return (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x);
+    }
+    
+    // Funzione per il calcolo dei greci nelle opzioni Vanilla
+    function calculateGreeks(S, K, T, r, sigma, q, d1, d2) {
+      const sqrtT = Math.sqrt(T);
+      const pdfd1 = normalPDF(d1);
+      return {
+        callDelta: normalCDF(d1),
+        putDelta: normalCDF(d1) - 1,
+        gamma: pdfd1 / (S * sigma * sqrtT),
+        vega: S * sqrtT * pdfd1 * 0.01,
+        callTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) - (r * K * Math.exp(-r * T) * normalCDF(d2)) + (q * S * Math.exp(-q * T) * normalCDF(d1)),
+        putTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) + (r * K * Math.exp(-r * T) * normalCDF(-d2)) - (q * S * Math.exp(-q * T) * normalCDF(-d1)),
+        callRho: K * T * Math.exp(-r * T) * normalCDF(d2) * 0.01,
+        putRho: -K * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01
+      };
+    }
+
+    // Funzioni per gestire i dividendi
+    function addDividendRow(containerId = 'dividendContainer') {
+      const container = document.getElementById(containerId);
+      const newRow = document.createElement('div');
+      newRow.className = 'dividend-row';
+      newRow.innerHTML = `
+        <div class="input-group">
+          <label>Dividend Amount</label>
+          <input type="number" class="dividend-amount" step="0.01">
+        </div>
+        <div class="input-group">
+          <label>Years to Dividend</label>
+          <input type="number" class="dividend-time" step="0.01">
+        </div>
+        <button class="remove-dividend" onclick="removeDividendRow(this)">×</button>
+      `;
+      container.appendChild(newRow);
+    }
+
+    function removeDividendRow(button) {
+      button.parentElement.remove();
+    }
+
+    // Helper per il prezzo della American Call
+    function calcAmericanCallPrice(S, sigma, T, r, K, dividends) {
+      let PV_all = 0;
+      for (let i = 0; i < dividends.length; i++){
+        PV_all += dividends[i].amount * Math.exp(-r * dividends[i].time);
+      }
+      let S_star_all = S - PV_all;
+      let c1 = 0;
+      if (T > 0) {
+        let d1 = (Math.log(S_star_all / K) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T));
+        let d2 = d1 - sigma * Math.sqrt(T);
+        c1 = S_star_all * normalCDF(d1) - K * Math.exp(-r * T) * normalCDF(d2);
+      }
+      if (dividends.length > 0) {
+        let PV_before_last = 0;
+        for (let i = 0; i < dividends.length - 1; i++){
+          PV_before_last += dividends[i].amount * Math.exp(-r * dividends[i].time);
+        }
+        let S_star_amer = S - PV_before_last;
+        let t_last = dividends[dividends.length - 1].time;
+        let c2 = 0;
+        if (t_last > 0) {
+          let d1 = (Math.log(S_star_amer / K) + (r + sigma * sigma / 2) * t_last) / (sigma * Math.sqrt(t_last));
+          let d2 = d1 - sigma * Math.sqrt(t_last);
+          c2 = S_star_amer * normalCDF(d1) - K * Math.exp(-r * t_last) * normalCDF(d2);
+        }
+        return Math.max(c1, c2);
+      } else {
+        return c1;
+      }
+    }
+
+    // Helper per il prezzo della American Put
+    function calcAmericanPutPrice(S, sigma, T, r, K, dividends) {
+      let PV_all = 0;
+      for (let i = 0; i < dividends.length; i++){
+        PV_all += dividends[i].amount * Math.exp(-r * dividends[i].time);
+      }
+      let S_star_all = S - PV_all;
+      let p1 = 0;
+      if (T > 0) {
+        let d1 = (Math.log(S_star_all / K) + (r + sigma * sigma / 2) * T) / (sigma * Math.sqrt(T));
+        let d2 = d1 - sigma * Math.sqrt(T);
+        p1 = K * Math.exp(-r * T) * normalCDF(-d2) - S_star_all * normalCDF(-d1);
+      }
+      if (dividends.length > 0) {
+        let PV_before_last = 0;
+        for (let i = 0; i < dividends.length - 1; i++){
+          PV_before_last += dividends[i].amount * Math.exp(-r * dividends[i].time);
+        }
+        let S_star_amer = S - PV_before_last;
+        let t_last = dividends[dividends.length - 1].time;
+        let p2 = 0;
+        if (t_last > 0) {
+          let d1 = (Math.log(S_star_amer / K) + (r + sigma * sigma / 2) * t_last) / (sigma * Math.sqrt(t_last));
+          let d2 = d1 - sigma * Math.sqrt(t_last);
+          p2 = K * Math.exp(-r * t_last) * normalCDF(-d2) - S_star_amer * normalCDF(-d1);
+        }
+        return Math.max(p1, p2);
+      } else {
+        return p1;
+      }
+    }
+
+    
+    function calculateAmericanOptions() {
+      try {
+        // Retrieve input values
+        const S = parseFloat(document.getElementById('aSpot').value);
+        const K = parseFloat(document.getElementById('aStrike').value);
+        const T = parseFloat(document.getElementById('aTime').value);
+        const r = (parseFloat(document.getElementById('aRate').value) || 0) / 100;
+        const sigma = (parseFloat(document.getElementById('aVol').value) || 0) / 100;
+        if (isNaN(S) || isNaN(K) || isNaN(T) || isNaN(sigma) || S <= 0 || K <= 0 || T <= 0 || sigma <= 0) {
+          throw new Error("Please enter all values greater than zero to perform the calculation");
+        }
+        
+        // Collect dividends (only those with amount > 0 and time <= T)
+        const dividends = [];
+        document.querySelectorAll('#aDividendContainer .dividend-row').forEach(row => {
+          const amount = parseFloat(row.querySelector('.dividend-amount').value) || 0;
+          const time = parseFloat(row.querySelector('.dividend-time').value) || 0;
+          if (amount > 0 && time > 0 && time <= T) {
+            dividends.push({ amount, time });
+          }
+        });
+        dividends.sort((a, b) => a.time - b.time);
+        
+        // Calculate the present value (PV) of all dividends for adjustment (European price adjustment)
+        let PV_all = 0;
+        let divCalcDetails = "";
+        dividends.forEach((div, idx) => {
+          const pv = div.amount * Math.exp(-r * div.time);
+          PV_all += pv;
+          divCalcDetails += `<p>Dividend ${idx + 1}: Amount = ${div.amount.toFixed(2)}, Time = ${div.time.toFixed(2)} years, PV = ${pv.toFixed(4)}</p>`;
+        });
+        const S_star_all = S - PV_all;
+        
+        // European option prices using adjusted underlying (S* = S_star_all)
+        const d1_eur = (Math.log(S_star_all / K) + (r + (sigma ** 2) / 2) * T) / (sigma * Math.sqrt(T));
+        const d2_eur = d1_eur - sigma * Math.sqrt(T);
+        const c1 = S_star_all * normalCDF(d1_eur) - K * Math.exp(-r * T) * normalCDF(d2_eur);
+        const p1 = K * Math.exp(-r * T) * normalCDF(-d2_eur) - S_star_all * normalCDF(-d1_eur);
+        
+        // For American option pricing, adjust using S** = S - (PV of all dividends except the last)
+        let PV_before_last = 0;
+        if (dividends.length > 0) {
+          for (let i = 0; i < dividends.length - 1; i++) {
+            PV_before_last += dividends[i].amount * Math.exp(-r * dividends[i].time);
+          }
+        }
+        const S_star_amer = dividends.length > 0 ? S - PV_before_last : S;
+        const t2 = dividends.length > 0 ? dividends[dividends.length - 1].time : T;
+        
+        const d1_amer = (Math.log(S_star_amer / K) + (r + (sigma ** 2) / 2 * t2)) / (sigma * Math.sqrt(t2));
+        const d2_amer = d1_amer - sigma * Math.sqrt(t2);
+        const c2 = S_star_amer * normalCDF(d1_amer) - K * Math.exp(-r * t2) * normalCDF(d2_amer);
+        const p2 = K * Math.exp(-r * t2) * normalCDF(-d2_amer) - S_star_amer * normalCDF(-d1_amer);
+        
+        const americanCall = dividends.length > 0 ? Math.max(c1, c2) : c1;
+        const americanPut  = dividends.length > 0 ? Math.max(p1, p2) : p1;
+        
+        // Early Exercise Analysis: Check if early exercise is beneficial based on dividends
+        let earlyExerciseDetails = "";
+        if (dividends.length >= 1) {
+          earlyExerciseDetails += "<h4>Early Exercise Analysis</h4>";
+          const expirationTime = T;
+          dividends.sort((a, b) => a.time - b.time);
+          earlyExerciseDetails += `
+            <div class="calculation-step">
+              <strong>Optimal Condition:</strong> D > K (1 - e<sup>-rΔt</sup>)
+              <ul>
+                <li>D = dividend amount</li>
+                <li>K = strike price</li>
+                <li>r = risk-free rate</li>
+                <li>Δt = time interval between dividends</li>
+              </ul>
+            </div>
+          `;
+          for (let i = 0; i < dividends.length; i++) {
+            const div = dividends[i];
+            let deltaT = (i < dividends.length - 1) ? dividends[i + 1].time - div.time : expirationTime - div.time;
+            const threshold = K * (1 - Math.exp(-r * deltaT));
+            const isOptimal = div.amount > threshold;
+            earlyExerciseDetails += `
+              <div class="calculation-step">
+                <strong>Dividend ${i + 1} Analysis:</strong>
+                <ul>
+                  <li>D = ${div.amount.toFixed(4)}</li>
+                  <li>K (1 - e<sup>-rΔt</sup>) = ${K.toFixed(2)} (1 - e<sup>-${r.toFixed(4)} × ${deltaT.toFixed(2)}</sup>)</li>
+                  <li>Threshold = ${threshold.toFixed(4)}</li>
+                  <li>Comparison: ${div.amount.toFixed(4)} ${div.amount > threshold ? '>' : '<'} ${threshold.toFixed(4)}</li>
+                  <li>Conclusion: <span class="${isOptimal ? 'optimal' : 'not-optimal'}">${isOptimal ? 'Early exercise recommended' : 'No early exercise'}</span></li>
+                </ul>
+              </div>
+            `;
+          }
+        }
+        const earlyExerciseMsg = `<div class="early-exercise-section">${earlyExerciseDetails}</div>`;
+        
+        // Display the detailed price calculations
+        let calcSteps = `<p><strong>European Option Prices (with dividend adjustment):</strong></p>`;
+        calcSteps += divCalcDetails;
+        calcSteps += `<p><strong>S*</strong> = S - Σ(PV of Dividends) = ${S.toFixed(2)} - ${PV_all.toFixed(4)} = ${S_star_all.toFixed(4)}</p>`;
+        calcSteps += `<p><strong>d1 (European)</strong> = [ln(${S_star_all.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + ${(sigma ** 2 / 2).toFixed(4)}) × ${T.toFixed(4)}] / (${sigma.toFixed(4)} × √${T.toFixed(4)}) = ${d1_eur.toFixed(4)}</p>`;
+        calcSteps += `<p><strong>d₂ (European)</strong> = ${d1_eur.toFixed(4)} - ${sigma.toFixed(4)} × √${T.toFixed(4)} = ${d2_eur.toFixed(4)}</p>`;
+        calcSteps += `<p><strong>European Call (c1)</strong> = ${S_star_all.toFixed(4)} × N(${d1_eur.toFixed(4)}) - ${K.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × N(${d2_eur.toFixed(4)}) = ${c1.toFixed(4)}</p>`;
+        calcSteps += `<p><strong>European Put (p1)</strong> = ${K.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × N(-${d2_eur.toFixed(4)}) - ${S_star_all.toFixed(4)} × N(-${d1_eur.toFixed(4)}) = ${p1.toFixed(4)}</p>`;
+        if (dividends.length > 0) {
+          calcSteps += `<p><strong>S**</strong> = S - Σ(PV of Dividends except the last) = ${S.toFixed(2)} - ${PV_before_last.toFixed(4)} = ${S_star_amer.toFixed(4)}</p>`;
+          calcSteps += `<p>Using t₂ = ${t2.toFixed(2)} years (time of last dividend):</p>`;
+          calcSteps += `<p><strong>d1 (American)</strong> = [ln(${S_star_amer.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + ${(sigma ** 2 / 2).toFixed(4)}) × ${t2.toFixed(2)}] / (${sigma.toFixed(4)} × √${t2.toFixed(2)}) = ${d1_amer.toFixed(4)}</p>`;
+          calcSteps += `<p><strong>d₂ (American)</strong> = ${d1_amer.toFixed(4)} - ${sigma.toFixed(4)} × √${t2.toFixed(2)} = ${d2_amer.toFixed(4)}</p>`;
+          calcSteps += `<p><strong>European Call with S** (c2)</strong> = ${S_star_amer.toFixed(4)} × N(${d1_amer.toFixed(4)}) - ${K.toFixed(4)} × e<sup>-${(r * t2).toFixed(4)}</sup> × N(${d2_amer.toFixed(4)}) = ${c2.toFixed(4)}</p>`;
+          calcSteps += `<p><strong>European Put with S** (p2)</strong> = ${K.toFixed(4)} × e<sup>-${(r * t2).toFixed(4)}</sup> × N(-${d2_amer.toFixed(4)}) - ${S_star_amer.toFixed(4)} × N(-${d1_amer.toFixed(4)}) = ${p2.toFixed(4)}</p>`;
+          calcSteps += `<p><strong>American Call</strong> = max(c1, c2) = max(${c1.toFixed(4)}, ${c2.toFixed(4)}) = ${americanCall.toFixed(4)}</p>`;
+          calcSteps += `<p><strong>American Put</strong> = max(p1, p2) = max(${p1.toFixed(4)}, ${p2.toFixed(4)}) = ${americanPut.toFixed(4)}</p>`;
+          calcSteps += earlyExerciseMsg;
+        }
+        
+        safeSetText('aCallPrice', americanCall.toFixed(4));
+        safeSetText('aPutPrice', americanPut.toFixed(4));
+        safeSetHTML('americanCalculationsContent', calcSteps);
+        
+        // === CALCULATE AMERICAN OPTION GREENS USING FINITE DIFFERENCES ===
+        // Perturbation parameters:
+        // h = 1% of underlying price S
+        // dsigma = 1% of volatility σ
+        // dt = 1 day (1/365 years)
+        // dr = 1% of risk-free rate r
+        let h = S * 0.01; if (h === 0) h = 0.01;
+        let dsigma = sigma * 0.01; if (dsigma === 0) dsigma = 0.001;
+        let dt = 1 / 365;
+        let dr = r * 0.01; if (dr === 0) dr = 0.0001;
+        
+        // Calculate Greeks for the CALL option using finite differences:
+        let priceUpCall = calcAmericanCallPrice(S + h, sigma, T, r, K, dividends);
+        let priceDownCall = calcAmericanCallPrice(S - h, sigma, T, r, K, dividends);
+        let baseCall = calcAmericanCallPrice(S, sigma, T, r, K, dividends);
+        let deltaCall = (priceUpCall - priceDownCall) / (2 * h);
+        let gammaCall = (priceUpCall - 2 * baseCall + priceDownCall) / (h * h);
+        
+        let priceUpSigmaCall = calcAmericanCallPrice(S, sigma + dsigma, T, r, K, dividends);
+        let priceDownSigmaCall = calcAmericanCallPrice(S, sigma - dsigma, T, r, K, dividends);
+        let vegaCall = (priceUpSigmaCall - priceDownSigmaCall) / (2 * dsigma);
+        
+        let thetaCall = 0;
+        if (T - dt > 0) {
+          let priceT = calcAmericanCallPrice(S, sigma, T, r, K, dividends);
+          let priceTminus = calcAmericanCallPrice(S, sigma, T - dt, r, K, dividends);
+          thetaCall = (priceTminus - priceT) / dt;
+        }
+        
+        let priceUpRhoCall = calcAmericanCallPrice(S, sigma, T, r + dr, K, dividends);
+        let priceDownRhoCall = calcAmericanCallPrice(S, sigma, T, r - dr, K, dividends);
+        let rhoCall = (priceUpRhoCall - priceDownRhoCall) / (2 * dr);
+        
+        // Calculate Greeks for the PUT option using finite differences:
+        let priceUpPut = calcAmericanPutPrice(S + h, sigma, T, r, K, dividends);
+        let priceDownPut = calcAmericanPutPrice(S - h, sigma, T, r, K, dividends);
+        let basePut = calcAmericanPutPrice(S, sigma, T, r, K, dividends);
+        let deltaPut = (priceUpPut - priceDownPut) / (2 * h);
+        let gammaPut = (priceUpPut - 2 * basePut + priceDownPut) / (h * h);
+        
+        let priceUpSigmaPut = calcAmericanPutPrice(S, sigma + dsigma, T, r, K, dividends);
+        let priceDownSigmaPut = calcAmericanPutPrice(S, sigma - dsigma, T, r, K, dividends);
+        let vegaPut = (priceUpSigmaPut - priceDownSigmaPut) / (2 * dsigma);
+        
+        let thetaPut = 0;
+        if (T - dt > 0) {
+          let priceTPut = calcAmericanPutPrice(S, sigma, T, r, K, dividends);
+          let priceTminusPut = calcAmericanPutPrice(S, sigma, T - dt, r, K, dividends);
+          thetaPut = (priceTminusPut - priceTPut) / dt;
+        }
+        
+        let priceUpRhoPut = calcAmericanPutPrice(S, sigma, T, r + dr, K, dividends);
+        let priceDownRhoPut = calcAmericanPutPrice(S, sigma, T, r - dr, K, dividends);
+        let rhoPut = (priceUpRhoPut - priceDownRhoPut) / (2 * dr);
+        
+        safeSetText('aCallDelta', deltaCall.toFixed(4));
+        safeSetText('aCallGamma', gammaCall.toFixed(4));
+        safeSetText('aCallVega', vegaCall.toFixed(4));
+        safeSetText('aCallTheta', thetaCall.toFixed(4));
+        safeSetText('aCallRho', rhoCall.toFixed(4));
+        
+        safeSetText('aPutDelta', deltaPut.toFixed(4));
+        safeSetText('aPutGamma', gammaPut.toFixed(4));
+        safeSetText('aPutVega', vegaPut.toFixed(4));
+        safeSetText('aPutTheta', thetaPut.toFixed(4));
+        safeSetText('aPutRho', rhoPut.toFixed(4));
+        
+        // Display detailed Greek calculations with clear formulas
+        let greekSteps = `
+          <h4>Perturbation Parameters:</h4>
+          <p><em>h</em> = 1% of underlying price S = ${h.toFixed(4)}</p>
+          <p><em>dsigma</em> = 1% of volatility σ = ${dsigma.toFixed(4)}</p>
+          <p><em>dt</em> = 1 day = 1/365 ≈ ${dt.toFixed(4)} years</p>
+          <p><em>dr</em> = 1% of risk-free rate r = ${dr.toFixed(4)}</p>
+          
+          <hr>
+          
+          <h4>American Call Greeks</h4>
+          <p><strong>Delta Call (Δ_call):</strong><br>
+          Δ_call = [Price(S + h) - Price(S - h)] / (2h)</p>
+          <p>Price(S + h) = ${priceUpCall.toFixed(4)}</p>
+          <p>Price(S - h) = ${priceDownCall.toFixed(4)}</p>
+          <p><strong>Δ_call = (${priceUpCall.toFixed(4)} - ${priceDownCall.toFixed(4)}) / (2 × ${h.toFixed(4)}) = ${deltaCall.toFixed(4)}</strong></p>
+          
+          <h4>Gamma Call (Γ_call):</h4>
+          <p>Γ_call = [Price(S + h) - 2×Price(S) + Price(S - h)] / (h²)</p>
+          <p>Price(S) = ${baseCall.toFixed(4)}</p>
+          <p><strong>Γ_call = (${priceUpCall.toFixed(4)} - 2×${baseCall.toFixed(4)} + ${priceDownCall.toFixed(4)}) / (${h.toFixed(4)}²) = ${gammaCall.toFixed(4)}</strong></p>
+          
+          <h4>Vega Call (ν_call):</h4>
+          <p>ν_call = [Price(σ + dsigma) - Price(σ - dsigma)] / (2 × dsigma)</p>
+          <p>Price(σ + dsigma) = ${priceUpSigmaCall.toFixed(4)}</p>
+          <p>Price(σ - dsigma) = ${priceDownSigmaCall.toFixed(4)}</p>
+          <p><strong>ν_call = (${priceUpSigmaCall.toFixed(4)} - ${priceDownSigmaCall.toFixed(4)}) / (2 × ${dsigma.toFixed(4)}) = ${vegaCall.toFixed(4)}</strong></p>
+          
+          <h4>Theta Call (θ_call):</h4>
+          <p>θ_call = [Price(T - dt) - Price(T)] / dt</p>
+          <p>Price(T) = ${baseCall.toFixed(4)}</p>
+          <p>Price(T - dt) = ${ (T - dt > 0 ? calcAmericanCallPrice(S, sigma, T - dt, r, K, dividends) : "N/A").toFixed(4) }</p>
+          <p><strong>θ_call = (Price(T - dt) - Price(T)) / ${dt.toFixed(4)} = ${thetaCall.toFixed(4)}</strong></p>
+          
+          <h4>Rho Call (ρ_call):</h4>
+          <p>ρ_call = [Price(r + dr) - Price(r - dr)] / (2 × dr)</p>
+          <p>Price(r + dr) = ${priceUpRhoCall.toFixed(4)}</p>
+          <p>Price(r - dr) = ${priceDownRhoCall.toFixed(4)}</p>
+          <p><strong>ρ_call = (${priceUpRhoCall.toFixed(4)} - ${priceDownRhoCall.toFixed(4)}) / (2 × ${dr.toFixed(4)}) = ${rhoCall.toFixed(4)}</strong></p>
+          
+          <hr>
+          
+          <h4>American Put Greeks</h4>
+          <p><strong>Delta Put (Δ_put):</strong><br>
+          Δ_put = [Price(S + h) - Price(S - h)] / (2h)</p>
+          <p>Price(S + h) = ${priceUpPut.toFixed(4)}</p>
+          <p>Price(S - h) = ${priceDownPut.toFixed(4)}</p>
+          <p><strong>Δ_put = (${priceUpPut.toFixed(4)} - ${priceDownPut.toFixed(4)}) / (2 × ${h.toFixed(4)}) = ${deltaPut.toFixed(4)}</strong></p>
+          
+          <h4>Gamma Put (Γ_put):</h4>
+          <p>Γ_put = [Price(S + h) - 2×Price(S) + Price(S - h)] / (h²)</p>
+          <p>Price(S) = ${basePut.toFixed(4)}</p>
+          <p><strong>Γ_put = (${priceUpPut.toFixed(4)} - 2×${basePut.toFixed(4)} + ${priceDownPut.toFixed(4)}) / (${h.toFixed(4)}²) = ${gammaPut.toFixed(4)}</strong></p>
+          
+          <h4>Vega Put (ν_put):</h4>
+          <p>ν_put = [Price(σ + dsigma) - Price(σ - dsigma)] / (2 × dsigma)</p>
+          <p>Price(σ + dsigma) = ${priceUpSigmaPut.toFixed(4)}</p>
+          <p>Price(σ - dsigma) = ${priceDownSigmaPut.toFixed(4)}</p>
+          <p><strong>ν_put = (${priceUpSigmaPut.toFixed(4)} - ${priceDownSigmaPut.toFixed(4)}) / (2 × ${dsigma.toFixed(4)}) = ${vegaPut.toFixed(4)}</strong></p>
+          
+          <h4>Theta Put (θ_put):</h4>
+          <p>θ_put = [Price(T - dt) - Price(T)] / dt</p>
+          <p>Price(T) = ${basePut.toFixed(4)}</p>
+          <p>Price(T - dt) = ${ (T - dt > 0 ? calcAmericanPutPrice(S, sigma, T - dt, r, K, dividends) : "N/A").toFixed(4) }</p>
+          <p><strong>θ_put = (Price(T - dt) - Price(T)) / ${dt.toFixed(4)} = ${thetaPut.toFixed(4)}</strong></p>
+          
+          <h4>Rho Put (ρ_put):</h4>
+          <p>ρ_put = [Price(r + dr) - Price(r - dr)] / (2 × dr)</p>
+          <p>Price(r + dr) = ${priceUpRhoPut.toFixed(4)}</p>
+          <p>Price(r - dr) = ${priceDownRhoPut.toFixed(4)}</p>
+          <p><strong>ρ_put = (${priceUpRhoPut.toFixed(4)} - ${priceDownRhoPut.toFixed(4)}) / (2 × ${dr.toFixed(4)}) = ${rhoPut.toFixed(4)}</strong></p>
+        `;
+        safeSetHTML('americanGreeksContent', greekSteps);
+        
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+
+
+
+    // Funzione Black-Scholes corretta
+    function blackScholes(S, K, T, r, sigma, q, type) {
+        const d1 = (Math.log(S / K) + (r - q + (sigma**2)/2) * T) / (sigma * Math.sqrt(T));
+        const d2 = d1 - sigma * Math.sqrt(T);
+        
+        if(type === 'call') {
+            return S * Math.exp(-q * T) * normalCDF(d1) - K * Math.exp(-r * T) * normalCDF(d2);
+        } else {
+            return K * Math.exp(-r * T) * normalCDF(-d2) - S * Math.exp(-q * T) * normalCDF(-d1);
+        }
+    }
+
+    // Grafici per American Options
+    let aCallChart, aPutChart;
+    function renderAmericanPayoffCharts() {
+      try {
+        const S = parseFloat(document.getElementById('aSpot').value) || 0;
+        const K = parseFloat(document.getElementById('aStrike').value) || 0;
+        let S_star = S;
+        const r = (parseFloat(document.getElementById('aRate').value) || 0) / 100;
+        const callPrice = parseFloat(document.getElementById('aCallPrice').textContent) || 0;
+        const putPrice = parseFloat(document.getElementById('aPutPrice').textContent) || 0;
+        
+        // Calcolo dell'adeguamento per i dividendi (come originariamente per le put)
+        const dividends = [];
+        document.querySelectorAll('#aDividendContainer .dividend-row').forEach(row => {
+          const amount = parseFloat(row.querySelector('.dividend-amount').value) || 0;
+          const time = parseFloat(row.querySelector('.dividend-time').value) || 0;
+          if (amount > 0 && time > 0) {
+            dividends.push({ amount, time });
+          }
+        });
+        dividends.sort((a, b) => a.time - b.time);
+        let PV_before_last = 0;
+        if (dividends.length > 0) {
+          for (let i = 0; i < dividends.length - 1; i++) {
+            PV_before_last += dividends[i].amount * Math.exp(-r * dividends[i].time);
+          }
+          S_star = S - PV_before_last;
+        }
+        
+        // Costruzione del range per l'asse x, centrato su S_star
+        const numSteps = 10;
+        const xMin = S_star * 0.5;
+        const xMax = S_star * 1.5;
+        const step = (xMax - xMin) / numSteps;
+        let xValues = [];
+        for (let s = xMin; s <= xMax; s += step) {
+          xValues.push(s);
+        }
+        if (xValues[xValues.length - 1] < xMax) {
+          xValues.push(xMax);
+        }
+        const labels = xValues.map(s => s.toFixed(2));
+        
+        // Calcolo dei payoff
+        const payoffLongCall = xValues.map(s => Math.max(s - K, 0) - callPrice);
+        const payoffShortCall = xValues.map(s => callPrice - Math.max(s - K, 0));
+        const payoffLongPut = xValues.map(s => Math.max(K - s, 0) - putPrice);
+        const payoffShortPut = xValues.map(s => putPrice - Math.max(K - s, 0));
+        
+        const textColor = document.body.classList.contains('dark-mode') ? '#F1F5F9' : '#1E293B';
+        const gridColor = document.body.classList.contains('dark-mode') ? '#334155' : '#E2E8F0';
+        
+        // Impostazioni comuni per entrambi i grafici (senza scaling dinamico)
+        const commonOptions = {
+          plugins: {
+            legend: { display: true },
+            tooltip: { enabled: false },
+            zeroLinePlugin: { lineWidth: 2, color: textColor }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: { text: 'Underlying Price', display: true, font: { weight: 'bold', size: 14 }, color: textColor },
+              ticks: { font: { weight: 'bold', size: 12 }, color: textColor, maxTicksLimit: 5 },
+              grid: { color: gridColor, lineWidth: 1 },
+              border: { color: textColor, width: 2 }
+            },
+            y: {
+              title: { text: 'Profit / Loss', display: true, font: { weight: 'bold', size: 14 }, color: textColor },
+              ticks: { font: { weight: 'bold', size: 12 }, color: textColor, maxTicksLimit: 5 },
+              grid: { color: gridColor, lineWidth: 1 },
+              border: { color: textColor, width: 2 }
+              // Lasciamo Chart.js ad adattare l'asse y automaticamente
+            }
+          }
+        };
+        
+        // Distrugge eventuali grafici precedenti
+        if (aCallChart) aCallChart.destroy();
+        if (aPutChart) aPutChart.destroy();
+        
+        // Grafico delle Call (Long e Short) con le stesse impostazioni delle Put
+        aCallChart = new Chart(document.getElementById('aCallChart').getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Long American Call",
+                data: payoffLongCall,
+                borderColor: 'hsl(220, 100%, 64%)',
+                tension: 0,
+                borderWidth: 2
+              },
+              {
+                label: "Short American Call",
+                data: payoffShortCall,
+                borderColor: 'hsl(10, 100%, 60%)',
+                tension: 0,
+                borderWidth: 2
+              }
+            ]
+          },
+          options: Object.assign({}, commonOptions, {
+            plugins: { title: { display: true, text: "American Call Payoff", font: { weight: 'bold', size: 16 } } }
+          })
+        });
+        
+        // Grafico delle Put (Long e Short) invariato
+        aPutChart = new Chart(document.getElementById('aPutChart').getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Long American Put",
+                data: payoffLongPut,
+                borderColor: 'hsl(220, 100%, 64%)',
+                tension: 0,
+                borderWidth: 2
+              },
+              {
+                label: "Short American Put",
+                data: payoffShortPut,
+                borderColor: 'hsl(10, 100%, 60%)',
+                tension: 0,
+                borderWidth: 2
+              }
+            ]
+          },
+          options: Object.assign({}, commonOptions, {
+            plugins: { title: { display: true, text: "American Put Payoff", font: { weight: 'bold', size: 16 } } }
+          })
+        });
+        
+      } catch (error) {
+        console.error('Errore nel rendering del grafico:', error);
+      }
+    }
+
+    // Rileva automaticamente la pagina corrente e seleziona il dropdown
+    window.onload = function() {
+        const path     = window.location.pathname;
+        const file     = path.split("/").pop();                       // es: "futures-options-calculator.html"
+        const match    = file.replace('-calculator.html', '');        // es: "futures-options"
+        const selector = document.getElementById('derivativeType');
+        if (selector && match) {
+        selector.value = match;             // imposta il dropdown sul valore giusto
+        handleCalculatorSelection();        // mostra la sezione corrispondente
+        }
+    };
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const selector = document.getElementById('derivativeType');
+      selector.addEventListener('change', function () {
+        const value = this.value;
+        if (value) {
+          const targetPage = `${value}-calculator.html`;
+          window.location.href = targetPage;
+        }
+    });
+    });
+
+
+    </script>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-left">
+          <h3 class="footer-brand">
+          <a href="index.html">Black &amp; Scholes Calculator</a>
+          </h3>
+          <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
+          <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
+        </div>
+        <div class="footer-right">
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="cookie-policy.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script src="cookie-consent.js"></script>
+
+    </body>
+    </html>

@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ================================
+       COOKIE BANNER & MODAL STYLES
+       ================================ */
+       :root {
+      --primary: #01796F;
+      --background: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-color: #333333;
+      --card-radius: 8px;
+      --card-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .cookie-banner, .cookie-modal { position: fixed; left: 0; right: 0; z-index: 1000; }
+    .cookie-banner {
+      bottom: 0;
+      background: var(--card-bg);
+      padding: 1rem;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+      display: flex; flex-wrap: wrap;
+      align-items: center; justify-content: space-between;
+    }
+    .cookie-banner p { flex: 1 1 60%; margin-right: 1rem; }
+    .cookie-banner button {
+      margin: 0.25rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px;
+      cursor: pointer; font-weight: 600;
+    }
+    #accept-all { background: var(--primary); color: #fff; }
+    #decline-all { background: #ddd; }
+    #cookie-settings { background: transparent; color: var(--primary); }
+    .cookie-modal {
+      top: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+    }
+    .cookie-modal-content {
+      background: var(--card-bg);
+      max-width: 400px;
+      margin: 5% auto;
+      padding: 1.5rem;
+      border-radius: var(--card-radius);
+      position: relative;
+    }
+    .cookie-modal-content h2 { margin-bottom: 1rem; color: var(--primary); }
+    .cookie-modal-content label { display: block; margin-bottom: 0.75rem; }
+    .cookie-modal-content input[type="checkbox"] { margin-right: 0.5rem; }
+    #save-settings, #close-modal {
+      margin-top: 1rem; padding: 0.5rem 1rem;
+      border: none; border-radius: 4px; cursor: pointer;
+    }
+    #save-settings { background: var(--primary); color: #fff; }
+    #close-modal { background: #ddd; }
+    :root {
+      --primary: #01796F;
+      --secondary: #01796F;
+      --accent: #01796F;
+      --background: #F8FAFC;
+      --text: #000;
+      --card: #fff;
+    }
+    body {
+      font-family:'Inter', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      transition: all 0.3s;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background: #fff;
+      color: var(--text);
+      padding: 2rem 0;
+      text-align: center;
+      border-bottom: 1px solid #eaeaea;
+    }
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      color: white;
+      padding: 5px;
+    }
+    .calculator-selector {
+      margin-top: 20px;
+      position: relative;
+      top: -10px;
+      left: -10px;
+    }
+    #derivativeType {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--secondary);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 16px;
+      appearance: none;
+      cursor: pointer;
+    }
+    optgroup {
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    option {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    .calculator-selector::after {
+      content: '▼';
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--secondary);
+    }
+    .calculator {
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-top: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      display: none;
+    }
+    .calculator.active {
+      display: block;
+    }
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      max-width: 330px;
+      padding: 12px;
+      border: 2px solid #E2E8F0;
+      border-radius: 8px;
+      font-size: 16px;
+      background: var(--background);
+      color: var(--text);
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .result-card {
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 12px;
+      background: var(--background);
+    }
+    .result-card h3 {
+      margin-bottom: 0.5rem;
+      color: #000;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    body.dark-mode .result-card h3 {
+      color: #fff;
+    }
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      color: var(--primary);
+    }
+    button.calculate-btn {
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+    .calculations {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--background);
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+    }
+    .calculations h3 {
+      margin-bottom: 1rem;
+      color: var(--secondary);
+    }
+    .calculations p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    .calculations sup {
+      font-size: 0.8em;
+      vertical-align: super;
+    }
+    .greeks-columns {
+      display: flex;
+      gap: 2rem;
+    }
+    .greeks-column {
+      flex: 1;
+    }
+    .greeks-column .result-card {
+      margin-bottom: 0;
+    }
+    body.dark-mode {
+      --background: #fff;
+      --text: #000;
+      --card: #fff;
+      --secondary: #01796F;
+    }
+    body.dark-mode .calculations,
+    body.dark-mode .result-card {
+      background: var(--card);
+    }
+
+    body.dark-mode .result-card h3 {
+      color: #fff;
+    }
+    body.dark-mode .dark-mode-toggle {
+      color: #F1F5F9;
+    }
+    .toggle-buttons-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .toggle-buttons-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .toggle-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 16px;
+      width: 100%;
+    }
+    .toggle-btn.active {
+      background: var(--accent);
+    }
+    /* Grafico Futures: altezza a 600px */
+    #futureGraph {
+      margin-top: 2rem;
+      height: 600px;
+      position: relative;
+      display: none;
+    }
+    /* Grafici Vanilla e Currency: wrapper con dimensione fissa */
+    .graph-container {
+      margin-top: 2rem;
+      display: none;
+    }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .chart-wrapper {
+      height: 400px;
+      background: transparent !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+    }
+    body.dark-mode .chart-wrapper {
+      background: var(--card);
+    }
+    .dividend-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 1rem;
+      align-items: auto;
+      background: var(--background);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .dividend-row .input-group {
+      margin-bottom: 0;
+    }
+
+    .dividend-row label {
+      color: var(--secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .dividend-row input {
+      width: 100%;
+      padding: 4px;
+      border: 2px solid #E2E8F0;
+      border-radius: 8px;
+      background: var(--background);
+      color: var(--text);
+    }
+
+    .dividend-row button {
+      justify-self: end; 
+      align-self: end;
+      margin: 0.25rem 0 0 0.5rem;
+    }
+ 
+    .remove-dividend {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .early-exercise-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--background);
+    border-radius: 8px;
+    }
+
+    .calculation-step {
+        margin: 1rem 0;
+    }
+
+    .calculation-step ul {
+        margin: 0.5rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .optimal {
+        color: #10B981;
+        font-weight: 600;
+    }
+
+    .not-optimal {
+        color: #EF4444;
+        font-weight: 600;
+    }
+
+    .variable-rate-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 50px; /* Larghezza dedicata al pulsante */
+      gap: 1rem;
+      align-items: center; /* Allineamento verticale centrale */
+      padding: 0.5rem 1rem;
+    }
+
+    .remove-variable-rate {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-left: auto;
+      align-self: center; 
+      margin-top: 2px;
+      position: relative;
+      top: 2px;
+    }
+
+    .variable-rate-row .input-group {
+      margin-bottom: 0;
+    }
+
+    .variable-rate-row input {
+      padding: 6px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .variable-rate-row label {
+      color: var(--secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .remove-variable-rate {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: var(--background);
+    }
+    /* Nuovo CSS per la griglia delle greche */
+    .greeks-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .greeks-category {
+      background: var(--background);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .greeks-category h4 {
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .greeks-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .result-card h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    #straddleChart {
+      height: 400px;
+    }
+
+    .chart-title {
+        color: var(--secondary);
+        text-align: center;
+        margin: 0.5rem 0 1rem 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .chart-wrapper {
+        height: 300px;
+        background: var(--background);
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .charts-grid .chart-wrapper:nth-child(3),
+    .charts-grid .chart-wrapper:nth-child(4) {
+        margin-top: 40px;
+    }
+
+    #chooserChart {
+        background: rgba(255,255,255,0.9);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 15px;
+    }
+
+    #fsGraph {
+      height: 400px; /* oppure un'altezza che preferisci */
+    }
+
+    .navbar {
+      display: flex;
+      height: 47px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color: #F8FAFC;
+      border-bottom: 1px solid #eaeaea;
+    }
+    
+    .navbar-left,
+    .navbar-center,
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    /* Il brand ora punta a homepage.html */
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #000;
+      text-decoration: none;
+    }
+    
+    .navbar-left .brand:hover {
+      text-decoration: underline;
+    }
+
+    .navbar-center .calculator-selector,
+    .navbar-center .calculator-selector select,
+    
+    /* Nei link della navbar: Calculators e Theory */
+    .nav-link {
+      font-weight: 500;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    .nav-link:hover {
+      color: #01796F;
+    }
+
+    
+    /* Stili che assicurano che il blocco della tendina abbia le stesse dimensioni della search bar */
+    .calculator-selector {
+      display: inline-block;
+      width: 300px; /* imposta la larghezza come quella della search bar originale */
+    }
+    .calculator-selector select {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      appearance: none;
+      background: #fff;
+    }
+    .navbar-right .nav-link {
+      text-decoration: none;
+      margin-left: 20px;
+      color: #333;
+      font-size: 1rem;
+    }
+
+  
+
+    /* Imposta un layout mobile-first per il container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      width: 90%; /* Usa percentuali per adattarsi a diversi schermi */
+    }
+
+    /* Esempio di grid responsiva */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    sub {
+      font-size: 0.8em;
+      vertical-align: sub;
+      line-height: 1;
+    }
+
+    .cookie-settings-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .footer-brand a {
+      color: inherit;         /* eredita il colore del .footer-brand */
+      text-decoration: none;  /* rimuove la sottolineatura */
+      font-weight: 700;       /* mantiene il peso del font */
+    }
+
+    .footer-brand a:hover {
+      color: var(--primary);  /* cambia colore on hover se vuoi */
+    }
+
+    #futureGraph .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    #futureGraph .result-card {
+      background: var(--background);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #futureGraph .chart-title {
+      color: var(--secondary);
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    #futureGraph .chart-wrapper {
+      width: 100%;
+      height: 300px;
+      background: transparent;
+      padding: 0;
+    }
+    #futureGraph .chart-wrapper canvas {
+      width: 100% !important;
+      height: 300px !important;
+      display: block;
+    }
+
+
+
+
+    @media (max-width: 600px) {
+    /* Contenitore principale */
+    .container {
+      width: 95%;
+      max-width: 100%;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    /* Input: colonna singola */
+    .input-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .input-group,
+    .input-group label,
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Bottoni */
+    .toggle-buttons-2,
+    .toggle-buttons-3 {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .toggle-btn,
+    button.calculate-btn {
+      font-size: 14px;
+      padding: 10px 18px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Sezioni delle greche */
+    .greeks-grid,
+    .greeks-columns {
+      display: block;
+      width: 100%;
+    }
+    .greeks-grid > * {
+      margin-bottom: 0.5rem;
+    }
+    .greeks-column h3,
+    .greeks-column p {
+      font-size: 13px;
+      margin: 0.2rem 0;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    /* Charts generali */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .chart-wrapper {
+      width: 100%;
+      height: auto;
+      min-height: 250px;
+      max-height: 380px;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .chart-wrapper canvas {
+      width: 100% !important;
+      height: 280px !important;
+      display: block;
+    }
+
+    /* Futures - Griglia */
+    #futureGraph .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    /* Futures - Card dei grafici */
+    #futureGraph .result-card {
+      padding: 1rem;
+      background: var(--background);
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Futures - Grafici dentro la card */
+    #futureGraph .chart-wrapper {
+      width: 100%;
+      height: auto;
+      min-height: 250px;
+      max-height: 380px;
+      overflow: hidden;
+      box-sizing: border-box;
+      background: none;
+      padding: 0;
+      box-shadow: none;
+    }
+    #futureGraph .chart-wrapper canvas {
+      width: 100% !important;
+      height: 280px !important;
+      display: block;
+    }
+
+    /* Binary Options */
+    #binary-calculator .charts-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #binary-calculator .chart-wrapper {
+      width: 100%;
+      height: auto;
+      min-height: 250px;
+      max-height: 380px;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    #binary-calculator .chart-wrapper canvas {
+      width: 100% !important;
+      height: 280px !important;
+      display: block;
+    }
+
+    /* Tabelle scrollabili */
+    table {
+      width: 100%;
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-size: 13px;
+      box-sizing: border-box;
+    }
+    #cds-pd-table {
+      font-size: 13px;
+    }
+
+    /* Calcoli */
+    .calculations, 
+    .calculations * {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    /* Footer */
+    .footer-container {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px 0;
+    }
+  }
+
+
+
+
+    /* Navbar responsiva */
+    .navbar {
+      display: flex;
+      flex-wrap: wrap; /* Permette di andare a capo se necessario */
+      justify-content: space-between;
+      padding: 1rem;
+    }
+    /* Rimuovo eventuali interazioni indesiderate (tooltip/legenda) */
+    canvas { cursor: default; }
+    /* -------------------------- */
+    /*         FOOTER            */
+    /* -------------------------- */
+    .site-footer {
+      background-color: #fff;
+      border-top: 1px solid #eaeaea;
+      padding: 2rem;
+    }
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      max-width: 10000px;
+      margin: 0 auto;
+    }
+    .footer-left,
+    .footer-right {
+      flex: 1;
+    }
+    .footer-brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
+    .footer-text {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    .footer-right ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-right a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .footer-right a:hover {
+      color: #01796F;
+    }
+  </style>
+  </head>
+  <body>
+  
+    <!-- COOKIE BANNER -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
+      <p>
+        We use cookies to remember your settings, analyze traffic, and provide personalized ads. 
+        Please select your preferences or read our
+        <a href="cookie-policy.html" class="cookie-policy-link" target="_blank" rel="noopener">Cookie Policy</a>.
+      </p>
+      <div>
+        <button id="accept-all">Accept All</button>
+        <button id="decline-all">Decline All</button>
+        <button id="cookie-settings">Settings</button>
+      </div>
+    </div>
+  
+    <!-- COOKIE SETTINGS MODAL -->
+    <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
+      <div class="cookie-modal-content">
+        <h2 id="cookie-modal-title">Cookie Preferences</h2>
+        <form id="cookie-form">
+          <label><input type="checkbox" id="toggle-preferences"> Preferences Cookies</label>
+          <label><input type="checkbox" id="toggle-statistics"> Statistics Cookies</label>
+          <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
+          <button type="button" id="save-settings">Save Settings</button>
+        </form>
+        <button id="close-modal">Close</button>
+      </div>
+    </div>
+  
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <!-- Brand (sinistra) -->
+      <div class="navbar-left">
+        <a href="index.html" class="brand">Black &amp; Scholes Calculator</a>
+      </div>
+
+      <!-- Center: Derivative Selector -->
+      <div class="navbar-center">
+        <div class="calculator-selector">
+          <select id="derivativeType">
+            <option value="">Select a derivative...</option>
+            <option value="theory">Vanilla Options</option>
+            <option value="futures">Futures & Forwards</option>
+            <option value="futures-options">Options on Futures/Forwards</option>
+            <option value="discrete-div">Options with Discrete Dividends</option>
+            <option value="american">American Options</option>
+            <option value="index-options">Index Options</option>
+            <option value="currency">Currency Options</option>
+            <option value="swap">Interest Rate Swaps</option>
+            <option value="swaption">Swaptions</option>
+            <option value="cds">Credit Default Swaps</option>
+            <option value="gap-options">Gap Options</option>
+            <option value="binary">Binary Options</option>
+            <option value="chooser-options">Chooser Options</option>
+            <option value="straddle">Straddle Strategy</option>
+            <option value="forward-start-options">Forward Start Options</option>
+          </select>
+        </div>      
+      </div>
+
+      <!-- Nav links (destra) -->
+    <div class="navbar-right">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="theory.html" class="nav-link">Theory</a>
+    </div>
+  </nav>
+  
+  </header>
+  <main class="container">
+    <!-- Swap Calculator -->
+    <div id="swap-calculator" class="calculator">
+        <h2>Swap Calculator</h2>
+        <div class="input-grid">
+          <div class="input-group">
+            <label>Notional Amount</label>
+            <input type="number" id="notional" value="" step="0.0001">
+          </div>
+          <div class="input-group">
+            <label>Maturity (years)</label>
+            <input type="number" id="maturity" value="" step="0.01">
+          </div>
+          <div class="input-group">
+            <label>Payment Frequency</label>
+            <select id="frequency">
+              <option value="1">Annual</option>
+              <option value="2">Semi-Annual</option>
+              <option value="4">Quarterly</option>
+            </select>
+          </div>
+        </div>
+        
+        <h3 style="margin: 1rem 0; color: var(--secondary);">Yield Curve Input</h3>
+        <div id="variableRatesContainer">
+          <div class="variable-rate-row">
+            <div class="input-group">
+              <label>Years</label>
+              <input type="number" class="variable-rate-time" value="" step="0.01">
+            </div>
+            <div class="input-group">
+              <label>Rate (%)</label>
+              <input type="number" class="variable-rate" value="" step="0.0001">
+            </div>
+            <button class="remove-variable-rate" onclick="removeVariableRateRow(this)">×</button>
+          </div>
+        </div>
+        
+        <button class="calculate-btn" onclick="addVariableRateRow()">Add Rate Period</button>
+        <button class="calculate-btn" onclick="calculateSwap()">Calculate Swap</button>
+        
+        <div class="results">
+          <div class="result-card">
+            <h3>Fixed Rate</h3>
+            <div class="price" id="fixed-rate">0.0000%</div>
+          </div>
+        </div>
+        
+        <div class="calculations">
+          <h3>📝 Calculations:</h3>
+          <div id="swapCalculationsContent"></div>
+          <div id="swapCashFlows"></div>
+        </div>
+      </div>
+
+      
+    
+    </div>
+  <script>
+
+   // Plugin per disegnare in grassetto la linea orizzontale a y=0 (già registrato in <head>)
+    Chart.register({
+      id: 'zeroLinePlugin',
+      afterDraw: (chart, args, options) => {
+        const ctx = chart.ctx;
+        const yScale = chart.scales.y;
+        const yZero = yScale.getPixelForValue(0);
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(chart.chartArea.left, yZero);
+        ctx.lineTo(chart.chartArea.right, yZero);
+        ctx.lineWidth = options.lineWidth || 2;
+        ctx.strokeStyle = document.body.classList.contains('dark-mode') ? '#ffffff' : (options.color || 'black');
+        ctx.stroke();
+        ctx.restore();
+      }
+    });
+    
+    // Funzioni helper per aggiornare il DOM
+    function safeSetText(id, text) {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = text; }
+    }
+    function safeSetHTML(id, html) {
+      const el = document.getElementById(id);
+      if (el) { el.innerHTML = html; }
+    }
+    function resetAllResults() {
+      document.querySelectorAll('.price').forEach(el => {
+        el.textContent = '0.0000';
+      });
+      safeSetHTML('futureCalculationsContent', '');
+      safeSetHTML('calculationsContent', '');
+      safeSetHTML('greeksCalculationsContent', '');
+      safeSetHTML('swapCalculationsContent', '');
+      safeSetHTML('cdsCalculationsContent', '');
+    } 
+
+    function handleCalculatorSelection() {
+      const selectedValue = document.getElementById('derivativeType').value;
+      document.querySelectorAll('.calculator').forEach(calc => { 
+        calc.classList.remove('active');
+        calc.style.display = 'none';
+      });
+      document.querySelectorAll('.graph-container').forEach(graph => { 
+        graph.style.display = 'none';
+      });
+      const targetCalculator = document.getElementById(`${selectedValue}-calculator`);
+      if (targetCalculator) {
+        targetCalculator.classList.add('active');
+        targetCalculator.style.display = 'block';
+      }
+    }
+    
+    function toggleSection(sectionId, button) {
+      const section = document.getElementById(sectionId);
+      const wasVisible = section.style.display === 'block';
+      document.querySelectorAll('.graph-container').forEach(g => g.style.display = 'none');
+      section.style.display = wasVisible ? 'none' : 'block';
+      if (!wasVisible) {
+        if (sectionId === 'vanillaGraph') renderPayoffCharts();
+        if (sectionId === 'currencyGraph') renderCurrencyPayoffCharts();
+        if (sectionId === 'futureGraph') renderFutureChart();
+        if (sectionId === 'indexGraph') renderIndexPayoffCharts();
+        if (sectionId === 'discreteGraph') renderDiscretePayoffCharts();
+        if (sectionId === 'foGraph') renderFOPayoffCharts();
+        if (sectionId === 'americanGraph') renderAmericanPayoffCharts();
+        if (sectionId === 'gapGraph') renderGapOptionChart();
+        if (sectionId === 'gapGreeks') calculateGapOptionGreeks();
+        if (sectionId === 'binaryGreeks') calculateBinaryOptionGreeks();
+        if (sectionId === 'binaryGraph') renderBinaryOptionChart();
+        if (sectionId === 'chooserGreeks') calculateChooserGreeksCalculations();
+        if (sectionId === 'chooserGraph') renderChooserGraph();
+        if (sectionId === 'straddleGraph') renderStraddleChart();
+        if (sectionId === 'fsGraph') renderFSChart();
+      }
+      button.classList.toggle('active', !wasVisible);
+    }
+
+    function normalCDF(x) {
+      const t = 1 / (1 + 0.2316419 * Math.abs(x));
+      const d = 0.3989423 * Math.exp(-x * x / 2);
+      let prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+      return x > 0 ? 1 - prob : prob;
+    }
+    function normalPDF(x) {
+      return (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x);
+    }
+    
+    // Funzione per il calcolo dei greci nelle opzioni Vanilla
+    function calculateGreeks(S, K, T, r, sigma, q, d1, d2) {
+      const sqrtT = Math.sqrt(T);
+      const pdfd1 = normalPDF(d1);
+      return {
+        callDelta: normalCDF(d1),
+        putDelta: normalCDF(d1) - 1,
+        gamma: pdfd1 / (S * sigma * sqrtT),
+        vega: S * sqrtT * pdfd1 * 0.01,
+        callTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) - (r * K * Math.exp(-r * T) * normalCDF(d2)) + (q * S * Math.exp(-q * T) * normalCDF(d1)),
+        putTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) + (r * K * Math.exp(-r * T) * normalCDF(-d2)) - (q * S * Math.exp(-q * T) * normalCDF(-d1)),
+        callRho: K * T * Math.exp(-r * T) * normalCDF(d2) * 0.01,
+        putRho: -K * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01
+      };
+    }
+
+    // Funzione per il calcolo dei greci nelle opzioni Currency
+    function calculateCurrencyGreeks(S, K, T, r, sigma, rf, d1, d2) {
+      const sqrtT = Math.sqrt(T);
+      const pdfd1 = normalPDF(d1);
+      return {
+        callDelta: normalCDF(d1),
+        putDelta: normalCDF(d1) - 1,
+        gamma: pdfd1 / (S * sigma * sqrtT),
+        vega: S * sqrtT * pdfd1 * 0.01,
+        callTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) - (r * K * Math.exp(-r * T) * normalCDF(d2)) + (rf * S * Math.exp(-rf * T) * normalCDF(d1)),
+        putTheta: (-(S * pdfd1 * sigma) / (2 * sqrtT)) + (r * K * Math.exp(-r * T) * normalCDF(-d2)) - (rf * S * Math.exp(-rf * T) * normalCDF(-d1)),
+        callRho: K * T * Math.exp(-r * T) * normalCDF(d2) * 0.01,
+        putRho: -K * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01
+      };
+    }
+
+    function addVariableRateRow() {
+      const container = document.getElementById('variableRatesContainer');
+      const newRow = document.createElement('div');
+      newRow.className = 'variable-rate-row';
+      newRow.innerHTML = `
+        <div class="input-group">
+          <label>Time (years)</label>
+          <input type="number" class="variable-rate-time" step="0.01">
+        </div>
+        <div class="input-group">
+          <label>Rate (%)</label>
+          <input type="number" class="variable-rate" step="0.0001">
+        </div>
+        <button class="remove-variable-rate" onclick="removeVariableRateRow(this)">×</button>
+      `;
+      container.appendChild(newRow);
+    }
+
+    function removeVariableRateRow(button) {
+      button.parentElement.remove();
+    }
+
+    function calculateSwap() {
+      try {
+        // Step 1: Read and validate inputs
+        const matEl = document.getElementById('maturity');
+        const freqEl = document.getElementById('frequency');
+        const maturity = parseFloat(matEl?.value);
+        const frequency = parseInt(freqEl?.value, 10);
+        if (isNaN(maturity) || isNaN(frequency) || maturity <= 0 || frequency <= 0) {
+          throw new Error("Please enter a positive numeric Maturity (years) and Frequency (per year).");
+        }
+
+        // Step 2: Build the yield curve from each row, skipping completely blank rows
+        const yieldCurve = Array.from(document.querySelectorAll('.variable-rate-row'))
+          .map(row => {
+            const timeInput = row.querySelector('input.variable-rate-time');
+            const rateInput = row.querySelector('input.variable-rate');
+            const tVal = timeInput?.value.trim();
+            const rVal = rateInput?.value.trim();
+            if (!tVal && !rVal) return null;           // skip empty template rows
+            if (!tVal || !rVal)                       // one field missing
+              throw new Error("Each rate-row must have both Time and Rate filled in.");
+            const time = parseFloat(tVal);
+            const rate = parseFloat(rVal) / 100;
+            if (isNaN(time) || isNaN(rate) || time <= 0) {
+              throw new Error("Invalid Time or Rate in one of the rate rows.");
+            }
+            return { time, rate };
+          })
+          .filter(item => item !== null)
+          .sort((a, b) => a.time - b.time);
+
+        if (yieldCurve.length === 0) {
+          throw new Error("Please provide at least one valid (Time, Rate) entry.");
+        }
+
+        // Step 3: Linear interpolation function on the yield curve
+        const interpolateRate = t => {
+          // before first node
+          if (t <= yieldCurve[0].time) return yieldCurve[0].rate;
+          // after last node
+          if (t >= yieldCurve.at(-1).time) return yieldCurve.at(-1).rate;
+          // between two nodes
+          for (let i = 0; i < yieldCurve.length - 1; i++) {
+            const a = yieldCurve[i], b = yieldCurve[i+1];
+            if (t >= a.time && t <= b.time) {
+              const slope = (b.rate - a.rate) / (b.time - a.time);
+              return a.rate + slope * (t - a.time);
+            }
+          }
+        };
+
+        // Step 4: Loop periods to compute discount factors and forward rates
+        const periods = Math.ceil(maturity * frequency);
+        const delta = 1 / frequency;   // accrual fraction per period
+        let sumDF = 0, sumFWDF = 0;
+        let html = `
+          <h4>Swap Calculation Details</h4>
+          <p><strong>Inputs:</strong> Maturity = ${maturity} years, Frequency = ${frequency} per year, Δ = ${delta.toFixed(4)}</p>
+          <h5>Yield Curve (sorted):</h5>
+          <ul>
+            ${yieldCurve.map(pt => `<li>Time ${pt.time}y → Rate ${(pt.rate*100).toFixed(4)}%</li>`).join('')}
+          </ul>
+        `;
+
+        html += `<h5>Step 1: Compute Discount Factors (DF<sub>k</sub>)</h5>`;
+        for (let k = 1; k <= periods; k++) {
+          const t = +(k * delta).toFixed(8);
+          const r = interpolateRate(t);
+          const df = 1 / Math.pow(1 + r, t);
+          sumDF += df * delta;
+
+          html += `
+            <div class="calculation-step">
+              <strong>Period ${k}:</strong> t = Δ·k = ${t.toFixed(4)}y<br>
+              Interp. zero rate r(t) = ${ (r*100).toFixed(4) }%<br>
+              DF<sub>${k}</sub> = 1 / (1 + r)<sup>t</sup> = 1 / (1 + ${r.toFixed(4)})<sup>${t.toFixed(4)}</sup> = ${df.toFixed(6)}<br>
+              Weighted DF·Δ = ${ (df * delta).toFixed(6) }
+            </div>
+          `;
+        }
+
+        html += `<h5>Step 2: Compute Forward Rates F<sub>k</sub></h5>`;
+        for (let k = 1; k <= periods; k++) {
+          const t = +(k * delta).toFixed(8);
+          const r = interpolateRate(t);
+          let fwd;
+          if (k === 1) {
+            fwd = r;
+          } else {
+            const t0 = +(((k - 1) * delta).toFixed(8));
+            const r0 = interpolateRate(t0);
+            // F(k-1,k) = [ (1+r(t))^t / (1+r(t0))^t0  – 1 ] / Δ
+            fwd = ( Math.pow(1 + r, t) / Math.pow(1 + r0, t0) - 1 ) / delta;
+          }
+          const df = 1 / Math.pow(1 + r, t);
+          sumFWDF += fwd * df * delta;
+
+          html += `
+            <div class="calculation-step">
+              <strong>Forward at period ${k}:</strong><br>
+              ${k === 1
+                ? `F<sub>1</sub> = r(Δ) = ${fwd.toFixed(6)}`
+                : `F<sub>${k}</sub> = [ (1 + ${r.toFixed(4)})^${t.toFixed(4)} / (1 + ${interpolateRate(((k-1)*delta)).toFixed(4)})^${(((k-1)*delta).toFixed(4))} – 1 ] / Δ = ${fwd.toFixed(6)}`
+              }<br>
+              Weighted F·DF·Δ = ${(fwd * df * delta).toFixed(6)}
+            </div>
+          `;
+        }
+
+        // Step 5: Sum up and compute fixed swap rate
+        html += `
+          <h5>Step 3: Sum and Compute Fixed Rate</h5>
+          <p>Σ(DF·Δ) = ${sumDF.toFixed(6)}</p>
+          <p>Σ(F·DF·Δ) = ${sumFWDF.toFixed(6)}</p>
+          <p><strong>Fixed Swap Rate R</strong> = Σ(F·DF·Δ) / Σ(DF·Δ) = 
+            ${sumFWDF.toFixed(6)} / ${sumDF.toFixed(6)} 
+            = ${(sumFWDF/sumDF*100).toFixed(4)}%
+          </p>
+        `;
+
+        // Update DOM
+        document.getElementById('fixed-rate').textContent = (sumFWDF / sumDF * 100).toFixed(4) + "%";
+        document.getElementById('swapCalculationsContent').innerHTML = html;
+
+      } catch (err) {
+        alert("Error: " + err.message);
+      }
+    }
+
+    // Rileva automaticamente la pagina corrente e seleziona il dropdown
+    window.onload = function() {
+        const path     = window.location.pathname;
+        const file     = path.split("/").pop();                       // es: "futures-options-calculator.html"
+        const match    = file.replace('-calculator.html', '');        // es: "futures-options"
+        const selector = document.getElementById('derivativeType');
+        if (selector && match) {
+        selector.value = match;             // imposta il dropdown sul valore giusto
+        handleCalculatorSelection();        // mostra la sezione corrispondente
+        }
+    };
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const selector = document.getElementById('derivativeType');
+      selector.addEventListener('change', function () {
+        const value = this.value;
+        if (value) {
+          const targetPage = `${value}-calculator.html`;
+          window.location.href = targetPage;
+        }
+    });
+    });
+
+
+    </script>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-left">
+          <h3 class="footer-brand">
+          <a href="index.html">Black &amp; Scholes Calculator</a>
+          </h3>
+          <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
+          <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
+        </div>
+        <div class="footer-right">
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="cookie-policy.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    <script src="cookie-consent.js"></script>
+
+    </body>
+    </html>
