@@ -3,9 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <title>Vanilla Options Pricing Calculator – Free Black-Scholes Tool</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Meta base -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Meta description e keywords -->
+  <meta name="description" content="Free Vanilla Options Pricing Calculator using the Black-Scholes model. Price call & put options, compute Greeks, and visualize payoff charts in seconds.">
+  <meta name="keywords" content="Vanilla Options Calculator, Black-Scholes Pricing, Option Greeks, Finance Calculator, European Options">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://calculatorblackscholes.com/vanilla-calculator.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Vanilla Options Pricing Calculator – Free Black-Scholes Tool">
+  <meta property="og:description" content="Price European call & put options with our free Black-Scholes calculator. Compute Greeks and view interactive payoff charts instantly.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/vanilla-calculator.html">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/vanilla-calculator-og.png">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Vanilla Options Pricing Calculator">
+  <meta name="twitter:description" content="Free Black-Scholes tool to price options, compute Greeks & visualize payoffs in seconds.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/vanilla-calculator-og.png">
+
+  <!-- JSON-LD: SoftwareApplication + BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://calculatorblackscholes.com/calculators.html" },
+          { "@type": "ListItem", "position": 3, "name": "Vanilla Options Calculator", "item": "https://calculatorblackscholes.com/vanilla-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Vanilla Options Calculator",
+        "operatingSystem": "All",
+        "applicationCategory": "FinanceApplication",
+        "description": "Free Vanilla Options Pricing Calculator using the Black-Scholes model. Price call & put options, compute Greeks and visualize payoff charts.",
+        "url": "https://calculatorblackscholes.com/vanilla-calculator.html",
+        "author": { "@type": "Organization", "name": "CalculatorBlackScholes.com" }
+      }
+    ]
+  }
+  </script>
   
   <style>
     /* ================================
@@ -1278,7 +1327,7 @@
           throw new Error("Please enter all values (S, K, T, σ) greater than zero.");
         }
 
-        // 2. Compute d₁ and d₂
+        // 2. Compute d1 and d2
         const sqrtT = Math.sqrt(T);
         const drift = r - q;
         const d1    = (
@@ -1299,22 +1348,22 @@
 
         // 5. Build “Calculations” HTML
         const steps = `
-          <h4>Step 1: Compute d₁ and d₂</h4>
-          <p><strong>d₁</strong> = [ ln(S/K) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
+          <h4>Step 1: Compute d1 and d2</h4>
+          <p><strong>d1</strong> = [ ln(S/K) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
           <p>= [ ln(${S.toFixed(4)}/${K.toFixed(4)}) 
               + (${r.toFixed(4)} − ${q.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
             ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
             = ${d1.toFixed(4)}</p>
-          <p><strong>d₂</strong> = d₁ − σ√T
+          <p><strong>d2</strong> = d1 − σ√T
             = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
             = ${d2.toFixed(4)}</p>
 
           <h4>Step 2: Call & Put Prices</h4>
-          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d₁) − K e<sup>−rT</sup> N(d₂)</p>
+          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d1) − K e<sup>−rT</sup> N(d2)</p>
           <p>= ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
             − ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
             = ${callPrice.toFixed(4)}</p>
-          <p><strong>Put</strong>  = K e<sup>−rT</sup> N(−d₂) − S e<sup>−qT</sup> N(−d₁)</p>
+          <p><strong>Put</strong>  = K e<sup>−rT</sup> N(−d2) − S e<sup>−qT</sup> N(−d1)</p>
           <p>= ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
             − ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(−${d1.toFixed(4)})
             = ${putPrice.toFixed(4)}</p>
@@ -1352,14 +1401,14 @@
 
         // 8. Build “Greeks” HTML with explicit formulas
         const greekSteps = `
-          <p><strong>Delta Call</strong> = N(d₁) = ${callDelta.toFixed(4)}</p>
-          <p><strong>Delta Put</strong>  = N(d₁) - 1 = ${putDelta.toFixed(4)}</p>
-          <p><strong>Gamma</strong>     = N'(d₁)/(Sσ√T) = ${gamma.toFixed(4)}</p>
-          <p><strong>Vega</strong>      = S√T×N'(d₁)×0.01 = ${vega.toFixed(4)}</p>
-          <p><strong>Theta Call</strong> = [-(S×N'(d₁)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d₂) + qS×e<sup>-qT</sup>×N(d₁)] = ${callTheta.toFixed(4)}</p>
-          <p><strong>Theta Put</strong>  = [-(S×N'(d₁)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d₂) - qS×e<sup>-qT</sup>×N(-d₁)] = ${putTheta.toFixed(4)}</p>
-          <p><strong>Rho Call</strong>   = K×T×e<sup>-rT</sup>×N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
-          <p><strong>Rho Put</strong>    = -K×T×e<sup>-rT</sup>×N(-d₂)×0.01 = ${putRho.toFixed(4)}</p>
+          <p><strong>Delta Call</strong> = N(d1) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Delta Put</strong>  = N(d1) - 1 = ${putDelta.toFixed(4)}</p>
+          <p><strong>Gamma</strong>     = N'(d1)/(Sσ√T) = ${gamma.toFixed(4)}</p>
+          <p><strong>Vega</strong>      = S√T×N'(d1)×0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>Theta Call</strong> = [-(S×N'(d1)×σ)/(2√T) - rK×e<sup>-rT</sup>×N(d2) + qS×e<sup>-qT</sup>×N(d1)] = ${callTheta.toFixed(4)}</p>
+          <p><strong>Theta Put</strong>  = [-(S×N'(d1)×σ)/(2√T) + rK×e<sup>-rT</sup>×N(-d2) - qS×e<sup>-qT</sup>×N(-d1)] = ${putTheta.toFixed(4)}</p>
+          <p><strong>Rho Call</strong>   = K×T×e<sup>-rT</sup>×N(d2)×0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>Rho Put</strong>    = -K×T×e<sup>-rT</sup>×N(-d2)×0.01 = ${putRho.toFixed(4)}</p>
         `;
         safeSetHTML('greeksCalculationsContent', greekSteps);
 
