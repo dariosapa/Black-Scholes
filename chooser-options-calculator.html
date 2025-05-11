@@ -980,7 +980,7 @@
             <input type="number" id="chooser-strike" step="0.0001" value="">
           </div>
           <div class="input-group">
-            <label>Option Maturity (T₂)</label>
+            <label>Option Maturity (T2)</label>
             <input type="number" id="chooser-T2" step="0.01" value="">
           </div>
           <div class="input-group">
@@ -1218,10 +1218,10 @@
           throw new Error("Please enter all values greater than zero.");
         }
         if (T1 >= T2) {
-          throw new Error("Choice Time (T1) must be less than Option Maturity (T₂).");
+          throw new Error("Choice Time (T1) must be less than Option Maturity (T2).");
         }
         
-        // Step 1: Calculate the European call option price with maturity T₂
+        // Step 1: Calculate the European call option price with maturity T2
         const d1 = (Math.log(S / K) + (r + 0.5 * sigma * sigma) * T2) / (sigma * Math.sqrt(T2));
         const d2 = d1 - sigma * Math.sqrt(T2);
         const callPrice = S * Math.exp(-q * T2) * normalCDF(d1) - K * Math.exp(-r * T2) * normalCDF(d2);
@@ -1244,21 +1244,21 @@
         
         // Build the calculation steps (including the short chooser steps)
         const calculations = `
-          <p><strong>Step 1: Call Option Price (Maturity T₂)</strong></p>
+          <p><strong>Step 1: Call Option Price (Maturity T2)</strong></p>
           <p>d1 = [ln(${S.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + 0.5×${(sigma * sigma).toFixed(4)})×${T2.toFixed(4)}] ÷ (${sigma.toFixed(4)}×√${T2.toFixed(4)}) = ${d1.toFixed(4)}</p>
-          <p>d₂ = d1 – ${sigma.toFixed(4)}×√${T2.toFixed(4)} = ${d2.toFixed(4)}</p>
-          <p>N(d1) = ${normalCDF(d1).toFixed(4)} and N(d₂) = ${normalCDF(d2).toFixed(4)}</p>
-          <p>Call Price = ${S.toFixed(4)}·e^(–q×${T2.toFixed(4)})·N(d1) – ${K.toFixed(4)}·e^(–r×${T2.toFixed(4)})·N(d₂) = ${callPrice.toFixed(4)}</p>
+          <p>d2 = d1 – ${sigma.toFixed(4)}×√${T2.toFixed(4)} = ${d2.toFixed(4)}</p>
+          <p>N(d1) = ${normalCDF(d1).toFixed(4)} and N(d2) = ${normalCDF(d2).toFixed(4)}</p>
+          <p>Call Price = ${S.toFixed(4)}·e^(–q×${T2.toFixed(4)})·N(d1) – ${K.toFixed(4)}·e^(–r×${T2.toFixed(4)})·N(d2) = ${callPrice.toFixed(4)}</p>
           
           <p><strong>Step 2: Put Option Price (Maturity T1) with Modified Strike</strong></p>
-          <p>Modified Strike k* = ${K.toFixed(4)}·e^(–r×(T₂–T1)) = ${kStar.toFixed(4)}</p>
+          <p>Modified Strike k* = ${K.toFixed(4)}·e^(–r×(T2–T1)) = ${kStar.toFixed(4)}</p>
           <p>d1* = [ln(${S.toFixed(4)}/${kStar.toFixed(4)}) + (${r.toFixed(4)} + 0.5×${(sigma * sigma).toFixed(4)})×${T1.toFixed(4)}] ÷ (${sigma.toFixed(4)}×√${T1.toFixed(4)}) = ${d1Star.toFixed(4)}</p>
-          <p>d₂* = d1* – ${sigma.toFixed(4)}×√${T1.toFixed(4)} = ${d2Star.toFixed(4)}</p>
-          <p>N(–d1*) = ${normalCDF(-d1Star).toFixed(4)} and N(–d₂*) = ${normalCDF(-d2Star).toFixed(4)}</p>
-          <p>Put Price = ${kStar.toFixed(4)}·e^(–r×${T1.toFixed(4)})·N(–d₂*) – ${S.toFixed(4)}·N(–d1*) = ${putPrice.toFixed(4)}</p>
+          <p>d2* = d1* – ${sigma.toFixed(4)}×√${T1.toFixed(4)} = ${d2Star.toFixed(4)}</p>
+          <p>N(–d1*) = ${normalCDF(-d1Star).toFixed(4)} and N(–d2*) = ${normalCDF(-d2Star).toFixed(4)}</p>
+          <p>Put Price = ${kStar.toFixed(4)}·e^(–r×${T1.toFixed(4)})·N(–d2*) – ${S.toFixed(4)}·N(–d1*) = ${putPrice.toFixed(4)}</p>
           
           <p><strong>Step 3: Long Chooser Price</strong></p>
-          <p>Long Chooser Price = Call Price + e^(–q×(T₂–T1))·max(Put Price, 0)</p>
+          <p>Long Chooser Price = Call Price + e^(–q×(T2–T1))·max(Put Price, 0)</p>
           <p>= ${callPrice.toFixed(4)} + e^(–q×(${(T2 - T1).toFixed(4)}))·max(${putPrice.toFixed(4)}, 0) = ${longChooserPrice.toFixed(4)}</p>
           
           <p><strong>Step 4: Short Chooser Price</strong></p>
