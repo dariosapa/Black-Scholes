@@ -1228,9 +1228,9 @@
         const Sstar = S - PVdiv;
         if (Sstar <= 0) throw new Error("Adjusted spot S* must be > 0.");
 
-        // 4. Compute d₁ and d₂ (Black–Scholes on S*)
-        //    d₁ = [ ln(S*/K) + (r + ½σ²) T ] ÷ (σ √T)
-        //    d₂ = d₁ − σ √T
+        // 4. Compute d1 and d2 (Black–Scholes on S*)
+        //    d1 = [ ln(S*/K) + (r + ½σ²) T ] ÷ (σ √T)
+        //    d2 = d1 − σ √T
         const sqrtT = Math.sqrt(T);
         const d1 = (
           Math.log(Sstar / K)
@@ -1239,8 +1239,8 @@
         const d2 = d1 - sigma * sqrtT;
 
         // 5. Option prices on S*
-        //    Call = S* N(d₁) − K e^{−rT} N(d₂)
-        //    Put  = K e^{−rT} N(−d₂) − S* N(−d₁)
+        //    Call = S* N(d1) − K e^{−rT} N(d2)
+        //    Put  = K e^{−rT} N(−d2) − S* N(−d1)
         const dfK = K * Math.exp(-r * T);
         const call = Sstar * normalCDF(d1) - dfK * normalCDF(d2);
         const put  = dfK * normalCDF(-d2) - Sstar * normalCDF(-d1);
@@ -1279,13 +1279,13 @@
           <ul>${divLines}</ul>
           <p><strong>S*</strong> = ${S.toFixed(4)} − ${PVdiv.toFixed(4)} = ${Sstar.toFixed(4)}</p>
 
-          <h4>Step 2: d₁ and d₂</h4>
-          <p>d₁ = [ ln(S*/K) + (r + ½σ²)×T ] ÷ (σ√T)</p>
+          <h4>Step 2: d1 and d2</h4>
+          <p>d1 = [ ln(S*/K) + (r + ½σ²)×T ] ÷ (σ√T)</p>
           <p>= [ ln(${Sstar.toFixed(4)}/${K.toFixed(4)}) 
               + (${r.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
             ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) 
             = ${d1.toFixed(4)}</p>
-          <p>d₂ = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
+          <p>d2 = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
 
           <h4>Step 3: Call & Put Prices</h4>
           <p><strong>Call</strong> = ${Sstar.toFixed(4)}×N(${d1.toFixed(4)}) 
@@ -1300,14 +1300,14 @@
         // 9. Build “Greeks” HTML
         const greekHTML = `
           <h4>Greeks (on S*)</h4>
-          <p><strong>Δ Call</strong> = N(d₁) = ${callDelta.toFixed(4)}</p>
-          <p><strong>Δ Put</strong>  = N(d₁)−1 = ${putDelta.toFixed(4)}</p>
-          <p><strong>Γ</strong>      = pdf(d₁)/(S*σ√T) = ${gamma.toFixed(4)}</p>
-          <p><strong>ν</strong>      = S*√T·pdf(d₁)×0.01 = ${vega.toFixed(4)}</p>
-          <p><strong>θ Call</strong> = −[S*σ pdf(d₁)/(2√T)] − rK e<sup>−rT</sup> N(d₂) = ${callTheta.toFixed(4)}</p>
-          <p><strong>θ Put</strong>  = −[S*σ pdf(d₁)/(2√T)] + rK e<sup>−rT</sup> N(−d₂) = ${putTheta.toFixed(4)}</p>
-          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup> N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
-          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup> N(−d₂)×0.01 = ${putRho.toFixed(4)}</p>
+          <p><strong>Δ Call</strong> = N(d1) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Δ Put</strong>  = N(d1)−1 = ${putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong>      = pdf(d1)/(S*σ√T) = ${gamma.toFixed(4)}</p>
+          <p><strong>ν</strong>      = S*√T·pdf(d1)×0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>θ Call</strong> = −[S*σ pdf(d1)/(2√T)] − rK e<sup>−rT</sup> N(d2) = ${callTheta.toFixed(4)}</p>
+          <p><strong>θ Put</strong>  = −[S*σ pdf(d1)/(2√T)] + rK e<sup>−rT</sup> N(−d2) = ${putTheta.toFixed(4)}</p>
+          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup> N(d2)×0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup> N(−d2)×0.01 = ${putRho.toFixed(4)}</p>
         `;
         safeSetHTML('discreteGreeksContent', greekHTML);
 
