@@ -1362,14 +1362,14 @@
         calcSteps += divCalcDetails;
         calcSteps += `<p><strong>S*</strong> = S - Σ(PV of Dividends) = ${S.toFixed(2)} - ${PV_all.toFixed(4)} = ${S_star_all.toFixed(4)}</p>`;
         calcSteps += `<p><strong>d1 (European)</strong> = [ln(${S_star_all.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + ${(sigma ** 2 / 2).toFixed(4)}) × ${T.toFixed(4)}] / (${sigma.toFixed(4)} × √${T.toFixed(4)}) = ${d1_eur.toFixed(4)}</p>`;
-        calcSteps += `<p><strong>d₂ (European)</strong> = ${d1_eur.toFixed(4)} - ${sigma.toFixed(4)} × √${T.toFixed(4)} = ${d2_eur.toFixed(4)}</p>`;
+        calcSteps += `<p><strong>d2 (European)</strong> = ${d1_eur.toFixed(4)} - ${sigma.toFixed(4)} × √${T.toFixed(4)} = ${d2_eur.toFixed(4)}</p>`;
         calcSteps += `<p><strong>European Call (c1)</strong> = ${S_star_all.toFixed(4)} × N(${d1_eur.toFixed(4)}) - ${K.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × N(${d2_eur.toFixed(4)}) = ${c1.toFixed(4)}</p>`;
         calcSteps += `<p><strong>European Put (p1)</strong> = ${K.toFixed(4)} × e<sup>-${(r * T).toFixed(4)}</sup> × N(-${d2_eur.toFixed(4)}) - ${S_star_all.toFixed(4)} × N(-${d1_eur.toFixed(4)}) = ${p1.toFixed(4)}</p>`;
         if (dividends.length > 0) {
           calcSteps += `<p><strong>S**</strong> = S - Σ(PV of Dividends except the last) = ${S.toFixed(2)} - ${PV_before_last.toFixed(4)} = ${S_star_amer.toFixed(4)}</p>`;
           calcSteps += `<p>Using t₂ = ${t2.toFixed(2)} years (time of last dividend):</p>`;
           calcSteps += `<p><strong>d1 (American)</strong> = [ln(${S_star_amer.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + ${(sigma ** 2 / 2).toFixed(4)}) × ${t2.toFixed(2)}] / (${sigma.toFixed(4)} × √${t2.toFixed(2)}) = ${d1_amer.toFixed(4)}</p>`;
-          calcSteps += `<p><strong>d₂ (American)</strong> = ${d1_amer.toFixed(4)} - ${sigma.toFixed(4)} × √${t2.toFixed(2)} = ${d2_amer.toFixed(4)}</p>`;
+          calcSteps += `<p><strong>d2 (American)</strong> = ${d1_amer.toFixed(4)} - ${sigma.toFixed(4)} × √${t2.toFixed(2)} = ${d2_amer.toFixed(4)}</p>`;
           calcSteps += `<p><strong>European Call with S** (c2)</strong> = ${S_star_amer.toFixed(4)} × N(${d1_amer.toFixed(4)}) - ${K.toFixed(4)} × e<sup>-${(r * t2).toFixed(4)}</sup> × N(${d2_amer.toFixed(4)}) = ${c2.toFixed(4)}</p>`;
           calcSteps += `<p><strong>European Put with S** (p2)</strong> = ${K.toFixed(4)} × e<sup>-${(r * t2).toFixed(4)}</sup> × N(-${d2_amer.toFixed(4)}) - ${S_star_amer.toFixed(4)} × N(-${d1_amer.toFixed(4)}) = ${p2.toFixed(4)}</p>`;
           calcSteps += `<p><strong>American Call</strong> = max(c1, c2) = max(${c1.toFixed(4)}, ${c2.toFixed(4)}) = ${americanCall.toFixed(4)}</p>`;
