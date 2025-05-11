@@ -1245,10 +1245,10 @@
         
         const calcDetails = `
           <p><strong>d1</strong> = [ln(${S.toFixed(4)}/${K.toFixed(4)}) + (${r.toFixed(4)} + 0.5×${vol.toFixed(4)}²)×${T.toFixed(4)}] / (${vol.toFixed(4)}×√${T.toFixed(4)}) = ${d1.toFixed(4)}</p>
-          <p><strong>d₂</strong> = d1 - ${vol.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
+          <p><strong>d2</strong> = d1 - ${vol.toFixed(4)}×√${T.toFixed(4)} = ${d2.toFixed(4)}</p>
           <h4>Cash-or-Nothing Options:</h4>
-          <p><strong>Cash Call</strong> = Q × e^(-rT) × N(d₂) = ${Q.toFixed(4)} × e^(-${(r*T).toFixed(4)}) × ${normalCDF(d2).toFixed(4)} = ${cashCallPrice.toFixed(4)}</p>
-          <p><strong>Cash Put</strong> = Q × e^(-rT) × N(-d₂) = ${Q.toFixed(4)} × e^(-${(r*T).toFixed(4)}) × ${normalCDF(-d2).toFixed(4)} = ${cashPutPrice.toFixed(4)}</p>
+          <p><strong>Cash Call</strong> = Q × e^(-rT) × N(d2) = ${Q.toFixed(4)} × e^(-${(r*T).toFixed(4)}) × ${normalCDF(d2).toFixed(4)} = ${cashCallPrice.toFixed(4)}</p>
+          <p><strong>Cash Put</strong> = Q × e^(-rT) × N(-d2) = ${Q.toFixed(4)} × e^(-${(r*T).toFixed(4)}) × ${normalCDF(-d2).toFixed(4)} = ${cashPutPrice.toFixed(4)}</p>
           <h4>Asset-or-Nothing Options:</h4>
           <p><strong>Asset Call</strong> = S × N(d1) = ${S.toFixed(4)} × ${normalCDF(d1).toFixed(4)} = ${assetCallPrice.toFixed(4)}</p>
           <p><strong>Asset Put</strong> = S × N(-d1) = ${S.toFixed(4)} × ${normalCDF(-d1).toFixed(4)} = ${assetPutPrice.toFixed(4)}</p>
