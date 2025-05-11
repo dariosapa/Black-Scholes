@@ -1216,25 +1216,25 @@
           <h4>Step 1: Forward Price</h4>
           <p><strong>F</strong> = S × e<sup>(r − q)T</sup> = ${F.toFixed(4)}</p>
 
-          <h4>Step 2: d₁ and d₂</h4>
-          <p><strong>d₁</strong> = [ln(F/K) + ½σ²T] / (σ√T) = ${d1.toFixed(4)}</p>
-          <p><strong>d₂</strong> = d₁ − σ√T = ${d2.toFixed(4)}</p>
+          <h4>Step 2: d1 and d2</h4>
+          <p><strong>d1</strong> = [ln(F/K) + ½σ²T] / (σ√T) = ${d1.toFixed(4)}</p>
+          <p><strong>d2</strong> = d1 − σ√T = ${d2.toFixed(4)}</p>
 
           <h4>Step 3: Option Prices</h4>
-          <p><strong>Call</strong> = e<sup>−rT</sup>[ F·N(d₁) − K·N(d₂) ] = ${callPrice.toFixed(4)}</p>
-          <p><strong>Put</strong> = e<sup>−rT</sup>[ K·N(−d₂) − F·N(−d₁) ] = ${putPrice.toFixed(4)}</p>
+          <p><strong>Call</strong> = e<sup>−rT</sup>[ F·N(d1) − K·N(d2) ] = ${callPrice.toFixed(4)}</p>
+          <p><strong>Put</strong> = e<sup>−rT</sup>[ K·N(−d2) − F·N(−d1) ] = ${putPrice.toFixed(4)}</p>
         `;
         safeSetHTML('foCalculationsContent', calcSteps);
 
         const greekSteps = `
-          <p><strong>Δ Call</strong> = e<sup>−rT</sup>·N(d₁) = ${callDelta.toFixed(4)}</p>
-          <p><strong>Δ Put</strong> = e<sup>−rT</sup>·[N(d₁) − 1] = ${putDelta.toFixed(4)}</p>
-          <p><strong>Γ</strong> = e<sup>−rT</sup>·N′(d₁)/(F·σ·√T) = ${gamma.toFixed(4)}</p>
-          <p><strong>Vega</strong> = e<sup>−rT</sup>·F·√T·N′(d₁)·0.01 = ${vega.toFixed(4)}</p>
-          <p><strong>θ Call</strong> = −[F·σ·N′(d₁)·e<sup>−rT</sup> / (2√T)] − r·Call = ${callTheta.toFixed(4)}</p>
-          <p><strong>θ Put</strong> = −[F·σ·N′(d₁)·e<sup>−rT</sup> / (2√T)] − r·Put = ${putTheta.toFixed(4)}</p>
-          <p><strong>ρ Call</strong> = K·T·e<sup>−rT</sup>·N(d₂)·0.01 = ${callRho.toFixed(4)}</p>
-          <p><strong>ρ Put</strong> = −K·T·e<sup>−rT</sup>·N(−d₂)·0.01 = ${putRho.toFixed(4)}</p>
+          <p><strong>Δ Call</strong> = e<sup>−rT</sup>·N(d1) = ${callDelta.toFixed(4)}</p>
+          <p><strong>Δ Put</strong> = e<sup>−rT</sup>·[N(d1) − 1] = ${putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong> = e<sup>−rT</sup>·N′(d1)/(F·σ·√T) = ${gamma.toFixed(4)}</p>
+          <p><strong>Vega</strong> = e<sup>−rT</sup>·F·√T·N′(d1)·0.01 = ${vega.toFixed(4)}</p>
+          <p><strong>θ Call</strong> = −[F·σ·N′(d1)·e<sup>−rT</sup> / (2√T)] − r·Call = ${callTheta.toFixed(4)}</p>
+          <p><strong>θ Put</strong> = −[F·σ·N′(d1)·e<sup>−rT</sup> / (2√T)] − r·Put = ${putTheta.toFixed(4)}</p>
+          <p><strong>ρ Call</strong> = K·T·e<sup>−rT</sup>·N(d2)·0.01 = ${callRho.toFixed(4)}</p>
+          <p><strong>ρ Put</strong> = −K·T·e<sup>−rT</sup>·N(−d2)·0.01 = ${putRho.toFixed(4)}</p>
         `;
         safeSetHTML('foGreeksContent', greekSteps);
 
