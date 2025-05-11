@@ -1180,9 +1180,9 @@
           throw new Error("Please enter all values > 0 for S, K, T and σ.");
         }
 
-        // 2. Compute d₁ and d₂
-        //    d₁ = [ ln(S/K) + (r − q + ½σ²) T ] ÷ (σ √T)
-        //    d₂ = d₁ − σ √T
+        // 2. Compute d1 and d2
+        //    d1 = [ ln(S/K) + (r − q + ½σ²) T ] ÷ (σ √T)
+        //    d2 = d1 − σ √T
         const sqrtT = Math.sqrt(T);
         const drift = r - q;
         const d1 = (
@@ -1192,8 +1192,8 @@
         const d2 = d1 - sigma * sqrtT;
 
         // 3. Price formulas
-        //    Call = S e^(−qT) N(d₁) − K e^(−rT) N(d₂)
-        //    Put  = K e^(−rT) N(−d₂) − S e^(−qT) N(−d₁)
+        //    Call = S e^(−qT) N(d1) − K e^(−rT) N(d2)
+        //    Put  = K e^(−rT) N(−d2) − S e^(−qT) N(−d1)
         const dfS  = S * Math.exp(-q * T);
         const dfK  = K * Math.exp(-r * T);
         const call = dfS * normalCDF(d1) - dfK * normalCDF(d2);
@@ -1205,22 +1205,22 @@
 
         // 5. Build “Calculations” HTML
         const steps = `
-          <h4>Step 1: Compute d₁ and d₂</h4>
-          <p><strong>d₁</strong> = [ ln(S/K) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
+          <h4>Step 1: Compute d1 and d2</h4>
+          <p><strong>d1</strong> = [ ln(S/K) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
           <p>= [ ln(${S.toFixed(4)}/${K.toFixed(4)}) 
               + (${r.toFixed(4)} − ${q.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
             ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
             = ${d1.toFixed(4)}</p>
-          <p><strong>d₂</strong> = d₁ − σ√T
+          <p><strong>d2</strong> = d1 − σ√T
             = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
             = ${d2.toFixed(4)}</p>
 
           <h4>Step 2: Call & Put Prices</h4>
-          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d₁) − K e<sup>−rT</sup> N(d₂)</p>
+          <p><strong>Call</strong> = S e<sup>−qT</sup> N(d1) − K e<sup>−rT</sup> N(d2)</p>
           <p>= ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
             − ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
             = ${call.toFixed(4)}</p>
-          <p><strong>Put</strong> = K e<sup>−rT</sup> N(−d₂) − S e<sup>−qT</sup> N(−d₁)</p>
+          <p><strong>Put</strong> = K e<sup>−rT</sup> N(−d2) − S e<sup>−qT</sup> N(−d1)</p>
           <p>= ${K.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
             − ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(−${d1.toFixed(4)})
             = ${put.toFixed(4)}</p>
@@ -1246,14 +1246,14 @@
         // 8. Build “Greeks” HTML
         const greekSteps = `
           <h4>Greeks for Call & Put</h4>
-          <p><strong>Δ Call</strong> = e<sup>−qT</sup> N(d₁) = ${greeks.callDelta.toFixed(4)}</p>
-          <p><strong>Δ Put</strong>  = e<sup>−qT</sup>[N(d₁)−1] = ${greeks.putDelta.toFixed(4)}</p>
-          <p><strong>Γ</strong>     = N′(d₁)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
-          <p><strong>ν</strong>     = S√T N′(d₁)×0.01 = ${greeks.vega.toFixed(4)}</p>
-          <p><strong>θ Call</strong> = −[SσN′(d₁)/(2√T)] − rK e<sup>−rT</sup> N(d₂) + qS e<sup>−qT</sup> N(d₁) = ${greeks.callTheta.toFixed(4)}</p>
-          <p><strong>θ Put</strong>  = −[SσN′(d₁)/(2√T)] + rK e<sup>−rT</sup> N(−d₂) − qS e<sup>−qT</sup> N(−d₁) = ${greeks.putTheta.toFixed(4)}</p>
-          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup> N(d₂)×0.01 = ${greeks.callRho.toFixed(4)}</p>
-          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup> N(−d₂)×0.01 = ${greeks.putRho.toFixed(4)}</p>
+          <p><strong>Δ Call</strong> = e<sup>−qT</sup> N(d1) = ${greeks.callDelta.toFixed(4)}</p>
+          <p><strong>Δ Put</strong>  = e<sup>−qT</sup>[N(d1)−1] = ${greeks.putDelta.toFixed(4)}</p>
+          <p><strong>Γ</strong>     = N′(d1)/(Sσ√T) = ${greeks.gamma.toFixed(4)}</p>
+          <p><strong>ν</strong>     = S√T N′(d1)×0.01 = ${greeks.vega.toFixed(4)}</p>
+          <p><strong>θ Call</strong> = −[SσN′(d1)/(2√T)] − rK e<sup>−rT</sup> N(d2) + qS e<sup>−qT</sup> N(d1) = ${greeks.callTheta.toFixed(4)}</p>
+          <p><strong>θ Put</strong>  = −[SσN′(d1)/(2√T)] + rK e<sup>−rT</sup> N(−d2) − qS e<sup>−qT</sup> N(−d1) = ${greeks.putTheta.toFixed(4)}</p>
+          <p><strong>ρ Call</strong> = K T e<sup>−rT</sup> N(d2)×0.01 = ${greeks.callRho.toFixed(4)}</p>
+          <p><strong>ρ Put</strong>  = −K T e<sup>−rT</sup> N(−d2)×0.01 = ${greeks.putRho.toFixed(4)}</p>
         `;
         safeSetHTML('indexGreeksCalculationsContent', greekSteps);
 
