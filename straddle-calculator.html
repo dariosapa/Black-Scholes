@@ -1209,9 +1209,9 @@
         throw new Error("Please enter all values greater than zero for the straddle.");
       }
 
-      // 2. Compute d₁ and d₂ (Black‑Scholes)
-      //    d₁ = [ ln(S/X) + (r + ½σ²) T ] ÷ (σ √T)
-      //    d₂ = d₁ − σ √T
+      // 2. Compute d1 and d2 (Black‑Scholes)
+      //    d1 = [ ln(S/X) + (r + ½σ²) T ] ÷ (σ √T)
+      //    d2 = d1 − σ √T
       const sqrtT = Math.sqrt(T);
       const d1 = (
         Math.log(S / X)
@@ -1220,8 +1220,8 @@
       const d2 = d1 - sigma * sqrtT;
 
       // 3. European call & put prices
-      //    Call = S N(d₁) − X e^(−rT) N(d₂)
-      //    Put  = X e^(−rT) N(−d₂) − S N(−d₁)
+      //    Call = S N(d1) − X e^(−rT) N(d2)
+      //    Put  = X e^(−rT) N(−d2) − S N(−d1)
       const callPrice = S * normalCDF(d1)
                       - X * Math.exp(-r * T) * normalCDF(d2);
       const putPrice  = X * Math.exp(-r * T) * normalCDF(-d2)
@@ -1237,22 +1237,22 @@
 
       // 6. Build “Calculations” HTML
       const calcSteps = `
-        <h4>Step 1: Compute d₁ and d₂</h4>
-        <p><strong>d₁</strong> = [ ln(S/X) + (r + ½σ²)×T ] ÷ (σ√T)</p>
+        <h4>Step 1: Compute d1 and d2</h4>
+        <p><strong>d1</strong> = [ ln(S/X) + (r + ½σ²)×T ] ÷ (σ√T)</p>
         <p>= [ ln(${S.toFixed(4)}/${X.toFixed(4)}) 
             + (${r.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
           ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
           = ${d1.toFixed(4)}</p>
-        <p><strong>d₂</strong> = d₁ − σ√T
+        <p><strong>d2</strong> = d1 − σ√T
           = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
           = ${d2.toFixed(4)}</p>
 
         <h4>Step 2: Call & Put Prices</h4>
-        <p><strong>Call</strong> = S N(d₁) − X e<sup>−rT</sup> N(d₂)</p>
+        <p><strong>Call</strong> = S N(d1) − X e<sup>−rT</sup> N(d2)</p>
         <p>= ${S.toFixed(4)}×N(${d1.toFixed(4)}) 
           − ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
           = ${callPrice.toFixed(4)}</p>
-        <p><strong>Put</strong> = X e<sup>−rT</sup> N(−d₂) − S N(−d₁)</p>
+        <p><strong>Put</strong> = X e<sup>−rT</sup> N(−d2) − S N(−d1)</p>
         <p>= ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
           − ${S.toFixed(4)}×N(−${d1.toFixed(4)})
           = ${putPrice.toFixed(4)}</p>
@@ -1264,11 +1264,11 @@
       safeSetHTML('straddleCalculationsContent', calcSteps);
 
       // 7. Greeks for the long straddle
-      //    Δ = N(d₁) − N(−d₁)
-      //    Γ = [N′(d₁) + N′(−d₁)] ÷ (Sσ√T)
-      //    ν = S√T [N′(d₁) + N′(−d₁)] ×0.01
-      //    θ = −[SσN′(d₁)/(2√T)] − r(Call+Put)
-      //    ρ = X T e^(−rT)[N(d₂) − N(−d₂)]×0.01
+      //    Δ = N(d1) − N(−d1)
+      //    Γ = [N′(d1) + N′(−d1)] ÷ (Sσ√T)
+      //    ν = S√T [N′(d1) + N′(−d1)] ×0.01
+      //    θ = −[SσN′(d1)/(2√T)] − r(Call+Put)
+      //    ρ = X T e^(−rT)[N(d2) − N(−d2)]×0.01
       const pdf1   = normalPDF(d1);
       const pdfm1  = normalPDF(-d1);
       const cdf1   = normalCDF(d1);
@@ -1306,17 +1306,17 @@
       // 9. Build “Greeks” HTML
       const greekDetails = `
         <h4>Long Straddle Greeks</h4>
-        <p><strong>Δ</strong> = N(d₁) − N(−d₁) 
+        <p><strong>Δ</strong> = N(d1) − N(−d1) 
           = ${cdf1.toFixed(4)} − ${cdfm1.toFixed(4)} = ${longDelta.toFixed(4)}</p>
-        <p><strong>Γ</strong> = [N′(d₁) + N′(−d₁)] ÷ (Sσ√T) 
+        <p><strong>Γ</strong> = [N′(d1) + N′(−d1)] ÷ (Sσ√T) 
           = (${pdf1.toFixed(4)} + ${pdfm1.toFixed(4)}) ÷ (${S.toFixed(4)}×${sigma.toFixed(4)}×√${T.toFixed(4)}) 
           = ${longGamma.toFixed(4)}</p>
-        <p><strong>ν</strong> = S√T [N′(d₁)+N′(−d₁)]×0.01 
+        <p><strong>ν</strong> = S√T [N′(d1)+N′(−d1)]×0.01 
           = ${S.toFixed(4)}×√${T.toFixed(4)}×(${pdf1.toFixed(4)}+${pdfm1.toFixed(4)})×0.01 
           = ${longVega.toFixed(4)}</p>
-        <p><strong>θ</strong> = −[SσN′(d₁)/(2√T)] − r(Call+Put)
+        <p><strong>θ</strong> = −[SσN′(d1)/(2√T)] − r(Call+Put)
           = ${longTheta.toFixed(4)}</p>
-        <p><strong>ρ</strong> = X T e<sup>−rT</sup>[N(d₂)−N(−d₂)]×0.01
+        <p><strong>ρ</strong> = X T e<sup>−rT</sup>[N(d2)−N(−d2)]×0.01
           = ${longRho.toFixed(4)}</p>
 
         <h4>Short Straddle Greeks</h4>
