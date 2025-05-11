@@ -980,7 +980,7 @@
             <input type="number" id="fsX" step="0.0001" value="">
           </div>
           <div class="input-group">
-            <label>Maturity (T₂-T1)</label>
+            <label>Maturity (T2-T1)</label>
             <input type="number" id="fsTime" step="0.01" value="">
           </div>
           <div class="input-group">
@@ -1206,9 +1206,9 @@
         throw new Error("Please enter positive values for S, X, T and σ.");
       }
 
-      // 2. Compute d₁ and d₂ (Black–Scholes)
-      //    d₁ = [ ln(S/X) + (r + ½σ²) T ] ÷ (σ √T)
-      //    d₂ = d₁ − σ √T
+      // 2. Compute d1 and d2 (Black–Scholes)
+      //    d1 = [ ln(S/X) + (r + ½σ²) T ] ÷ (σ √T)
+      //    d2 = d1 − σ √T
       const sqrtT = Math.sqrt(T);
       const d1    = (
         Math.log(S / X)
@@ -1217,8 +1217,8 @@
       const d2 = d1 - sigma * sqrtT;
 
       // 3. Price formulas for forward‑start (vanilla BS form)
-      //    Call = S N(d₁) − X e^(−rT) N(d₂)
-      //    Put  = X e^(−rT) N(−d₂) − S N(−d₁)
+      //    Call = S N(d1) − X e^(−rT) N(d2)
+      //    Put  = X e^(−rT) N(−d2) − S N(−d1)
       const dfX  = X * Math.exp(-r * T);
       const call  = S * normalCDF(d1) - dfX * normalCDF(d2);
       const put   = dfX * normalCDF(-d2) - S * normalCDF(-d1);
@@ -1253,22 +1253,22 @@
 
       // 6. Build “Calculations” HTML
       const calcHTML = `
-        <h4>Step 1: Compute d₁ and d₂</h4>
-        <p><strong>d₁</strong> = [ ln(S/X) + (r + ½σ²)×T ] ÷ (σ√T)</p>
+        <h4>Step 1: Compute d1 and d2</h4>
+        <p><strong>d1</strong> = [ ln(S/X) + (r + ½σ²)×T ] ÷ (σ√T)</p>
         <p>= [ ln(${S.toFixed(4)}/${X.toFixed(4)}) 
             + (${r.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
           ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)}) 
           = ${d1.toFixed(4)}</p>
-        <p><strong>d₂</strong> = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+        <p><strong>d2</strong> = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
           = ${d2.toFixed(4)}</p>
 
         <h4>Step 2: Call & Put Prices</h4>
-        <p><strong>Call</strong> = S N(d₁) − X e<sup>−rT</sup> N(d₂)</p>
+        <p><strong>Call</strong> = S N(d1) − X e<sup>−rT</sup> N(d2)</p>
         <p>= ${S.toFixed(4)}×N(${d1.toFixed(4)}) 
           − ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
           = ${call.toFixed(4)}</p>
 
-        <p><strong>Put</strong> = X e<sup>−rT</sup> N(−d₂) − S N(−d₁)</p>
+        <p><strong>Put</strong> = X e<sup>−rT</sup> N(−d2) − S N(−d1)</p>
         <p>= ${X.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(−${d2.toFixed(4)}) 
           − ${S.toFixed(4)}×N(−${d1.toFixed(4)})
           = ${put.toFixed(4)}</p>
@@ -1278,18 +1278,18 @@
       // 7. Build “Greeks” HTML
       const greekHTML = `
         <h4>Call Greeks</h4>
-        <p>Δ = N(d₁) = ${callDelta.toFixed(4)}</p>
-        <p>Γ = pdf(d₁)/(Sσ√T) = ${gamma.toFixed(4)}</p>
-        <p>ν = S√T·pdf(d₁)×0.01 = ${vega.toFixed(4)}</p>
-        <p>θ = −[Sσpdf(d₁)/(2√T)] − rX e<sup>−rT</sup>N(d₂) = ${callTheta.toFixed(4)}</p>
-        <p>ρ = X T e<sup>−rT</sup>N(d₂)×0.01 = ${callRho.toFixed(4)}</p>
+        <p>Δ = N(d1) = ${callDelta.toFixed(4)}</p>
+        <p>Γ = pdf(d1)/(Sσ√T) = ${gamma.toFixed(4)}</p>
+        <p>ν = S√T·pdf(d1)×0.01 = ${vega.toFixed(4)}</p>
+        <p>θ = −[Sσpdf(d1)/(2√T)] − rX e<sup>−rT</sup>N(d2) = ${callTheta.toFixed(4)}</p>
+        <p>ρ = X T e<sup>−rT</sup>N(d2)×0.01 = ${callRho.toFixed(4)}</p>
         <hr>
         <h4>Put Greeks</h4>
-        <p>Δ = N(d₁) − 1 = ${putDelta.toFixed(4)}</p>
-        <p>Γ = pdf(d₁)/(Sσ√T) = ${gamma.toFixed(4)}</p>
-        <p>ν = S√T·pdf(d₁)×0.01 = ${vega.toFixed(4)}</p>
-        <p>θ = −[Sσpdf(d₁)/(2√T)] + rX e<sup>−rT</sup>N(−d₂) = ${putTheta.toFixed(4)}</p>
-        <p>ρ = −X T e<sup>−rT</sup>N(−d₂)×0.01 = ${putRho.toFixed(4)}</p>
+        <p>Δ = N(d1) − 1 = ${putDelta.toFixed(4)}</p>
+        <p>Γ = pdf(d1)/(Sσ√T) = ${gamma.toFixed(4)}</p>
+        <p>ν = S√T·pdf(d1)×0.01 = ${vega.toFixed(4)}</p>
+        <p>θ = −[Sσpdf(d1)/(2√T)] + rX e<sup>−rT</sup>N(−d2) = ${putTheta.toFixed(4)}</p>
+        <p>ρ = −X T e<sup>−rT</sup>N(−d2)×0.01 = ${putRho.toFixed(4)}</p>
       `;
       safeSetHTML('fsGreeksCalculationsContent', greekHTML);
 
