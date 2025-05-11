@@ -1215,7 +1215,7 @@
         var interval = parseInt(document.getElementById('cds-interval').value); // 1: annual, 2: semiannual, 4: quarterly
         var compounding = document.getElementById('cds-compounding').value; // "discrete" oppure "continuous"
 
-        // Il periodo base T₁: ad es. per annual T₁ = 1, per semiannual T₁ = 0.5, ecc.
+        // Il periodo base T1: ad es. per annual T1 = 1, per semiannual T1 = 0.5, ecc.
         var T1_default = 1 / interval;
 
         // Prelevo dinamicamente il primo valore della colonna "Years (T)" della tabella Buyer
@@ -1383,7 +1383,7 @@
         // Buyer Payments Table
         html += "<h4>Buyer Payments</h4>";
         html += "<table style='table-layout: fixed; width: 100%;'><thead><tr>";
-        html += "<th>Years (T)</th><th>SP</th><th>E[payment] (T₁×SP×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
+        html += "<th>Years (T)</th><th>SP</th><th>E[payment] (T1×SP×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
         html += "</tr></thead><tbody>";
         buyerData.forEach(function(row) {
           html += "<tr>";
@@ -1416,7 +1416,7 @@
         // Accrual Payments Table
         html += "<h4>Accrual Payments</h4>";
         html += "<table style='table-layout: fixed; width: 100%;'><thead><tr>";
-        html += "<th>Years (T)</th><th>PD</th><th>E[payment] (T₁×PD×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
+        html += "<th>Years (T)</th><th>PD</th><th>E[payment] (T1×PD×s)</th><th>DF</th><th>PV [E(pmt)]</th>";
         html += "</tr></thead><tbody>";
         accrualData.forEach(function(row) {
           html += "<tr>";
