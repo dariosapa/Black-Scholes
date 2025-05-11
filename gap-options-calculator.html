@@ -976,11 +976,11 @@
             <input type="number" id="gap-S" step="0.0001" value="">
           </div>
           <div class="input-group">
-            <label>Payoff Strike (x₁)</label>
+            <label>Payoff Strike (x1)</label>
             <input type="number" id="gap-x1" step="0.0001" value="">
           </div>
           <div class="input-group">
-            <label>Moneyness Strike (x₂)</label>
+            <label>Moneyness Strike (x2)</label>
             <input type="number" id="gap-x2" step="0.0001" value="">
           </div>
           <div class="input-group">
@@ -1192,9 +1192,9 @@
           throw new Error("Please enter all values greater than zero.");
         }
 
-        // 2. Compute d₁ and d₂
-        //    d₁ = [ ln(S/x₂) + (r − q + ½σ²) T ] ÷ (σ √T)
-        //    d₂ = d₁ − σ √T
+        // 2. Compute d1 and d2
+        //    d1 = [ ln(S/x2) + (r − q + ½σ²) T ] ÷ (σ √T)
+        //    d2 = d1 − σ √T
         const sqrtT = Math.sqrt(T);
         const d1 = (
           Math.log(S / x2)
@@ -1203,8 +1203,8 @@
         const d2 = d1 - sigma * sqrtT;
 
         // 3. Gap option prices
-        //    Gap Call: c_gap = S e^(−qT) N(d₁) − x₁ e^(−rT) N(d₂)
-        //    Gap Put:  p_gap = x₁ e^(−rT) N(−d₂) − S e^(−qT) N(−d₁)
+        //    Gap Call: c_gap = S e^(−qT) N(d1) − x1 e^(−rT) N(d2)
+        //    Gap Put:  p_gap = x1 e^(−rT) N(−d2) − S e^(−qT) N(−d1)
         const discDiv  = Math.exp(-q * T);
         const discCash = Math.exp(-r * T);
         const gapCall  = S  * discDiv  * normalCDF(d1)
@@ -1218,22 +1218,22 @@
 
         // 5. Build step‑by‑step “Calculations” HTML
         const calcHTML = `
-          <h4>Step 1: Compute d₁ and d₂</h4>
-          <p><strong>d₁</strong> = [ ln(S/x₂) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
+          <h4>Step 1: Compute d1 and d2</h4>
+          <p><strong>d1</strong> = [ ln(S/x2) + (r − q + ½σ²)×T ] ÷ (σ√T)</p>
           <p>= [ ln(${S.toFixed(4)}/${x2.toFixed(4)}) 
               + (${r.toFixed(4)} − ${q.toFixed(4)} + ½×${sigma.toFixed(4)}²)×${T.toFixed(4)} ]
             ÷ (${sigma.toFixed(4)}×√${T.toFixed(4)})
             = ${d1.toFixed(4)}</p>
-          <p><strong>d₂</strong> = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
+          <p><strong>d2</strong> = ${d1.toFixed(4)} − ${sigma.toFixed(4)}×√${T.toFixed(4)}
             = ${d2.toFixed(4)}</p>
 
           <h4>Step 2: Gap Call & Put Formulas</h4>
-          <p><strong>Gap Call</strong> = S·e<sup>−qT</sup>·N(d₁) − x₁·e<sup>−rT</sup>·N(d₂)</p>
+          <p><strong>Gap Call</strong> = S·e<sup>−qT</sup>·N(d1) − x1·e<sup>−rT</sup>·N(d2)</p>
           <p>= ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(${d1.toFixed(4)}) 
             − ${x1.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(${d2.toFixed(4)})
             = ${gapCall.toFixed(4)}</p>
 
-          <p><strong>Gap Put</strong>  = x₁·e<sup>−rT</sup>·N(−d₂) − S·e<sup>−qT</sup>·N(−d₁)</p>
+          <p><strong>Gap Put</strong>  = x1·e<sup>−rT</sup>·N(−d2) − S·e<sup>−qT</sup>·N(−d1)</p>
           <p>= ${x1.toFixed(4)}×e<sup>−${(r*T).toFixed(4)}</sup>×N(-${d2.toFixed(4)}) 
             − ${S.toFixed(4)}×e<sup>−${(q*T).toFixed(4)}</sup>×N(-${d1.toFixed(4)})
             = ${gapPut.toFixed(4)}</p>
@@ -1262,7 +1262,7 @@
           throw new Error("Inserisci tutti i valori maggiori di zero.");
         }
         
-        // Calcola d1 e d₂ (nota: si usa x₂ per la moneyness)
+        // Calcola d1 e d2 (nota: si usa x2 per la moneyness)
         var d1 = (Math.log(S / x2) + (r - q + 0.5 * vol * vol) * T) / (vol * Math.sqrt(T));
         var d2 = d1 - vol * Math.sqrt(T);
         
@@ -1277,7 +1277,7 @@
         // Vega
         var gapVega  = S * Math.exp(-q * T) * Math.sqrt(T) * normalPDF(d1) * 0.01;
         
-        // Theta: usare x₁ al posto di K nelle parti in cui compare il prezzo strike
+        // Theta: usare x1 al posto di K nelle parti in cui compare il prezzo strike
         var gapCallTheta = - (S * vol * Math.exp(-q * T) * normalPDF(d1)) / (2 * Math.sqrt(T))
                             - r * x1 * Math.exp(-r * T) * normalCDF(d2)
                             + q * S * Math.exp(-q * T) * normalCDF(d1);
@@ -1285,7 +1285,7 @@
                             + r * x1 * Math.exp(-r * T) * normalCDF(-d2)
                             - q * S * Math.exp(-q * T) * normalCDF(-d1);
         
-        // Rho: con x₁ al posto di K
+        // Rho: con x1 al posto di K
         var gapCallRho = x1 * T * Math.exp(-r * T) * normalCDF(d2) * 0.01;
         var gapPutRho  = - x1 * T * Math.exp(-r * T) * normalCDF(-d2) * 0.01;
         
@@ -1309,10 +1309,10 @@
         steps += "<p><strong>Delta Put</strong> = e<sup>-qT</sup> × (N(d1) - 1) = " + gapPutDelta.toFixed(4) + "</p>";
         steps += "<p><strong>Gamma</strong> = e<sup>-qT</sup> × N'(d1) / (Sσ√T) = " + gapGamma.toFixed(4) + "</p>";
         steps += "<p><strong>Vega</strong> = S√T × e<sup>-qT</sup> × N'(d1) × 0.01 = " + gapVega.toFixed(4) + "</p>";
-        steps += "<p><strong>Theta Call</strong> = [-(S × N'(d1) × σ) / (2√T) - r × x₁ × e<sup>-rT</sup> × N(d₂) + q × S × e<sup>-qT</sup> × N(d1)] = " + gapCallTheta.toFixed(4) + "</p>";
-        steps += "<p><strong>Theta Put</strong> = [-(S × N'(d1) × σ) / (2√T) + r × x₁ × e<sup>-rT</sup> × N(-d₂) - q × S × e<sup>-qT</sup> × N(-d1)] = " + gapPutTheta.toFixed(4) + "</p>";
-        steps += "<p><strong>Rho Call</strong> = x₁ × T × e<sup>-rT</sup> × N(d₂) × 0.01 = " + gapCallRho.toFixed(4) + "</p>";
-        steps += "<p><strong>Rho Put</strong> = -x₁ × T × e<sup>-rT</sup> × N(-d₂) × 0.01 = " + gapPutRho.toFixed(4) + "</p>";
+        steps += "<p><strong>Theta Call</strong> = [-(S × N'(d1) × σ) / (2√T) - r × x1 × e<sup>-rT</sup> × N(d2) + q × S × e<sup>-qT</sup> × N(d1)] = " + gapCallTheta.toFixed(4) + "</p>";
+        steps += "<p><strong>Theta Put</strong> = [-(S × N'(d1) × σ) / (2√T) + r × x1 × e<sup>-rT</sup> × N(-d2) - q × S × e<sup>-qT</sup> × N(-d1)] = " + gapPutTheta.toFixed(4) + "</p>";
+        steps += "<p><strong>Rho Call</strong> = x1 × T × e<sup>-rT</sup> × N(d2) × 0.01 = " + gapCallRho.toFixed(4) + "</p>";
+        steps += "<p><strong>Rho Put</strong> = -x1 × T × e<sup>-rT</sup> × N(-d2) × 0.01 = " + gapPutRho.toFixed(4) + "</p>";
         
         safeSetHTML('gapGreeksContent', steps);
         
