@@ -1183,14 +1183,21 @@
         const S     = parseFloat(document.getElementById('gap-S'  ).value);
         const x1    = parseFloat(document.getElementById('gap-x1' ).value);
         const x2    = parseFloat(document.getElementById('gap-x2' ).value);
-        const r     = parseFloat(document.getElementById('gap-r'  ).value) || 0) / 100;
+        const r     = parseFloat(document.getElementById('gap-r'  ).value) / 100;
         const q     = parseFloat(document.getElementById('gap-q'  ).value) || 0) / 100;
         const T     = parseFloat(document.getElementById('gap-T'  ).value);
         const sigma = parseFloat(document.getElementById('gap-vol').value) / 100;
 
-        if ([S, x1, x2, r, q, T, sigma].some(v => isNaN(v) || v <= 0)) {
-          throw new Error("Please enter all values greater than zero.");
+        if (
+          [S, x1, x2, T, sigma].some(v => isNaN(v) || v <= 0) ||
+          isNaN(r)    || r < 0   ||
+          q < 0
+        ) {
+          throw new Error(
+            "Enter valid values: S, x1, x2, T and volatility > 0; rates (r and q) ≥ 0."
+          );
         }
+
 
         // 2. Compute d1 and d2
         //    d1 = [ ln(S/x2) + (r − q + ½σ²) T ] ÷ (σ √T)
