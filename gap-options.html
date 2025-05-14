@@ -435,65 +435,78 @@
       "gap-options": {
         title: "Theory on Gap Options",
         content: `
-          <section>
-            <h2>Introduction</h2>
-            <p>
-              Gap options are a type of exotic option characterized by two distinct strike prices. The first strike, called the <strong>trigger strike</strong> (K<sub>1</sub>), determines when the option becomes active, while the second strike, called the <strong>payment strike</strong> (K<sub>2</sub>), is used to calculate the payoff. This dual-strike design allows for more customized risk/reward profiles compared to standard options.
-            </p>
-          </section>
-          <section>
-            <h2>Definitions and Characteristics</h2>
-            <p>
-              Key features of gap options include:
-            </p>
-            <ul>
-              <li><strong>Trigger Strike (K<sub>1</sub>):</strong> The level that the underlying asset must reach or exceed for the option to become active.</li>
-              <li><strong>Payment Strike (K<sub>2</sub>):</strong> Once activated, the payoff is computed based on the difference between the underlying asset’s price and this strike.</li>
-              <li><strong>Exotic Structure:</strong> The separation between trigger and payment strikes may result in a lower premium, offering tailored exposure and leverage.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Pricing and Valuation</h2>
-            <p>
-              Gap options are generally priced using modifications of standard option pricing models. The Black‑Scholes framework is adjusted to reflect the probability of the underlying asset reaching the trigger strike. For a gap call option, if the asset’s price (S) reaches or exceeds K<sub>1</sub>, the payoff is calculated as (S − K<sub>2</sub>); otherwise, the payoff is zero.
-            </p>
-            <p style="text-align: center; font-style: italic;">
-              Payoff (Call): { S − K<sub>2</sub> if S ≥ K<sub>1</sub>; otherwise 0 }
-            </p>
-            <p>
-              Due to the discontinuous nature of the payoff, numerical methods—such as Monte Carlo simulation or finite difference approaches—are frequently used to obtain an accurate valuation.
-            </p>
-          </section>
-          <section>
-            <h2>The Greeks and Sensitivity Analysis</h2>
-            <p>
-              Because of the dual-strike structure, the sensitivity measures (Greeks) for gap options can differ significantly from those of vanilla options:
-            </p>
-            <ul>
-              <li><strong>Delta:</strong> The sensitivity to changes in the underlying asset’s price may change sharply near the trigger strike.</li>
-              <li><strong>Gamma:</strong> Can be very high around the trigger point as the option switches from inactive to active.</li>
-              <li><strong>Theta:</strong> Time decay may be irregular, accelerating when the probability of triggering increases.</li>
-              <li><strong>Vega:</strong> Very sensitive to volatility changes, which affect the likelihood of reaching the trigger strike.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Hedging Strategies and Risks</h2>
-            <p>
-              Hedging gap options is challenging due to their discontinuous payoff. Traders must employ dynamic hedging strategies that accurately estimate the chance of activation and adjust positions as market conditions change. Special attention is required near the trigger threshold to manage sudden shifts in risk exposure.
-            </p>
-          </section>
-          <section>
-            <h2>Practical Examples and Applications</h2>
-            <p>
-              For example, a trader looking to reduce premium costs might purchase a gap call option with a trigger strike slightly above the current market price and a lower payment strike, aiming to capture leveraged gains if the underlying asset surges beyond the trigger level.
-            </p>
-          </section>
-          <section>
-            <h2>Conclusions</h2>
-            <p>
-              Gap options provide an innovative way to tailor exposure by separating the activation condition from the payoff calculation. Their effective valuation and risk management require specialized pricing models and dynamic hedging techniques.
-            </p>
-          </section>
+        <!-- Gap Options Theory Content — SEO Optimized -->
+        <section id="gap-options-introduction">
+          <h2>Introduction to Gap Options</h2>
+          <p>
+            <strong>Gap options</strong> are specialized <strong>exotic options</strong> featuring two separate strike prices: the <em>trigger strike</em> (K<sub>1</sub>) that activates the contract, and the <em>payment strike</em> (K<sub>2</sub>) used to calculate the payoff. This dual-strike architecture offers bespoke <strong>risk/reward profiles</strong> and cost-efficient premium structures compared to standard vanilla options.
+          </p>
+        </section>
+        
+        <section id="gap-options-definitions-characteristics">
+          <h2>Key Definitions & Characteristics of Gap Options</h2>
+          <p>
+            Core attributes of a gap option contract include:
+          </p>
+          <ul>
+            <li><strong>Trigger Strike (K<sub>1</sub>):</strong> The price threshold the underlying asset must reach or exceed for the option to become active.</li>
+            <li><strong>Payment Strike (K<sub>2</sub>):</strong> Once activated, the payoff equals the difference between the asset price and this strike.</li>
+            <li><strong>Exotic Structure:</strong> Separation of activation and payoff strikes often reduces premium costs and enhances leverage opportunities.</li>
+          </ul>
+        </section>
+        
+        <section id="gap-options-pricing-valuation">
+          <h2>Gap Option Pricing & Valuation Methods</h2>
+          <p>
+            Valuing a gap option requires adapting the <strong>Black–Scholes model</strong> or other analytic frameworks to account for the probability of reaching the trigger strike. For a gap call:
+          </p>
+          <p style="text-align:center; font-style:italic;">
+            <strong>Payoff (Call):</strong> { S − K<sub>2</sub> if S ≥ K<sub>1</sub>; otherwise 0 }
+          </p>
+          <p>
+            Due to the discontinuous payoff at K<sub>1</sub>, practitioners frequently employ <strong>Monte Carlo simulation</strong> or <strong>finite difference methods</strong> for precise valuation.
+          </p>
+        </section>
+        
+        <section id="gap-options-greeks-sensitivity">
+          <h2>Sensitivity Analysis & Gap Option “Greeks”</h2>
+          <p>
+            The dual-strike feature generates distinct <strong>sensitivity profiles</strong>, making the following measures critical for risk management:
+          </p>
+          <ul>
+            <li><strong>Delta:</strong> Exhibits abrupt changes as the underlying approaches the trigger strike.</li>
+            <li><strong>Gamma:</strong> Peaks near K<sub>1</sub> due to activation discontinuity.</li>
+            <li><strong>Theta:</strong> Time decay accelerates when activation probability increases.</li>
+            <li><strong>Vega:</strong> Highly responsive to volatility shifts affecting trigger likelihood.</li>
+          </ul>
+        </section>
+        
+        <section id="gap-options-hedging-risks">
+          <h2>Hedging Strategies & Risk Considerations</h2>
+          <p>
+            Effective hedging of gap options demands <strong>dynamic delta hedging</strong> and frequent rebalancing, especially as the underlying nears the trigger strike. Traders must monitor:
+          </p>
+          <ul>
+            <li><strong>Trigger Risk:</strong> Sudden exposure changes when S crosses K<sub>1</sub>.</li>
+            <li><strong>Model Risk:</strong> Valuation inaccuracy due to incorrect assumptions on trigger probability.</li>
+            <li><strong>Liquidity Risk:</strong> Wider spreads and execution delays around activation events.</li>
+          </ul>
+        </section>
+        
+        <section id="gap-options-examples-applications">
+          <h2>Practical Examples & Use Cases</h2>
+          <p>
+            <strong>Cost-Effective Leverage:</strong> A trader buys a gap call with K<sub>1</sub> just above spot price and a lower K<sub>2</sub>, aiming to amplify returns if the underlying surges past the trigger.  
+            <br><strong>Tailored Hedging:</strong> An institutional investor uses gap puts to insure downside risk only if the asset breaches a critical support level.
+          </p>
+        </section>
+        
+        <section id="gap-options-conclusion">
+          <h2>Conclusion: Advantages of Gap Options</h2>
+          <p>
+            Gap options empower market participants with customizable activation and payoff conditions, delivering optimized premium costs and targeted exposure. Mastery of specialized <strong>pricing techniques</strong> and <strong>dynamic hedging strategies</strong> is essential to harness their full potential while mitigating discontinuity and liquidity risks.
+          </p>
+        </section>
         `
       }
     };
