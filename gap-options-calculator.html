@@ -1183,8 +1183,8 @@
         const S     = parseFloat(document.getElementById('gap-S'  ).value);
         const x1    = parseFloat(document.getElementById('gap-x1' ).value);
         const x2    = parseFloat(document.getElementById('gap-x2' ).value);
-        const r     = parseFloat(document.getElementById('gap-r'  ).value) / 100;
-        const q     = parseFloat(document.getElementById('gap-q'  ).value) / 100;
+        const r     = parseFloat(document.getElementById('gap-r'  ).value) || 0) / 100;
+        const q     = parseFloat(document.getElementById('gap-q'  ).value) || 0) / 100;
         const T     = parseFloat(document.getElementById('gap-T'  ).value);
         const sigma = parseFloat(document.getElementById('gap-vol').value) / 100;
 
