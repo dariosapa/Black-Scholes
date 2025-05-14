@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Derivatives Theory</title>
+  <title>Credit Default Swaps (CDS) – Pricing, Risk Management, and Hedging Strategies</title>
+  <meta name="description" content="Learn how Credit Default Swaps (CDS) work, how to price them using default probabilities and recovery rates, and how they are used to manage credit risk.">
+  <meta name="keywords" content="credit default swaps, CDS pricing, CDS spread, credit risk, protection buyer, protection seller, default probability, recovery rate, hedging strategies, DV01, credit derivatives, counterparty risk, credit event">
+  <link rel="canonical" href="https://calculatorblackscholes.com/cds.html" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
 
@@ -433,69 +436,82 @@
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
       "cds": {
-        title: "Theory on Credit Default Swaps",
+        title: "Credit Default Swaps – Definition, Pricing, Hedging, and Risk Management",
         content: `
-          <section>
-            <h2>Introduction</h2>
-            <p>
-              Credit Default Swaps (CDS) are financial derivatives that allow investors to transfer credit risk from one party to another. In a CDS contract, the protection buyer makes periodic premium payments to the protection seller in exchange for compensation if a predefined credit event occurs, such as a default, restructuring, or bankruptcy of the reference entity.
-            </p>
-          </section>
-          <section>
-            <h2>Definitions and Characteristics</h2>
-            <p>
-              The key elements and features of a CDS include:
-            </p>
-            <ul>
-              <li><strong>Reference Entity:</strong> The borrower or issuer whose credit risk is being transferred.</li>
-              <li><strong>Protection Buyer:</strong> Pays a periodic premium (spread) to secure protection against credit events.</li>
-              <li><strong>Protection Seller:</strong> Commits to compensate the buyer if a credit event occurs.</li>
-              <li><strong>Credit Event:</strong> Defined triggers such as default, missed payments, or restructuring that activate the contract.</li>
-              <li><strong>Notional Amount:</strong> The principal amount on which premiums and compensation calculations are based.</li>
-              <li><strong>Maturity:</strong> The duration over which the CDS contract is active.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Pricing and Valuation</h2>
-            <p>
-              Pricing a CDS involves estimating the probability of a credit event (default) and the expected recovery rate if such an event occurs. Under a risk‑neutral framework, the premium (or spread) reflects these probabilities and is determined such that the present value of the premium payments equals the expected loss from the credit event. More advanced models use hazard rates, survival probabilities, and discount factors to derive the fair CDS spread.
-            </p>
-            <p style="text-align: center; font-style: italic;">
-              Basic CDS Pricing (Simplified):<br>
-              Spread ≈ (Default Probability × (1 - Recovery Rate)) / [1 - (Default Probability × Recovery Rate)]
-            </p>
-            <p>
-              In practice, calibration to market data is essential to incorporate current credit spreads, recovery assumptions, and liquidity conditions.
-            </p>
-          </section>
-          <section>
-            <h2>The Greeks and Sensitivity Analysis</h2>
-            <p>
-              Unlike options, CDS contracts do not have traditional Greeks. However, sensitivity measures are still crucial:
-            </p>
-            <ul>
-              <li><strong>Sensitivity to Credit Spreads:</strong> How the value of the CDS changes with widening or tightening of the credit spread.</li>
-              <li><strong>DV01 (Dollar Value of a 1 bp Move):</strong> Reflects the change in the CDS’s value for a one‑basis‑point shift in the credit spread.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Hedging Strategies and Risks</h2>
-            <p>
-              CDS contracts are used both for hedging and for speculative purposes. They enable investors holding fixed-income assets to hedge against potential credit losses, while traders may take positions to profit from changes in perceived credit risk. However, CDS contracts involve risks such as counterparty risk, basis risk (mismatch between the CDS and the underlying exposure), and liquidity risk.
-            </p>
-          </section>
-          <section>
-            <h2>Practical Examples and Applications</h2>
-            <p>
-              For instance, an investor holding a portfolio of corporate bonds might purchase CDS protection to hedge against the default risk of one or more issuers. Alternatively, a trader might sell CDS protection to capture premium income, betting that the credit quality of the reference entities will improve.
-            </p>
-          </section>
-          <section>
-            <h2>Conclusions</h2>
-            <p>
-              Credit Default Swaps are indispensable instruments for transferring and managing credit risk. Their valuation relies on assessing default probabilities and recovery rates within a risk‑neutral framework, while their use in hedging and speculation highlights the importance of managing counterparty and liquidity risks.
-            </p>
-          </section>
+        <section id="cds-introduction">
+          <h2>Introduction to Credit Default Swaps (CDS)</h2>
+          <p>
+            Credit Default Swaps (CDS) are over-the-counter <strong>credit derivatives</strong> designed to transfer <strong>credit risk</strong> between two parties. In a typical CDS contract, the protection buyer pays a periodic premium (spread) to the protection seller in exchange for a contingent payment if a <strong>credit event</strong>—such as a default, restructuring, or bankruptcy—occurs on the underlying reference entity.
+          </p>
+        </section>
+
+        <section id="cds-definitions-characteristics">
+          <h2>Key Definitions & Characteristics of CDS Contracts</h2>
+          <p>
+            Understanding the fundamental components of a CDS is essential for effective <strong>credit risk management</strong>:
+          </p>
+          <ul>
+            <li><strong>Reference Entity:</strong> The issuer or borrower whose <em>creditworthiness</em> is the basis of the swap.</li>
+            <li><strong>Protection Buyer:</strong> Pays the CDS spread to hedge against potential losses from a credit event.</li>
+            <li><strong>Protection Seller:</strong> Receives the spread and agrees to compensate the buyer upon occurrence of a predefined credit event.</li>
+            <li><strong>Credit Event:</strong> Specific triggers—default, missed interest/principal payment, or restructuring—that activate the payout clause.</li>
+            <li><strong>Notional Amount:</strong> The principal face value on which the CDS premiums and settlement calculations are based.</li>
+            <li><strong>Maturity:</strong> The term length over which credit protection is provided, commonly ranging from 1 to 10 years.</li>
+          </ul>
+        </section>
+
+        <section id="cds-pricing-valuation">
+          <h2>CDS Pricing & Valuation Models</h2>
+          <p>
+            Accurate valuation of a CDS requires estimating the <strong>default probability</strong> and <strong>expected recovery rate</strong> in a risk-neutral framework. The CDS spread is calibrated so that the present value of premium payments equals the expected loss from a credit event.
+          </p>
+          <p style="text-align:center; font-style:italic;">
+            <strong>Approximate CDS Spread Formula:</strong><br>
+            Spread ≈ (Default Probability × (1 − Recovery Rate)) / [1 − (Default Probability × Recovery Rate)]
+          </p>
+          <p>
+            Advanced valuation uses term structures of <strong>hazard rates</strong>, <strong>survival probabilities</strong>, and appropriate discount factors to derive a market-consistent CDS spread.
+          </p>
+        </section>
+
+        <section id="cds-sensitivity-analysis">
+          <h2>Sensitivity Analysis & CDS “Greeks”</h2>
+          <p>
+            While CDS contracts lack traditional option Greeks, they exhibit key sensitivity measures critical for <strong>credit spread risk</strong> management:
+          </p>
+          <ul>
+            <li><strong>Spread Sensitivity:</strong> Measures how the mark-to-market value of the CDS changes when the underlying credit spread widens or tightens.</li>
+            <li><strong>DV01 (Dollar Value of a 1 bp Move):</strong> Quantifies the change in the CDS present value for a one-basis-point shift in spread.</li>
+          </ul>
+        </section>
+
+        <section id="cds-hedging-strategies-risks">
+          <h2>Hedging Strategies & Associated Risks</h2>
+          <p>
+            CDS instruments serve both as effective hedges against corporate bond defaults and speculative vehicles. Common hedging strategies include matching CDS notional to bond holdings or overlaying spread trades. However, market participants must manage:
+          </p>
+          <ul>
+            <li><strong>Counterparty Risk:</strong> The potential for the protection seller to default on its obligation.</li>
+            <li><strong>Basis Risk:</strong> The mismatch between movement in the bond’s yield and the CDS spread.</li>
+            <li><strong>Liquidity Risk:</strong> The risk of wide bid-ask spreads or inability to unwind positions in stressed markets.</li>
+          </ul>
+        </section>
+
+        <section id="cds-practical-examples-applications">
+          <h2>Practical Examples & Real-World Applications</h2>
+          <p>
+            <strong>Hedging Credit Exposure:</strong> A portfolio manager holding high-yield corporate bonds can buy CDS protection to offset potential default losses.  
+            <br><strong>Speculative Trading:</strong> A trader may sell CDS protection to earn premium income, anticipating credit spreads will tighten as credit quality improves.
+          </p>
+        </section>
+
+        <section id="cds-conclusion">
+          <h2>Conclusion: Importance of Credit Default Swaps</h2>
+          <p>
+            Credit Default Swaps are cornerstone instruments for <strong>transferring credit risk</strong> and managing exposure to corporate defaults. Their valuation hinges on robust modeling of default probabilities and recovery assumptions, while prudent use of CDS demands careful attention to counterparty and liquidity risks.
+          </p>
+        </section>
+
         `
       }
     };
@@ -609,7 +625,7 @@
     <!-- Right: Navigation Links -->
     <div class="navbar-right">
       <a href="index.html" class="nav-link">Home</a>
-      <a href="theory-calculator.html" class="nav-link">Calculators</a>
+      <a href="calculators.html" class="nav-link">Calculators</a>
     </div>
   </nav>
   
