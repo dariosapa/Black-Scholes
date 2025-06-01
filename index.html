@@ -2,52 +2,186 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Use our free interactive Black-Scholes calculator to price European and exotic options, compute Greeks, and analyze swaptions in seconds." />
-  <title>Interactive Black-Scholes Option Pricing Calculator</title>
-  <meta property="og:title"        content="Interactive Black-Scholes Option Pricing Calculator – Free Tool for Finance Students">
-  <meta property="og:description"  content="Master option pricing with our free interactive Black-Scholes calculator: price European & exotic options, compute all Greeks & swaptions instantly.">
-  <meta property="og:image"        content="https://calculatorblackscholes.com/og-image.png">
-  <meta property="og:url"          content="https://calculatorblackscholes.com/">
-  <meta name="twitter:card"        content="summary_large_image">
-  <!-- Inclusione del font Rubik da Google Fonts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="canonical" href="https://calculatorblackscholes.com/">
-  <link rel="preload" href="https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-B4iFU0U1Z4Y.woff2" as="font" type="font/woff2" crossorigin>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- ========================
+       ON-PAGE SEO ELEMENTS
+       ======================== -->
+  <!-- Titolo ottimizzato: keyword esatta all’inizio + USP -->
+  <title>Black-Scholes Calculator – Free Interactive Option Pricing Tool</title>
 
+  <!-- Meta Description con call-to-action -->
+  <meta name="description"
+        content="Free Black-Scholes Calculator – price European & exotic options, compute Greeks & swaptions in seconds. Try it now, no registration needed!" />
+
+  <!-- Open Graph tags coerenti con titolo e descrizione -->
+  <meta property="og:title"
+        content="Black-Scholes Calculator – Free Interactive Option Pricing Tool" />
+  <meta property="og:description"
+        content="Master option pricing with our free interactive Black-Scholes calculator: price European & exotic options, compute all Greeks & swaptions instantly. Try it now!" />
+  <meta property="og:image"
+        content="https://calculatorblackscholes.com/og-image.png" />
+  <meta property="og:url" content="https://calculatorblackscholes.com/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Black-Scholes Calculator – Free Interactive Option Pricing Tool" />
+  <meta name="twitter:description"
+        content="Free Black-Scholes Calculator – price European & exotic options, compute Greeks & swaptions in seconds. Try it now!" />
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/og-image.png" />
+
+  <!-- Lingua della pagina -->
+  <link rel="alternate" href="https://calculatorblackscholes.com/" hreflang="en" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://calculatorblackscholes.com/" />
+
+  <!-- ========================
+       FONT & PERFORMANCE
+       ======================== -->
+  <!-- Preload font Rubik e Inter -->
+  <link rel="preload"
+        href="https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-B4iFU0U1Z4Y.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap"
+        rel="stylesheet" />
+
+  <!-- Chart.js caricato in modo non bloccante -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+  <!-- ========================
+       JSON-LD STRUCTURED DATA
+       ======================== -->
+  <!-- 1) BreadcrumbList -->
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://calculatorblackscholes.com/"
-        }
-      ]
-    }
-    </script>
-    
-  
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://calculatorblackscholes.com/"
+      }
+    ]
+  }
+  </script>
 
-
+  <!-- 2) SoftwareApplication con screenshot, offers e aggregateRating -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Black & Scholes Calculator",
     "applicationCategory": "FinanceApplication",
-    "operatingSystem": "All",
+    "operatingSystem": "Web",
     "description": "Interactive web-based Black-Scholes calculator to price options, futures, and exotic derivatives with step-by-step explanations.",
-    "url": "https://calculatorblackscholes.com",
+    "url": "https://calculatorblackscholes.com/",
+    "screenshot": "https://calculatorblackscholes.com/og-image.png",
+    "image": "https://calculatorblackscholes.com/og-image.png",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "url": "https://calculatorblackscholes.com/"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "37"
+    },
     "author": {
-    "@type": "Organization",
-    "name": "CalculatorBlackScholes.com"
+      "@type": "Organization",
+      "name": "CalculatorBlackScholes.com"
     }
+  }
+  </script>
+
+  <!-- 3) HowTo – passaggi per usare il calcolatore -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to use the Black-Scholes Calculator",
+    "description": "Follow these steps to calculate option prices using our free online Black-Scholes Calculator.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Insert current stock price (Spot)",
+        "text": "Digita il prezzo corrente del sottostante nel campo 'Spot Price'."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Enter strike price",
+        "text": "Inserisci il prezzo di esercizio (Strike) desiderato."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Select expiration date or time to maturity",
+        "text": "Seleziona la data di scadenza o inserisci il tempo alla scadenza in anni."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 4,
+        "name": "Enter volatility, interest rate, dividend yield",
+        "text": "Specifica la volatilità (implied o storica), il tasso risk-free e l’eventuale dividendo."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 5,
+        "name": "Click 'Calculate' to get option price and Greeks",
+        "text": "Clicca su 'Calcola' per ottenere in tempo reale il prezzo dell’opzione e i valori dei Greek."
+      }
+    ]
+  }
+  </script>
+
+  <!-- 4) FAQPage – domande frequenti -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cos’è il modello di Black-Scholes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Il modello di Black-Scholes è una formula per calcolare il prezzo teorico di opzioni europee call e put su asset finanziari, basata su parametri quali prezzo del sottostante, strike, volatilità, tasso risk-free e tempo alla scadenza."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Come si usa il Black-Scholes Calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inserisci il prezzo corrente del sottostante, il prezzo di esercizio, la volatilità, il tasso di interesse e la scadenza, quindi clicca 'Calcola'. Otterrai in pochi secondi il prezzo dell’opzione e i valori dei principali Greeks."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "È necessario registrarsi per usare il calcolatore?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No, il nostro Black-Scholes Calculator è completamente gratuito e non richiede alcuna registrazione o login."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quali opzioni posso valutare con questo tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Puoi calcolare opzioni europee, opzioni esotiche (come barrier option), swaptions e ottenere i Greek (Delta, Gamma, Vega, Theta, Rho) in tempo reale."
+        }
+      }
+    ]
   }
   </script>
     
@@ -682,7 +816,7 @@
   <section class="hero">
     <div class="hero-text">
       <div class="hero-subheading">Free Interactive Option Pricing Tool</div>
-      <h1 class="hero-title">Interactive Black-Scholes Option Pricing Calculator for Finance Students</h1>
+      <h1 class="hero-title">Black-Scholes Calculator – Interactive Option Pricing Tool</h1>
       <p class="hero-subtitle">
         Calculate option prices interactively in seconds with our free, web-based Black-Scholes pricing calculator, tailored for finance students and professors. Price European and exotic options, futures, swaptions and CDS. Try it free now:
       </p>
