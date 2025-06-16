@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Futures Calculator – Price, Profit/Loss, and Payoff Charts</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Use our Futures Calculator to compute forward prices using the cost of carry model. Calculate profit/loss, visualize long and short payoff charts, and understand futures pricing." />
+  <meta name="keywords" content="Futures Calculator, Forward Price Calculator, Profit and Loss Futures, Cost of Carry Model, Long Short Futures Payoff, Financial Derivatives Tool" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/futures-calculator.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Futures Calculator – Price and Payoff Analysis Tool" />
+  <meta property="og:description" content="Calculate futures prices and profit/loss using spot price, interest rate, time to maturity and dividend yield. Includes payoff graphs and step-by-step calculations." />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/futures-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/futures-calculator-og.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Futures Calculator – Estimate Price and Profit/Loss" />
+  <meta name="twitter:description" content="Free online futures calculator with cost of carry formula. Get profit/loss results, futures pricing, and long/short payoff charts." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/futures-calculator-og.png" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://www.calculatorblackscholes.com/calculators.html" },
+          { "@type": "ListItem", "position": 3, "name": "Futures Calculator", "item": "https://www.calculatorblackscholes.com/futures-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Futures Calculator",
+        "operatingSystem": "All",
+        "applicationCategory": "FinancialApplication",
+        "description": "Compute futures prices and visualize profit/loss using the cost of carry model. Includes payoff graphs for long and short futures contracts.",
+        "url": "https://www.calculatorblackscholes.com/futures-calculator.html",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Fonts & Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   
   <style>
     /* ================================
