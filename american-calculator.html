@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>American Options Pricing Calculator – Price, Greeks & Early Exercise</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Calculate American call and put option prices with dividends using our intuitive calculator. Includes Greeks, full calculation steps, and early exercise analysis." />
+  <meta name="keywords" content="American Options Calculator, Early Exercise, Options with Dividends, Binomial Tree, Option Greeks, American Call Put, Option Pricing, Financial Derivatives" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/american-calculator.html" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="American Options Calculator – Binomial Tree with Dividends" />
+  <meta property="og:description" content="Price American options with discrete dividends. Includes Greeks, early exercise logic, and visual payoff charts." />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/american-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/american-options-og.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="American Options Pricing Calculator – Early Exercise, Greeks & Charts" />
+  <meta name="twitter:description" content="Interactive calculator for pricing American options with dividends. Calculate Greeks, analyze early exercise conditions, and visualize payoffs." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/american-options-og.png" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://www.calculatorblackscholes.com/calculators.html" },
+          { "@type": "ListItem", "position": 3, "name": "American Options Calculator", "item": "https://www.calculatorblackscholes.com/american-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "American Options Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/american-calculator.html",
+        "description": "An advanced calculator for pricing American options using dividend-adjusted logic. Includes early exercise analysis and full computation of Greeks.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Resources -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   
   <style>
     /* ================================
