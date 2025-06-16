@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discrete Dividend Options Calculator – Price, Greeks & Payoff</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Use our Discrete Dividend Options Calculator to compute option prices adjusted for future dividend payments. Includes Greeks, payoff charts, and full calculation steps." />
+  <meta name="keywords" content="Discrete Dividend Options Calculator, Options with Dividends, Black-Scholes with Dividends, Option Pricing, Greeks Calculator, Call Put with Dividends, Payoff Graph, Financial Derivatives" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/discrete-div-calculator.html" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Discrete Dividend Options Calculator – Black-Scholes Tool" />
+  <meta property="og:description" content="Calculate European call and put options adjusted for discrete dividends. Includes Greeks and profit/loss charts." />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/discrete-div-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/discrete-div-og.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Discrete Dividend Options Calculator – Price & Greeks" />
+  <meta name="twitter:description" content="Use the Black-Scholes formula with discrete dividends to estimate option prices. Full calculations and payoff charts included." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/discrete-div-og.png" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://www.calculatorblackscholes.com/calculators.html" },
+          { "@type": "ListItem", "position": 3, "name": "Discrete Dividend Options Calculator", "item": "https://www.calculatorblackscholes.com/discrete-div-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Discrete Dividend Options Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/discrete-div-calculator.html",
+        "description": "Calculate European options adjusted for discrete dividends using the Black-Scholes model. Includes Greeks, payoff charts, and dividend present value logic.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Resources -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   
   <style>
     /* ================================
