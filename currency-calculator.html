@@ -1,11 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Options Calculator – Black-Scholes FX with Foreign Rate</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Calculate currency options with Black-Scholes including foreign interest rates. Get call and put values, Greeks, and FX payoff charts." />
+  <meta name="keywords" content="Currency Options Calculator, FX Option Pricing, Black-Scholes Model, Foreign Interest Rate, Currency Call Put Options, Greeks, FX Derivatives, Eurodollar, Forex Options, Garman-Kohlhagen" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/currency-calculator.html" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Currency Options Calculator – Black-Scholes FX with Foreign Rate" />
+  <meta property="og:description" content="Free online FX options calculator with Black-Scholes-Garman-Kohlhagen. Supports foreign/domestic rates, Greeks, and charts." />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/currency-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/currency-options-og.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Currency Options Calculator – FX Pricing with Greeks" />
+  <meta name="twitter:description" content="Compute call and put prices for FX options using Black-Scholes with interest rate differentials. View Greeks and payoff diagrams." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/currency-options-og.png" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://www.calculatorblackscholes.com/calculators.html" },
+          { "@type": "ListItem", "position": 3, "name": "Currency Options Calculator", "item": "https://www.calculatorblackscholes.com/currency-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Currency Options Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/currency-calculator.html",
+        "description": "FX options calculator using the Black-Scholes-Garman-Kohlhagen model. Calculates currency call and put prices, Greeks, and payoff charts with foreign/domestic interest rates.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   
   <style>
     /* ================================
