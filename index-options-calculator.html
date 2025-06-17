@@ -1,11 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index Options Calculator – Black-Scholes with Dividend Yield</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Price index options using Black-Scholes with dividend yield. Calculate call and put values, Greeks, and visualize payoffs. Fast, intuitive, and accurate." />
+  <meta name="keywords" content="Index Options Calculator, Option Pricing, Black-Scholes Model, Dividend Yield, Option Greeks, Index Call Put, Financial Derivatives, Nifty, SPX, DAX, Options Strategies" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/index-options-calculator.html" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Index Options Calculator – Black-Scholes with Dividend Yield" />
+  <meta property="og:description" content="Free calculator for pricing index call and put options using Black-Scholes with dividend yield. Includes Greeks and payoff charts." />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/index-options-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/index-options-og.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Index Options Calculator – Call, Put, Greeks, Dividends" />
+  <meta name="twitter:description" content="Interactive index options calculator with dividend yield. Compute price and Greeks for SPX, Nifty, DAX, and more." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/index-options-og.png" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://www.calculatorblackscholes.com/calculators.html" },
+          { "@type": "ListItem", "position": 3, "name": "Index Options Calculator", "item": "https://www.calculatorblackscholes.com/index-options-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Index Options Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/index-options-calculator.html",
+        "description": "An online calculator for pricing index options with dividend yield using the Black-Scholes formula. Includes Greeks and graphical payoff visualization.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   
   <style>
     /* ================================
