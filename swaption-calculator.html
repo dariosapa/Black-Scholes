@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swaption Calculator – Black Model for Payer & Receiver | Black-Scholes Tools</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Calculate the price of a European swaption using the Black 1976 model. Choose payer or receiver swaption, enter volatility, rates, maturity and see step-by-step results." />
+  <meta name="keywords" content="Swaption Calculator, Swaption Pricing, Black 76 Model, Payer Swaption, Receiver Swaption, Interest Rate Derivatives, European Swaptions, Black-Scholes Swaption, Financial Calculator, Yield Curve" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/swaption-calculator.html" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Swaption Calculator – Payer & Receiver Swaptions (Black Model)" />
+  <meta property="og:description" content="Free swaption calculator using Black's model. Price payer or receiver European swaptions. Customize volatility, yield curve and maturity." />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/swaption-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/swaption-calculator-og.png" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Swaption Calculator – European Pricing with Black's Model" />
+  <meta name="twitter:description" content="Calculate the price of a European swaption using the Black 1976 formula. Choose swaption type, volatility, and yield curve." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/swaption-calculator-og.png" />
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Swaption Calculator", "item": "https://www.calculatorblackscholes.com/swaption-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Swaption Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/swaption-calculator.html",
+        "description": "Free calculator for pricing European swaptions using the Black (1976) model. Supports payer and receiver swaptions, flat or custom yield curves, and full calculation breakdown.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Resources -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   
   <style>
     /* ================================
