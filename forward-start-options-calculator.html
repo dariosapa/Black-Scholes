@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forward Start Options Calculator | Black-Scholes Pricing, Greeks & Graphs</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Use this free forward start option calculator to compute the fair value of forward-starting calls and puts using the Black-Scholes model. Includes Greeks and payoff chart." />
+  <meta name="keywords" content="Forward Start Option, Forward Start Options Calculator, Options Pricing, Black-Scholes, Greeks, Financial Derivatives, Risk-Neutral Valuation, Payoff Chart" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/forward-start-options-calculator.html" />
+
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="Forward Start Options Calculator – Black-Scholes Pricing Tool" />
+  <meta property="og:description" content="Free Black-Scholes calculator for forward start options. Compute value, Greeks and see profit/loss charts instantly." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/forward-start-options-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/forward-start-og.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Forward Start Option Calculator – Black-Scholes" />
+  <meta name="twitter:description" content="Calculate fair price, Greeks and visualize charts for forward-starting options with this free Black-Scholes tool." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/forward-start-og.png" />
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Forward Start Options", "item": "https://www.calculatorblackscholes.com/forward-start-options-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Forward Start Options Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/forward-start-options-calculator.html",
+        "description": "Calculate the value of forward-starting call and put options using the Black-Scholes formula. Includes Greeks and a payoff chart for financial modeling.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Chart.js and Fonts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   
   <style>
     /* ================================
