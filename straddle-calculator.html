@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Straddle Options Strategy Calculator | Long & Short Payoff + Greeks</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Free online straddle strategy calculator using the Black-Scholes model. Compute long and short straddle prices, Greeks, and visualize profit/loss payoff charts." />
+  <meta name="keywords" content="Straddle Calculator, Options Strategy, Long Straddle, Short Straddle, Options Pricing, Profit and Loss, Greeks, Payoff Chart, Black-Scholes, Volatility Strategy" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/straddle-calculator.html" />
+
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="Straddle Options Strategy Calculator – Profit, Greeks & Payoff" />
+  <meta property="og:description" content="Use this free tool to calculate long and short straddle prices and Greeks with detailed Black-Scholes steps and visual payoff charts." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/straddle-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/straddle-options-og.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Straddle Options Calculator – Profit, Greeks, Payoff" />
+  <meta name="twitter:description" content="Calculate the price and Greeks of long and short straddles with real-time payoff graphs and Black-Scholes math." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/straddle-options-og.png" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Straddle Calculator", "item": "https://www.calculatorblackscholes.com/straddle-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Straddle Options Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/straddle-calculator.html",
+        "description": "Calculate and visualize the pricing, payoff, and Greeks of long and short straddle option strategies using the Black-Scholes model.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Resources -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   
   <style>
     /* ================================
