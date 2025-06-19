@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Binary Option Calculator | Cash-or-Nothing & Asset-or-Nothing Pricing</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Free online Binary Option Calculator using the Black-Scholes model. Compute Cash-or-Nothing and Asset-or-Nothing call and put prices, Greeks, and payoff charts." />
+  <meta name="keywords" content="Binary Option Calculator, Binary Call, Binary Put, Cash-or-Nothing Option, Asset-or-Nothing Option, Option Pricing, Greeks, Payoff Diagram, Black-Scholes Binary Options" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/binary-calculator.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Binary Option Calculator – Cash & Asset Based Payoffs" />
+  <meta property="og:description" content="Calculate binary options prices and Greeks with our online tool. Supports both cash-or-nothing and asset-or-nothing structures, with detailed charts and formulas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/binary-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/binary-options-og.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Binary Option Calculator – Cash & Asset Based Payoffs" />
+  <meta name="twitter:description" content="Free binary option calculator online. Use Black-Scholes model to compute payoffs and Greeks for digital options. Supports cash and asset style payouts." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/binary-options-og.png" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Binary Option Calculator", "item": "https://www.calculatorblackscholes.com/binary-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Binary Option Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/binary-calculator.html",
+        "description": "Free tool to calculate binary options pricing and Greeks using the Black-Scholes model. Includes payoff charts and detailed formula breakdowns.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Resources -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   
   <style>
     /* ================================
