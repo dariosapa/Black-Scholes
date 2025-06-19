@@ -1,11 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculators - Black &amp; Scholes Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gap Options Calculator | Black-Scholes Pricing Tool with Greeks & Charts</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Use this online Gap Option Calculator to compute prices, Greeks, and payoff charts. Supports Black-Scholes pricing with two strike levels (x1, x2)." />
+  <meta name="keywords" content="Gap Options, Gap Option Calculator, Black-Scholes Gap Options, Option Greeks, Payoff Diagram, Gap Call, Gap Put, x1 x2 strike, Exotic Options, Option Pricing Tool" />
+  <link rel="canonical" href="https://www.calculatorblackscholes.com/gap-options-calculator.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Gap Option Calculator – Black-Scholes Based Pricing Tool" />
+  <meta property="og:description" content="Calculate the price and Greeks of gap call and put options using our interactive gap option calculator. Visualize payoff charts and step-by-step formulas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.calculatorblackscholes.com/gap-options-calculator.html" />
+  <meta property="og:image" content="https://www.calculatorblackscholes.com/images/gap-options-og.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gap Option Calculator – Black-Scholes Based Pricing Tool" />
+  <meta name="twitter:description" content="Compute gap option prices, Greeks and visualize payoff diagrams online. Ideal for students, analysts, and quant developers." />
+  <meta name="twitter:image" content="https://www.calculatorblackscholes.com/images/gap-options-og.png" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Gap Option Calculator", "item": "https://www.calculatorblackscholes.com/gap-options-calculator.html" }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Gap Option Calculator",
+        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "All",
+        "url": "https://www.calculatorblackscholes.com/gap-options-calculator.html",
+        "description": "Free online tool to calculate Gap Call and Gap Put options using the Black-Scholes model with dual strike inputs (x1 and x2), Greeks, and charts.",
+        "author": {
+          "@type": "Organization",
+          "name": "CalculatorBlackScholes.com"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- External Resources -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
   
   <style>
     /* ================================
