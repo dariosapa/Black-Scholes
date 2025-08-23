@@ -7,18 +7,18 @@
   <!-- ========================
        ON-PAGE SEO ELEMENTS
        ======================== -->
-  <!-- Titolo ottimizzato: keyword esatta all’inizio + USP -->
-  <title>Black-Scholes Calculator – Free Interactive Option Pricing Tool</title>
+  <!-- Titolo ottimizzato: più corto per evitare troncamenti -->
+  <title>Black‑Scholes Calculator — Free Option Pricing Tool</title>
 
-  <!-- Meta Description con call-to-action -->
+  <!-- Meta Description allineata e non “over‑promising” -->
   <meta name="description"
-        content="Free Black-Scholes Calculator – price European & exotic options, compute Greeks & swaptions in seconds. Try it now, no registration needed!" />
+        content="Free Black‑Scholes calculator to price European options and compute Greeks in seconds. Clean UI, step‑by‑step workflow, no registration." />
 
-  <!-- Open Graph tags coerenti con titolo e descrizione -->
+  <!-- Open Graph tags coerenti -->
   <meta property="og:title"
-        content="Black-Scholes Calculator – Free Interactive Option Pricing Tool" />
+        content="Black‑Scholes Calculator — Free Option Pricing Tool" />
   <meta property="og:description"
-        content="Master option pricing with our free interactive Black-Scholes calculator: price European & exotic options, compute all Greeks & swaptions instantly. Try it now!" />
+        content="Price European options and compute Greeks fast with our free Black‑Scholes calculator. Try it now — no signup." />
   <meta property="og:image"
         content="https://calculatorblackscholes.com/og-image.png" />
   <meta property="og:url" content="https://calculatorblackscholes.com/" />
@@ -26,13 +26,14 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Black-Scholes Calculator – Free Interactive Option Pricing Tool" />
+  <meta name="twitter:title" content="Black‑Scholes Calculator — Free Option Pricing Tool" />
   <meta name="twitter:description"
-        content="Free Black-Scholes Calculator – price European & exotic options, compute Greeks & swaptions in seconds. Try it now!" />
+        content="Free Black‑Scholes calculator to price European options and compute Greeks in seconds. No registration." />
   <meta name="twitter:image" content="https://calculatorblackscholes.com/og-image.png" />
 
-  <!-- Lingua della pagina -->
+  <!-- Hreflang -->
   <link rel="alternate" href="https://calculatorblackscholes.com/" hreflang="en" />
+  <link rel="alternate" href="https://calculatorblackscholes.com/" hreflang="x-default" />
 
   <!-- Canonical URL -->
   <link rel="canonical" href="https://calculatorblackscholes.com/" />
@@ -40,17 +41,13 @@
   <!-- ========================
        FONT & PERFORMANCE
        ======================== -->
-  <!-- Preload font Rubik e Inter -->
-  <link rel="preload"
-        href="https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-B4iFU0U1Z4Y.woff2"
-        as="font"
-        type="font/woff2"
-        crossorigin />
+  <!-- Preconnect per i font (evita doppio preload woff2 + Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap"
         rel="stylesheet" />
 
-  <!-- Chart.js caricato in modo non bloccante -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <!-- (RIMOSSO) Chart.js: caricalo solo nelle pagine che lo usano realmente -->
 
   <!-- ========================
        JSON-LD STRUCTURED DATA
@@ -71,7 +68,7 @@
   }
   </script>
 
-  <!-- 2) SoftwareApplication con screenshot, offers e aggregateRating -->
+  <!-- 2) SoftwareApplication (senza aggregateRating e con descrizione allineata) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -79,7 +76,7 @@
     "name": "Black & Scholes Calculator",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "Web",
-    "description": "Interactive web-based Black-Scholes calculator to price options, futures, and exotic derivatives with step-by-step explanations.",
+    "description": "Web-based Black-Scholes calculator to price European options and compute Greeks with a clear, step-by-step workflow.",
     "url": "https://calculatorblackscholes.com/",
     "screenshot": "https://calculatorblackscholes.com/og-image.png",
     "image": "https://calculatorblackscholes.com/og-image.png",
@@ -89,11 +86,6 @@
       "priceCurrency": "USD",
       "url": "https://calculatorblackscholes.com/"
     },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "37"
-    },
     "author": {
       "@type": "Organization",
       "name": "CalculatorBlackScholes.com"
@@ -101,49 +93,49 @@
   }
   </script>
 
-  <!-- 3) HowTo – passaggi per usare il calcolatore -->
+  <!-- 3) HowTo — in inglese, allineato a lang="en" -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to use the Black-Scholes Calculator",
-    "description": "Follow these steps to calculate option prices using our free online Black-Scholes Calculator.",
+    "description": "Follow these steps to calculate option prices using our free online Black-Scholes calculator.",
     "step": [
       {
         "@type": "HowToStep",
         "position": 1,
         "name": "Insert current stock price (Spot)",
-        "text": "Digita il prezzo corrente del sottostante nel campo 'Spot Price'."
+        "text": "Type the current underlying price in the 'Spot Price' field."
       },
       {
         "@type": "HowToStep",
         "position": 2,
         "name": "Enter strike price",
-        "text": "Inserisci il prezzo di esercizio (Strike) desiderato."
+        "text": "Enter the desired strike price."
       },
       {
         "@type": "HowToStep",
         "position": 3,
         "name": "Select expiration date or time to maturity",
-        "text": "Seleziona la data di scadenza o inserisci il tempo alla scadenza in anni."
+        "text": "Pick the expiration date or input time to maturity in years."
       },
       {
         "@type": "HowToStep",
         "position": 4,
         "name": "Enter volatility, interest rate, dividend yield",
-        "text": "Specifica la volatilità (implied o storica), il tasso risk-free e l’eventuale dividendo."
+        "text": "Specify volatility (implied or historical), risk‑free rate and any dividend yield."
       },
       {
         "@type": "HowToStep",
         "position": 5,
         "name": "Click 'Calculate' to get option price and Greeks",
-        "text": "Clicca su 'Calcola' per ottenere in tempo reale il prezzo dell’opzione e i valori dei Greek."
+        "text": "Click 'Calculate' to get the option price and Greeks in real time."
       }
     ]
   }
   </script>
 
-  <!-- 4) FAQPage – domande frequenti -->
+  <!-- 4) FAQPage — in inglese per coerenza -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -151,47 +143,60 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Cos’è il modello di Black-Scholes?",
+        "name": "What is the Black-Scholes model?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Il modello di Black-Scholes è una formula per calcolare il prezzo teorico di opzioni europee call e put su asset finanziari, basata su parametri quali prezzo del sottostante, strike, volatilità, tasso risk-free e tempo alla scadenza."
+          "text": "The Black-Scholes model prices European call and put options based on inputs such as underlying price, strike, volatility, risk-free rate and time to maturity."
         }
       },
       {
         "@type": "Question",
-        "name": "Come si usa il Black-Scholes Calculator?",
+        "name": "How do I use the Black-Scholes Calculator?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Inserisci il prezzo corrente del sottostante, il prezzo di esercizio, la volatilità, il tasso di interesse e la scadenza, quindi clicca 'Calcola'. Otterrai in pochi secondi il prezzo dell’opzione e i valori dei principali Greeks."
+          "text": "Enter the underlying price, strike, volatility, interest rate and expiry, then click 'Calculate' to get the option price and Greeks."
         }
       },
       {
         "@type": "Question",
-        "name": "È necessario registrarsi per usare il calcolatore?",
+        "name": "Do I need to register to use the calculator?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No, il nostro Black-Scholes Calculator è completamente gratuito e non richiede alcuna registrazione o login."
+          "text": "No, the tool is completely free and requires no registration or login."
         }
       },
       {
         "@type": "Question",
-        "name": "Quali opzioni posso valutare con questo tool?",
+        "name": "Which options can I evaluate with this tool?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Puoi calcolare opzioni europee, opzioni esotiche (come barrier option), swaptions e ottenere i Greek (Delta, Gamma, Vega, Theta, Rho) in tempo reale."
+          "text": "You can calculate European options and obtain the main Greeks (Delta, Gamma, Vega, Theta, Rho)."
         }
       }
     ]
   }
   </script>
-    
 
-  
+  <!-- 5) WebSite + SearchAction (facoltativo ma utile per sitelinks search box) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://calculatorblackscholes.com/",
+    "name": "CalculatorBlackScholes.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://calculatorblackscholes.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
   <style>
     /* ================================
        COOKIE BANNER & MODAL STYLES
        ================================ */
-       :root {
+    :root {
       --primary: #01796F;
       --background: #F8FAFC;
       --card-bg: #FFFFFF;
@@ -243,18 +248,17 @@
     /* RESET */
     * {
       margin: 0;
-      padding: 3;
+      padding: 3px; /* fix: era '3' senza unità */
       box-sizing: border-box;
     }
-    
     body {
       font-family: 'Rubik', sans-serif;
       color: #000;
       background-color: #fff;
     }
-    
+
     /* -------------------------- */
-    /*         NAVBAR           */
+    /*         NAVBAR             */
     /* -------------------------- */
     .navbar {
       height: 80px;
@@ -265,7 +269,6 @@
       background-color: #F8FAFC;
       border-bottom: 1px solid #eaeaea;
     }
-    
     .navbar-left,
     .navbar-center,
     .navbar-right {
@@ -273,46 +276,31 @@
       align-items: center;
       gap: 1.5rem;
     }
-    
-    /* Il brand ora punta a homepage.html */
     .brand {
       font-size: 1.25rem;
       font-weight: 700;
       color: #000;
       text-decoration: none;
     }
-    
-    .navbar-left .brand:hover {
-      text-decoration: underline;
-    }
-    
-    /* Nei link della navbar: Calculators e Theory */
+    .navbar-left .brand:hover { text-decoration: underline; }
     .nav-link {
       font-weight: 500;
       color: #333;
       text-decoration: none;
       transition: color 0.2s ease;
     }
-    
-    .nav-link:hover {
-      color: #01796F;
-    }
-    
-    
+    .nav-link:hover { color: #01796F; }
+
     /* -------------------------- */
-    /*       HERO SECTION       */
+    /*       HERO SECTION         */
     /* -------------------------- */
     .hero {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start; /* Testo in alto */
+      align-items: flex-start;
       padding: 3rem 2rem;
     }
-    
-    .hero-text {
-      max-width: 600px;
-    }
-    
+    .hero-text { max-width: 600px; }
     .hero-subheading {
       font-size: 1.25rem;
       letter-spacing: 0.1em;
@@ -320,28 +308,19 @@
       color: #01796F;
       margin-bottom: 0.5rem;
     }
-    
-    /* Titolo e testo originali */
     .hero-title {
       font-size: 3.5rem;
       font-weight: 700;
       margin-bottom: 1rem;
       line-height: 1.2;
     }
-    
     .hero-subtitle {
       font-size: 1.5rem;
       line-height: 1.6;
       margin-bottom: 2rem;
       color: #555;
     }
-    
-    .button-group {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem; /* Spazio extra sotto i bottoni */
-    }
-    
+    .button-group { display: flex; gap: 1rem; margin-bottom: 2rem; }
     .cta-button,
     .outline-button {
       padding: 0.75rem 1.5rem;
@@ -354,56 +333,30 @@
       align-items: center;
       justify-content: center;
     }
-    
-    .cta-button {
-      background-color: #01796F;
-      color: #fff;
-      border: none;
-    }
-    
-    .cta-button:hover {
-      background-color: #01665E;
-    }
-    
-    .outline-button {
-      background-color: transparent;
-      color: #01796F;
-      border: 2px solid #01796F;
-    }
-    
-    .outline-button:hover {
-      background-color: #E0F2F1;
-    }
-    
+    .cta-button { background-color: #01796F; color: #fff; border: none; }
+    .cta-button:hover { background-color: #01665E; }
+    .outline-button { background-color: transparent; color: #01796F; border: 2px solid #01796F; }
+    .outline-button:hover { background-color: #E0F2F1; }
+
     .hero-image img {
       max-width: 5000px;
       width: 109%;
       height: auto;
+      /* idealmente aggiungere width/height reali o aspect-ratio per CLS */
     }
 
-    
     /* -------------------------- */
-    /*  WHAT WE OFFER SECTION    */
+    /*  WHAT WE OFFER SECTION     */
     /* -------------------------- */
     .offer-section {
       padding: 4rem 2rem;
       background-color: #F8FAFC;
       text-align: center;
     }
-    
-    .offer-title {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-    }
-    
+    .offer-title { font-size: 2rem; font-weight: 700; margin-bottom: 2rem; }
     .offer-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
+      display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;
     }
-    
     .offer-item {
       flex: 0 0 250px;
       background-color: #fff;
@@ -412,362 +365,132 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
-    
     .offer-item-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      color: #333;
-      min-height: 3rem;
+      font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #333; min-height: 3rem;
     }
-    
-    .offer-item-text {
-      font-size: 1rem;
-      color: #555;
-      line-height: 1.5;
-    }
+    .offer-item-text { font-size: 1rem; color: #555; line-height: 1.5; }
 
-    .foto12 {
-      width: 80px; 
-      height: auto; 
-    }
+    .foto12 { width: 80px; height: auto; }
+    .foto13 { width: 109px; height: auto; }
+    .foto14 { width: 85px; height: auto; }
+    .foto15 { width: 110px; height: auto; }
 
-    .foto13 {
-      width: 109px; 
-      height: auto; 
-    }
+    .registrazione1 { width: 500px; height: auto; }
 
-    .foto14 {
-      width: 85px; 
-      height: auto; 
-    }
-
-    .foto15 {
-      width: 110px; 
-      height: auto; 
-    }
-
-    .registrazione1 {
-      width: 500px; 
-      height: auto; 
-    }
-
-    
     /* -------------------------- */
-    /*  CALCULATORS SECTION      */
+    /*  CALCULATORS SECTION       */
     /* -------------------------- */
-    .calculators-section {
-      padding: 4rem 2rem;
-      background-color: #fff;
-    }
-    
+    .calculators-section { padding: 4rem 2rem; background-color: #fff; }
     .calculators-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 2rem;
+      max-width: 1200px; margin: 0 auto;
     }
-    
-    .calculators-text {
-      flex: 1;
-      max-width: 600px;
-    }
-    
+    .calculators-text { flex: 1; max-width: 600px; }
     .calculators-subheading {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #01796F;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      letter-spacing: 0.05em;
+      font-size: 1rem; font-weight: 500; color: #01796F; text-transform: uppercase;
+      margin-bottom: 0.75rem; letter-spacing: 0.05em;
     }
-    
     .calculators-title {
-      font-size: 2rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem;
     }
-    
     .calculators-description {
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #555;
-      margin-bottom: 2rem;
+      font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 2rem;
     }
-    
     .calculators-btn {
-      background-color: #01796F;
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: background-color 0.2s ease;
+      background-color: #01796F; color: #fff; padding: 0.75rem 1.5rem; border-radius: 50px;
+      text-decoration: none; font-weight: 500; transition: background-color 0.2s ease;
     }
-    
-    .calculators-btn:hover {
-      background-color: #01665E;
-    }
-    
-    .calculators-image {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-    
+    .calculators-btn:hover { background-color: #01665E; }
+    .calculators-image { flex: 1; display: flex; justify-content: center; }
     .calculators-image img {
-      max-width: 400px;
-      width: 100%;
-      height: auto;
-      display: block;
+      max-width: 400px; width: 100%; height: auto; display: block;
     }
-    
+
     /* -------------------------- */
-    /*     THEORY SECTION        */
+    /*     THEORY SECTION         */
     /* -------------------------- */
-    .theory-section {
-      padding: 4rem 2rem;
-      background-color: #F8FAFC;
-    }
-    
+    .theory-section { padding: 4rem 2rem; background-color: #F8FAFC; }
     .theory-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 2rem;
+      max-width: 1200px; margin: 0 auto;
     }
-    
-    /* Immagine a sinistra, testo a destra */
-    .theory-image {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-    
+    .theory-image { flex: 1; display: flex; justify-content: center; }
     .theory-image img {
-      max-width: 400px;
-      width: 100%;
-      height: auto;
-      display: block;
+      max-width: 400px; width: 100%; height: auto; display: block;
     }
-    
-    .theory-text {
-      flex: 1;
-      max-width: 600px;
-    }
-    
+    .theory-text { flex: 1; max-width: 600px; }
     .theory-subheading {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #01796F;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      letter-spacing: 0.05em;
+      font-size: 1rem; font-weight: 500; color: #01796F; text-transform: uppercase;
+      margin-bottom: 0.75rem; letter-spacing: 0.05em;
     }
-    
     .theory-title {
-      font-size: 2rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem;
     }
-    
-    .theory-description {
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #555;
-      margin-bottom: 2rem;
-    }
-    
+    .theory-description { font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 2rem; }
     .theory-btn {
-      background-color: #01796F;
-      color: #fff;
-      padding: 0.75rem 1.5rem;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: background-color 0.2s ease;
+      background-color: #01796F; color: #fff; padding: 0.75rem 1.5rem; border-radius: 50px;
+      text-decoration: none; font-weight: 500; transition: background-color 0.2s ease;
     }
-    
-    .theory-btn:hover {
-      background-color: #01665E;
-    }
-    
+    .theory-btn:hover { background-color: #01665E; }
+
     /* -------------------------- */
-    /*         FOOTER            */
+    /*         FOOTER             */
     /* -------------------------- */
     .site-footer {
-      background-color: #fff;
-      border-top: 1px solid #eaeaea;
-      padding: 2rem;
+      background-color: #fff; border-top: 1px solid #eaeaea; padding: 2rem;
     }
-    
     .footer-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
+      max-width: 1200px; margin: 0 auto;
     }
-    
-    .footer-left,
-    .footer-right {
-      flex: 1;
-    }
-    
-    .footer-brand {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      color: #000;
-    }
-    
-    .footer-text {
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.4;
-      margin-bottom: 1rem;
-    }
-    
+    .footer-left, .footer-right { flex: 1; }
+    .footer-brand { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #000; }
+    .footer-text { font-size: 0.9rem; color: #555; line-height: 1.4; margin-bottom: 1rem; }
     .footer-right ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      padding: 0;
-      margin: 0;
+      list-style: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 0; margin: 0;
     }
-    
-    .footer-right a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-    
-    .footer-right a:hover {
-      color: #01796F;
-    }
+    .footer-right a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s ease; }
+    .footer-right a:hover { color: #01796F; }
+    .cookie-policy-link { color: var(--primary); text-decoration: underline; margin-left: 0.25rem; }
+    .cookie-policy-link:hover { color: #01665E; }
+    .cookie-settings-link { color: var(--primary); text-decoration: none; }
 
-    .cookie-policy-link {
-      color: var(--primary);
-      text-decoration: underline;
-      margin-left: 0.25rem;
-    }
-    .cookie-policy-link:hover {
-      color: #01665E;
-    }
+    .footer-brand a { color: inherit; text-decoration: none; font-weight: 700; }
+    .footer-brand a:hover { color: var(--primary); }
 
-    .cookie-settings-link {
-      color: var(--primary);
-      text-decoration: none;
-    }
-
-    /* nel tuo style */
-    .footer-brand a {
-      color: inherit;         /* eredita il colore del .footer-brand */
-      text-decoration: none;  /* rimuove la sottolineatura */
-      font-weight: 700;       /* mantiene il peso del font */
-    }
-    
-    .footer-brand a:hover {
-      color: var(--primary);  /* cambia colore on hover se vuoi */
-    }
-
-
-    
     /* -------------------------- */
-    /*        RESPONSIVITÀ       */
+    /*        RESPONSIVITÀ        */
     /* -------------------------- */
     @media (max-width: 768px) {
-      .hero-subheading {
-        font-size: 1.15rem; /* invece di 1.25rem */
+      .hero-subheading { font-size: 1.15rem; }
+      .hero-title { font-size: 3.2rem; }
+      .hero-subtitle { font-size: 1.3rem; }
+      .hero { flex-direction: column; align-items: flex-start; }
+      .hero-image { margin-top: 2rem; }
+      .navbar { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .navbar-center { width: 100%; }
+      .offer-container, .calculators-container, .theory-container {
+        flex-direction: column; align-items: flex-start;
       }
-      .hero-title {
-        font-size: 3.2rem;  /* invece di 3.5rem */
+      .offer-item, .calculators-text, .theory-text {
+        width: 100%; max-width: 350px;
       }
-      .hero-subtitle {
-        font-size: 1.3rem;  /* invece di 1.5rem */
-      }
-      
-      .hero {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .hero-image {
-        margin-top: 2rem;
-      }
-      
-      .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-      
-      .navbar-center {
-        width: 100%;
-      }
-      
-      .offer-container,
-      .calculators-container,
-      .theory-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .offer-item,
-      .calculators-text,
-      .theory-text {
-        width: 100%;
-        max-width: 350px;
-      }
-      
-      .calculators-image,
-      .theory-image {
-        margin-top: 2rem;
-      }
-      
-      .calculators-image img,
-      .theory-image img {
-        max-width: 100%;
-      }
-      
-      .footer-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .foto-resize {
-        width: 15000px;
-        height: auto;
-      }
-
+      .calculators-image, .theory-image { margin-top: 2rem; }
+      .calculators-image img, .theory-image img { max-width: 100%; }
+      .footer-container { flex-direction: column; align-items: flex-start; }
+      .foto-resize { width: 15000px; height: auto; }
       .registrazione1 {
-        width: 100%;
-        max-width: none; /* oppure impostare un valore che si adatti meglio */
-        height: auto;
-        object-fit: contain; /* oppure "cover" in base alle necessità */
+        width: 100%; max-width: none; height: auto; object-fit: contain;
       }
-
     }
 
-    
     @media (min-width: 992px) {
-      .hero {
-        min-height: 100vh;
-      }
+      .hero { min-height: 100vh; }
     }
   </style>
 </head>
 <body>
-    
+
   <!-- COOKIE BANNER -->
   <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
     <p>
@@ -776,12 +499,11 @@
       <a href="cookie-policy.html" class="cookie-policy-link" target="_blank" rel="noopener">Cookie Policy</a>.
     </p>
     <div>
-      <button id="accept-all">Accept All</button>
-      <button id="decline-all">Decline All</button>
-      <button id="cookie-settings">Settings</button>
+      <button id="accept-all" type="button">Accept All</button>
+      <button id="decline-all" type="button">Decline All</button>
+      <button id="cookie-settings" type="button">Settings</button>
     </div>
   </div>
-
 
   <!-- COOKIE SETTINGS MODAL -->
   <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
@@ -793,7 +515,7 @@
         <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
         <button type="button" id="save-settings">Save Settings</button>
       </form>
-      <button id="close-modal">Close</button>
+      <button id="close-modal" type="button">Close</button>
     </div>
   </div>
 
@@ -801,17 +523,16 @@
   <nav class="navbar">
     <!-- Brand (sinistra) -->
     <div class="navbar-left">
-      <a href="index.html" class="brand">Black &amp; Scholes Calculator</a>
+      <a href="/" class="brand">Black &amp; Scholes Calculator</a>
     </div>
-    
-    
+
     <!-- Nav link (destra) -->
     <div class="navbar-right">
       <a href="theory-calculator.html" class="nav-link">Calculators</a>
       <a href="theory.html" class="nav-link">Theory</a>
     </div>
   </nav>
-  
+
   <!-- HERO SECTION -->
   <section class="hero">
     <div class="hero-text">
@@ -829,60 +550,58 @@
       <img src="Foto11.png" alt="Screenshot of the calculator interface" class="foto-resize">
     </div>
   </section>
-  
+
   <!-- WHAT WE OFFER SECTION -->
-<section class="offer-section">
-  <!-- Optimized section title -->
-  <h2 class="offer-title">Key Features of Our Black-Scholes Option Pricing Calculator</h2>
+  <section class="offer-section">
+    <h2 class="offer-title">Key Features of Our Black-Scholes Option Pricing Calculator</h2>
 
-  <div class="offer-container">
-    <!-- Card 1 -->
-    <div class="offer-item">
-      <div class="offer-icon">
-        <img src="foto12.PNG" alt="Black-Scholes step-by-step breakdown" class="foto12">
+    <div class="offer-container">
+      <!-- Card 1 -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="foto12.PNG" alt="Black-Scholes step-by-step breakdown" class="foto12" loading="lazy" decoding="async">
+        </div>
+        <h3 class="offer-item-title">Step-by-Step Option Pricing</h3>
+        <p class="offer-item-text">
+          Get a clear, stage-by-stage breakdown of the Black-Scholes model—from volatility inputs to Greeks—in your browser.
+        </p>
       </div>
-      <h3 class="offer-item-title">Step-by-Step Option Pricing</h3>
-      <p class="offer-item-text">
-        Get a clear, stage-by-stage breakdown of the Black-Scholes model—from volatility inputs to Greeks—in your browser.
-      </p>
-    </div>
 
-    <!-- Card 2 -->
-    <div class="offer-item">
-      <div class="offer-icon">
-        <img src="Foto13.png" alt="Instant Greeks calculation" class="foto13">
+      <!-- Card 2 -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="Foto13.png" alt="Instant Greeks calculation" class="foto13" loading="lazy" decoding="async">
+        </div>
+        <h3 class="offer-item-title">Instant Greeks Calculation</h3>
+        <p class="offer-item-text">
+          Compute Delta, Gamma, Vega, Theta and Rho in just a few clicks, with concise mathematical explanations for each Greek.
+        </p>
       </div>
-      <h3 class="offer-item-title">Instant Greeks Calculation</h3>
-      <p class="offer-item-text">
-        Compute Delta, Gamma, Vega, Theta and Rho in just a few clicks, with concise mathematical explanations for each Greek.
-      </p>
-    </div>
 
-    <!-- Card 3 -->
-    <div class="offer-item">
-      <div class="offer-icon">
-        <img src="Foto14.png" alt="Interactive payoff graphs" class="foto14">
+      <!-- Card 3 -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="Foto14.png" alt="Interactive payoff graphs" class="foto14" loading="lazy" decoding="async">
+        </div>
+        <h3 class="offer-item-title">Interactive Payoff Graphs</h3>
+        <p class="offer-item-text">
+          Visualize option payoffs and breakeven points by adjusting strike, underlying price, volatility and time parameters.
+        </p>
       </div>
-      <h3 class="offer-item-title">Interactive Payoff Graphs</h3>
-      <p class="offer-item-text">
-        Visualize option payoffs and breakeven points by adjusting strike, underlying price, volatility and time parameters.
-      </p>
-    </div>
 
-    <!-- Card 4 -->
-    <div class="offer-item">
-      <div class="offer-icon">
-        <img src="Foto15.png" alt="Derivative theory guide" class="foto15">
+      <!-- Card 4 -->
+      <div class="offer-item">
+        <div class="offer-icon">
+          <img src="Foto15.png" alt="Derivative theory guide" class="foto15" loading="lazy" decoding="async">
+        </div>
+        <h3 class="offer-item-title">Derivative Theory Guide</h3>
+        <p class="offer-item-text">
+          Access clear Black-Scholes theory—assumptions, derivations and real-world applications—to reinforce your learning.
+        </p>
       </div>
-      <h3 class="offer-item-title">Derivative Theory Guide</h3>
-      <p class="offer-item-text">
-        Access clear Black-Scholes theory—assumptions, derivations and real-world applications—to reinforce your learning.
-      </p>
     </div>
-  </div>
-</section>
+  </section>
 
-  
   <!-- CALCULATORS SECTION -->
   <section class="calculators-section">
     <div class="calculators-container">
@@ -893,18 +612,18 @@
           Use our Black-Scholes calculators to accurately price futures, European & American options, index & currency options, interest rate swaps and exotic derivatives. Each tool offers step-by-step walkthroughs, formula breakdowns and contextual explanations—ideal for finance students and professors.
         </p>
         <a href="theory-calculator.html" class="cta-button calculators-btn">Explore the Calculators</a>
-      </div>      
-      <video class="registrazione1" autoplay loop muted playsinline style="pointer-events: none;">
+      </div>
+      <video class="registrazione1" autoplay loop muted playsinline preload="none" style="pointer-events: none;">
         <source src="Registrazione1.mp4" type="video/mp4">
-      </video>      
+      </video>
     </div>
   </section>
-  
+
   <!-- THEORY SECTION -->
   <section class="theory-section">
     <div class="theory-container">
       <div class="theory-image">
-        <img src="Foto16.png" alt="Screenshot or illustration of derivative theory resources">
+        <img src="Foto16.png" alt="Screenshot or illustration of derivative theory resources" loading="lazy" decoding="async">
       </div>
       <div class="theory-text">
         <div class="theory-subheading">Comprehensive Derivative Pricing Theory</div>
@@ -913,17 +632,16 @@
           Dive into detailed tutorials on futures, European & American options and exotic products. Learn payoff structures, derive and apply the Black-Scholes equation, and explore real-world model assumptions and limitations. Perfect for both beginners and advanced finance students.
         </p>
         <a href="theory.html" class="theory-btn">Discover the Theory</a>
-      </div>      
       </div>
     </div>
   </section>
-  
- <!-- FOOTER -->
+
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-left">
         <h3 class="footer-brand">
-          <a href="index.html">Black &amp; Scholes Calculator</a>
+          <a href="/">Black &amp; Scholes Calculator</a>
         </h3>
         <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
         <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
@@ -940,6 +658,5 @@
   </footer>
 
   <script src="cookie-consent.js"></script>
-  
 </body>
 </html>
