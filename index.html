@@ -191,12 +191,14 @@
     }
   }
   </script>
+    
 
+  
   <style>
     /* ================================
        COOKIE BANNER & MODAL STYLES
        ================================ */
-    :root {
+       :root {
       --primary: #01796F;
       --background: #F8FAFC;
       --card-bg: #FFFFFF;
@@ -248,17 +250,18 @@
     /* RESET */
     * {
       margin: 0;
-      padding: 3px; /* fix: era '3' senza unità */
+      padding: 3;
       box-sizing: border-box;
     }
+    
     body {
       font-family: 'Rubik', sans-serif;
       color: #000;
       background-color: #fff;
     }
-
+    
     /* -------------------------- */
-    /*         NAVBAR             */
+    /*         NAVBAR           */
     /* -------------------------- */
     .navbar {
       height: 80px;
@@ -269,6 +272,7 @@
       background-color: #F8FAFC;
       border-bottom: 1px solid #eaeaea;
     }
+    
     .navbar-left,
     .navbar-center,
     .navbar-right {
@@ -276,31 +280,46 @@
       align-items: center;
       gap: 1.5rem;
     }
+    
+    /* Il brand ora punta a homepage.html */
     .brand {
       font-size: 1.25rem;
       font-weight: 700;
       color: #000;
       text-decoration: none;
     }
-    .navbar-left .brand:hover { text-decoration: underline; }
+    
+    .navbar-left .brand:hover {
+      text-decoration: underline;
+    }
+    
+    /* Nei link della navbar: Calculators e Theory */
     .nav-link {
       font-weight: 500;
       color: #333;
       text-decoration: none;
       transition: color 0.2s ease;
     }
-    .nav-link:hover { color: #01796F; }
-
+    
+    .nav-link:hover {
+      color: #01796F;
+    }
+    
+    
     /* -------------------------- */
-    /*       HERO SECTION         */
+    /*       HERO SECTION       */
     /* -------------------------- */
     .hero {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: flex-start; /* Testo in alto */
       padding: 3rem 2rem;
     }
-    .hero-text { max-width: 600px; }
+    
+    .hero-text {
+      max-width: 600px;
+    }
+    
     .hero-subheading {
       font-size: 1.25rem;
       letter-spacing: 0.1em;
@@ -308,19 +327,28 @@
       color: #01796F;
       margin-bottom: 0.5rem;
     }
+    
+    /* Titolo e testo originali */
     .hero-title {
       font-size: 3.5rem;
       font-weight: 700;
       margin-bottom: 1rem;
       line-height: 1.2;
     }
+    
     .hero-subtitle {
       font-size: 1.5rem;
       line-height: 1.6;
       margin-bottom: 2rem;
       color: #555;
     }
-    .button-group { display: flex; gap: 1rem; margin-bottom: 2rem; }
+    
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem; /* Spazio extra sotto i bottoni */
+    }
+    
     .cta-button,
     .outline-button {
       padding: 0.75rem 1.5rem;
@@ -333,30 +361,56 @@
       align-items: center;
       justify-content: center;
     }
-    .cta-button { background-color: #01796F; color: #fff; border: none; }
-    .cta-button:hover { background-color: #01665E; }
-    .outline-button { background-color: transparent; color: #01796F; border: 2px solid #01796F; }
-    .outline-button:hover { background-color: #E0F2F1; }
-
+    
+    .cta-button {
+      background-color: #01796F;
+      color: #fff;
+      border: none;
+    }
+    
+    .cta-button:hover {
+      background-color: #01665E;
+    }
+    
+    .outline-button {
+      background-color: transparent;
+      color: #01796F;
+      border: 2px solid #01796F;
+    }
+    
+    .outline-button:hover {
+      background-color: #E0F2F1;
+    }
+    
     .hero-image img {
       max-width: 5000px;
       width: 109%;
       height: auto;
-      /* idealmente aggiungere width/height reali o aspect-ratio per CLS */
     }
 
+    
     /* -------------------------- */
-    /*  WHAT WE OFFER SECTION     */
+    /*  WHAT WE OFFER SECTION    */
     /* -------------------------- */
     .offer-section {
       padding: 4rem 2rem;
       background-color: #F8FAFC;
       text-align: center;
     }
-    .offer-title { font-size: 2rem; font-weight: 700; margin-bottom: 2rem; }
-    .offer-container {
-      display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;
+    
+    .offer-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
     }
+    
+    .offer-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    
     .offer-item {
       flex: 0 0 250px;
       background-color: #fff;
@@ -365,132 +419,362 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
+    
     .offer-item-title {
-      font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #333; min-height: 3rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #333;
+      min-height: 3rem;
     }
-    .offer-item-text { font-size: 1rem; color: #555; line-height: 1.5; }
+    
+    .offer-item-text {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.5;
+    }
 
-    .foto12 { width: 80px; height: auto; }
-    .foto13 { width: 109px; height: auto; }
-    .foto14 { width: 85px; height: auto; }
-    .foto15 { width: 110px; height: auto; }
+    .foto12 {
+      width: 80px; 
+      height: auto; 
+    }
 
-    .registrazione1 { width: 500px; height: auto; }
+    .foto13 {
+      width: 109px; 
+      height: auto; 
+    }
 
+    .foto14 {
+      width: 85px; 
+      height: auto; 
+    }
+
+    .foto15 {
+      width: 110px; 
+      height: auto; 
+    }
+
+    .registrazione1 {
+      width: 500px; 
+      height: auto; 
+    }
+
+    
     /* -------------------------- */
-    /*  CALCULATORS SECTION       */
+    /*  CALCULATORS SECTION      */
     /* -------------------------- */
-    .calculators-section { padding: 4rem 2rem; background-color: #fff; }
+    .calculators-section {
+      padding: 4rem 2rem;
+      background-color: #fff;
+    }
+    
     .calculators-container {
-      display: flex; justify-content: space-between; align-items: center; gap: 2rem;
-      max-width: 1200px; margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    .calculators-text { flex: 1; max-width: 600px; }
+    
+    .calculators-text {
+      flex: 1;
+      max-width: 600px;
+    }
+    
     .calculators-subheading {
-      font-size: 1rem; font-weight: 500; color: #01796F; text-transform: uppercase;
-      margin-bottom: 0.75rem; letter-spacing: 0.05em;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #01796F;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
     }
+    
     .calculators-title {
-      font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
     }
+    
     .calculators-description {
-      font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 2rem;
     }
+    
     .calculators-btn {
-      background-color: #01796F; color: #fff; padding: 0.75rem 1.5rem; border-radius: 50px;
-      text-decoration: none; font-weight: 500; transition: background-color 0.2s ease;
+      background-color: #01796F;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
     }
-    .calculators-btn:hover { background-color: #01665E; }
-    .calculators-image { flex: 1; display: flex; justify-content: center; }
+    
+    .calculators-btn:hover {
+      background-color: #01665E;
+    }
+    
+    .calculators-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    
     .calculators-image img {
-      max-width: 400px; width: 100%; height: auto; display: block;
+      max-width: 400px;
+      width: 100%;
+      height: auto;
+      display: block;
     }
-
+    
     /* -------------------------- */
-    /*     THEORY SECTION         */
+    /*     THEORY SECTION        */
     /* -------------------------- */
-    .theory-section { padding: 4rem 2rem; background-color: #F8FAFC; }
+    .theory-section {
+      padding: 4rem 2rem;
+      background-color: #F8FAFC;
+    }
+    
     .theory-container {
-      display: flex; justify-content: space-between; align-items: center; gap: 2rem;
-      max-width: 1200px; margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    .theory-image { flex: 1; display: flex; justify-content: center; }
+    
+    /* Immagine a sinistra, testo a destra */
+    .theory-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    
     .theory-image img {
-      max-width: 400px; width: 100%; height: auto; display: block;
+      max-width: 400px;
+      width: 100%;
+      height: auto;
+      display: block;
     }
-    .theory-text { flex: 1; max-width: 600px; }
+    
+    .theory-text {
+      flex: 1;
+      max-width: 600px;
+    }
+    
     .theory-subheading {
-      font-size: 1rem; font-weight: 500; color: #01796F; text-transform: uppercase;
-      margin-bottom: 0.75rem; letter-spacing: 0.05em;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #01796F;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.05em;
     }
+    
     .theory-title {
-      font-size: 2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
     }
-    .theory-description { font-size: 1rem; line-height: 1.6; color: #555; margin-bottom: 2rem; }
+    
+    .theory-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    
     .theory-btn {
-      background-color: #01796F; color: #fff; padding: 0.75rem 1.5rem; border-radius: 50px;
-      text-decoration: none; font-weight: 500; transition: background-color 0.2s ease;
+      background-color: #01796F;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
     }
-    .theory-btn:hover { background-color: #01665E; }
-
+    
+    .theory-btn:hover {
+      background-color: #01665E;
+    }
+    
     /* -------------------------- */
-    /*         FOOTER             */
+    /*         FOOTER            */
     /* -------------------------- */
     .site-footer {
-      background-color: #fff; border-top: 1px solid #eaeaea; padding: 2rem;
+      background-color: #fff;
+      border-top: 1px solid #eaeaea;
+      padding: 2rem;
     }
+    
     .footer-container {
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
-      max-width: 1200px; margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    .footer-left, .footer-right { flex: 1; }
-    .footer-brand { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: #000; }
-    .footer-text { font-size: 0.9rem; color: #555; line-height: 1.4; margin-bottom: 1rem; }
+    
+    .footer-left,
+    .footer-right {
+      flex: 1;
+    }
+    
+    .footer-brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
+    
+    .footer-text {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    
     .footer-right ul {
-      list-style: none; display: flex; flex-direction: column; gap: 0.5rem; padding: 0; margin: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
     }
-    .footer-right a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.2s ease; }
-    .footer-right a:hover { color: #01796F; }
-    .cookie-policy-link { color: var(--primary); text-decoration: underline; margin-left: 0.25rem; }
-    .cookie-policy-link:hover { color: #01665E; }
-    .cookie-settings-link { color: var(--primary); text-decoration: none; }
+    
+    .footer-right a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    
+    .footer-right a:hover {
+      color: #01796F;
+    }
 
-    .footer-brand a { color: inherit; text-decoration: none; font-weight: 700; }
-    .footer-brand a:hover { color: var(--primary); }
+    .cookie-policy-link {
+      color: var(--primary);
+      text-decoration: underline;
+      margin-left: 0.25rem;
+    }
+    .cookie-policy-link:hover {
+      color: #01665E;
+    }
 
+    .cookie-settings-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* nel tuo style */
+    .footer-brand a {
+      color: inherit;         /* eredita il colore del .footer-brand */
+      text-decoration: none;  /* rimuove la sottolineatura */
+      font-weight: 700;       /* mantiene il peso del font */
+    }
+    
+    .footer-brand a:hover {
+      color: var(--primary);  /* cambia colore on hover se vuoi */
+    }
+
+
+    
     /* -------------------------- */
-    /*        RESPONSIVITÀ        */
+    /*        RESPONSIVITÀ       */
     /* -------------------------- */
     @media (max-width: 768px) {
-      .hero-subheading { font-size: 1.15rem; }
-      .hero-title { font-size: 3.2rem; }
-      .hero-subtitle { font-size: 1.3rem; }
-      .hero { flex-direction: column; align-items: flex-start; }
-      .hero-image { margin-top: 2rem; }
-      .navbar { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .navbar-center { width: 100%; }
-      .offer-container, .calculators-container, .theory-container {
-        flex-direction: column; align-items: flex-start;
+      .hero-subheading {
+        font-size: 1.15rem; /* invece di 1.25rem */
       }
-      .offer-item, .calculators-text, .theory-text {
-        width: 100%; max-width: 350px;
+      .hero-title {
+        font-size: 3.2rem;  /* invece di 3.5rem */
       }
-      .calculators-image, .theory-image { margin-top: 2rem; }
-      .calculators-image img, .theory-image img { max-width: 100%; }
-      .footer-container { flex-direction: column; align-items: flex-start; }
-      .foto-resize { width: 15000px; height: auto; }
+      .hero-subtitle {
+        font-size: 1.3rem;  /* invece di 1.5rem */
+      }
+      
+      .hero {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .hero-image {
+        margin-top: 2rem;
+      }
+      
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .navbar-center {
+        width: 100%;
+      }
+      
+      .offer-container,
+      .calculators-container,
+      .theory-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .offer-item,
+      .calculators-text,
+      .theory-text {
+        width: 100%;
+        max-width: 350px;
+      }
+      
+      .calculators-image,
+      .theory-image {
+        margin-top: 2rem;
+      }
+      
+      .calculators-image img,
+      .theory-image img {
+        max-width: 100%;
+      }
+      
+      .footer-container {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .foto-resize {
+        width: 15000px;
+        height: auto;
+      }
+
       .registrazione1 {
-        width: 100%; max-width: none; height: auto; object-fit: contain;
+        width: 100%;
+        max-width: none; /* oppure impostare un valore che si adatti meglio */
+        height: auto;
+        object-fit: contain; /* oppure "cover" in base alle necessità */
       }
+
     }
 
+    
     @media (min-width: 992px) {
-      .hero { min-height: 100vh; }
+      .hero {
+        min-height: 100vh;
+      }
     }
   </style>
 </head>
 <body>
-
+    
   <!-- COOKIE BANNER -->
   <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
     <p>
@@ -499,11 +783,12 @@
       <a href="cookie-policy.html" class="cookie-policy-link" target="_blank" rel="noopener">Cookie Policy</a>.
     </p>
     <div>
-      <button id="accept-all" type="button">Accept All</button>
-      <button id="decline-all" type="button">Decline All</button>
-      <button id="cookie-settings" type="button">Settings</button>
+      <button id="accept-all">Accept All</button>
+      <button id="decline-all">Decline All</button>
+      <button id="cookie-settings">Settings</button>
     </div>
   </div>
+
 
   <!-- COOKIE SETTINGS MODAL -->
   <div id="cookie-modal" class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookie-modal-title">
@@ -515,7 +800,7 @@
         <label><input type="checkbox" id="toggle-marketing"> Marketing Cookies</label>
         <button type="button" id="save-settings">Save Settings</button>
       </form>
-      <button id="close-modal" type="button">Close</button>
+      <button id="close-modal">Close</button>
     </div>
   </div>
 
@@ -523,16 +808,17 @@
   <nav class="navbar">
     <!-- Brand (sinistra) -->
     <div class="navbar-left">
-      <a href="/" class="brand">Black &amp; Scholes Calculator</a>
+      <a href="index.html" class="brand">Black &amp; Scholes Calculator</a>
     </div>
-
+    
+    
     <!-- Nav link (destra) -->
     <div class="navbar-right">
       <a href="theory-calculator.html" class="nav-link">Calculators</a>
       <a href="theory.html" class="nav-link">Theory</a>
     </div>
   </nav>
-
+  
   <!-- HERO SECTION -->
   <section class="hero">
     <div class="hero-text">
@@ -550,58 +836,60 @@
       <img src="Foto11.png" alt="Screenshot of the calculator interface" class="foto-resize">
     </div>
   </section>
-
+  
   <!-- WHAT WE OFFER SECTION -->
-  <section class="offer-section">
-    <h2 class="offer-title">Key Features of Our Black-Scholes Option Pricing Calculator</h2>
+<section class="offer-section">
+  <!-- Optimized section title -->
+  <h2 class="offer-title">Key Features of Our Black-Scholes Option Pricing Calculator</h2>
 
-    <div class="offer-container">
-      <!-- Card 1 -->
-      <div class="offer-item">
-        <div class="offer-icon">
-          <img src="foto12.PNG" alt="Black-Scholes step-by-step breakdown" class="foto12" loading="lazy" decoding="async">
-        </div>
-        <h3 class="offer-item-title">Step-by-Step Option Pricing</h3>
-        <p class="offer-item-text">
-          Get a clear, stage-by-stage breakdown of the Black-Scholes model—from volatility inputs to Greeks—in your browser.
-        </p>
+  <div class="offer-container">
+    <!-- Card 1 -->
+    <div class="offer-item">
+      <div class="offer-icon">
+        <img src="foto12.PNG" alt="Black-Scholes step-by-step breakdown" class="foto12">
       </div>
-
-      <!-- Card 2 -->
-      <div class="offer-item">
-        <div class="offer-icon">
-          <img src="Foto13.png" alt="Instant Greeks calculation" class="foto13" loading="lazy" decoding="async">
-        </div>
-        <h3 class="offer-item-title">Instant Greeks Calculation</h3>
-        <p class="offer-item-text">
-          Compute Delta, Gamma, Vega, Theta and Rho in just a few clicks, with concise mathematical explanations for each Greek.
-        </p>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="offer-item">
-        <div class="offer-icon">
-          <img src="Foto14.png" alt="Interactive payoff graphs" class="foto14" loading="lazy" decoding="async">
-        </div>
-        <h3 class="offer-item-title">Interactive Payoff Graphs</h3>
-        <p class="offer-item-text">
-          Visualize option payoffs and breakeven points by adjusting strike, underlying price, volatility and time parameters.
-        </p>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="offer-item">
-        <div class="offer-icon">
-          <img src="Foto15.png" alt="Derivative theory guide" class="foto15" loading="lazy" decoding="async">
-        </div>
-        <h3 class="offer-item-title">Derivative Theory Guide</h3>
-        <p class="offer-item-text">
-          Access clear Black-Scholes theory—assumptions, derivations and real-world applications—to reinforce your learning.
-        </p>
-      </div>
+      <h3 class="offer-item-title">Step-by-Step Option Pricing</h3>
+      <p class="offer-item-text">
+        Get a clear, stage-by-stage breakdown of the Black-Scholes model—from volatility inputs to Greeks—in your browser.
+      </p>
     </div>
-  </section>
 
+    <!-- Card 2 -->
+    <div class="offer-item">
+      <div class="offer-icon">
+        <img src="Foto13.png" alt="Instant Greeks calculation" class="foto13">
+      </div>
+      <h3 class="offer-item-title">Instant Greeks Calculation</h3>
+      <p class="offer-item-text">
+        Compute Delta, Gamma, Vega, Theta and Rho in just a few clicks, with concise mathematical explanations for each Greek.
+      </p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="offer-item">
+      <div class="offer-icon">
+        <img src="Foto14.png" alt="Interactive payoff graphs" class="foto14">
+      </div>
+      <h3 class="offer-item-title">Interactive Payoff Graphs</h3>
+      <p class="offer-item-text">
+        Visualize option payoffs and breakeven points by adjusting strike, underlying price, volatility and time parameters.
+      </p>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="offer-item">
+      <div class="offer-icon">
+        <img src="Foto15.png" alt="Derivative theory guide" class="foto15">
+      </div>
+      <h3 class="offer-item-title">Derivative Theory Guide</h3>
+      <p class="offer-item-text">
+        Access clear Black-Scholes theory—assumptions, derivations and real-world applications—to reinforce your learning.
+      </p>
+    </div>
+  </div>
+</section>
+
+  
   <!-- CALCULATORS SECTION -->
   <section class="calculators-section">
     <div class="calculators-container">
@@ -612,18 +900,18 @@
           Use our Black-Scholes calculators to accurately price futures, European & American options, index & currency options, interest rate swaps and exotic derivatives. Each tool offers step-by-step walkthroughs, formula breakdowns and contextual explanations—ideal for finance students and professors.
         </p>
         <a href="theory-calculator.html" class="cta-button calculators-btn">Explore the Calculators</a>
-      </div>
-      <video class="registrazione1" autoplay loop muted playsinline preload="none" style="pointer-events: none;">
+      </div>      
+      <video class="registrazione1" autoplay loop muted playsinline style="pointer-events: none;">
         <source src="Registrazione1.mp4" type="video/mp4">
-      </video>
+      </video>      
     </div>
   </section>
-
+  
   <!-- THEORY SECTION -->
   <section class="theory-section">
     <div class="theory-container">
       <div class="theory-image">
-        <img src="Foto16.png" alt="Screenshot or illustration of derivative theory resources" loading="lazy" decoding="async">
+        <img src="Foto16.png" alt="Screenshot or illustration of derivative theory resources">
       </div>
       <div class="theory-text">
         <div class="theory-subheading">Comprehensive Derivative Pricing Theory</div>
@@ -632,16 +920,17 @@
           Dive into detailed tutorials on futures, European & American options and exotic products. Learn payoff structures, derive and apply the Black-Scholes equation, and explore real-world model assumptions and limitations. Perfect for both beginners and advanced finance students.
         </p>
         <a href="theory.html" class="theory-btn">Discover the Theory</a>
+      </div>      
       </div>
     </div>
   </section>
-
-  <!-- FOOTER -->
+  
+ <!-- FOOTER -->
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-left">
         <h3 class="footer-brand">
-          <a href="/">Black &amp; Scholes Calculator</a>
+          <a href="index.html">Black &amp; Scholes Calculator</a>
         </h3>
         <p class="footer-text">© 2025 Black &amp; Scholes Calculator. All rights reserved.</p>
         <p><a href="#" class="cookie-settings-link">Cookie Settings</a></p>
@@ -658,5 +947,6 @@
   </footer>
 
   <script src="cookie-consent.js"></script>
+  
 </body>
 </html>
