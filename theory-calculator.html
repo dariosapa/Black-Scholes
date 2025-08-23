@@ -1,25 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vanilla Options Price Calculator – Free Black-Scholes Pricing Tool with Greeks</title>
+  <title>Vanilla Options Price Calculator – Free Black‑Scholes Pricing Tool with Greeks</title>
 
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Free Black-Scholes Vanilla Options Calculator to price European call and put options. Instantly compute option Greeks (Delta, Gamma, Vega, Theta, Rho) and payoff charts." />
-  <meta name="keywords" content="Vanilla Options Calculator, Option Pricing Calculator, Black-Scholes Calculator, European Call and Put Options, Option Greeks, Option Profit Calculator, Finance Tool" />
+  <!-- SEO Meta -->
+  <meta name="description" content="Free Black‑Scholes Vanilla Options Calculator to price European call and put options. Instantly compute option Greeks (Delta, Gamma, Vega, Theta, Rho) and payoff charts." />
+  <!-- removed meta keywords (deprecated) -->
   <link rel="canonical" href="https://calculatorblackscholes.com/theory-calculator.html" />
+  <link rel="alternate" href="https://calculatorblackscholes.com/theory-calculator.html" hreflang="en" />
+  <link rel="alternate" href="https://calculatorblackscholes.com/theory-calculator.html" hreflang="x-default" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Vanilla Options Calculator – Black-Scholes Pricing with Greeks" />
-  <meta property="og:description" content="Interactive Vanilla Options Calculator for pricing calls and puts using the Black-Scholes model. Calculate option values and Greeks in real time." />
+  <meta property="og:title" content="Vanilla Options Calculator – Black‑Scholes Pricing with Greeks" />
+  <meta property="og:description" content="Interactive Vanilla Options Calculator for pricing calls and puts using the Black‑Scholes model. Calculate option values and Greeks in real time." />
   <meta property="og:url" content="https://calculatorblackscholes.com/theory-calculator.html" />
   <meta property="og:image" content="https://calculatorblackscholes.com/images/theory-calculator-og.png" />
   <meta property="og:type" content="website" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Vanilla Options Pricing Calculator – Black-Scholes Tool" />
-  <meta name="twitter:description" content="Free tool to price vanilla options, compute Greeks (Delta, Vega, Gamma, Theta, Rho) and visualize payoff charts using the Black-Scholes model." />
+  <meta name="twitter:title" content="Vanilla Options Pricing Calculator – Black‑Scholes Tool" />
+  <meta name="twitter:description" content="Free tool to price vanilla options, compute Greeks (Delta, Vega, Gamma, Theta, Rho) and visualize payoff charts using the Black‑Scholes model." />
   <meta name="twitter:image" content="https://calculatorblackscholes.com/images/theory-calculator-og.png" />
+
+  <!-- Fonts & Scripts performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
@@ -30,21 +40,41 @@
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://calculatorblackscholes.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://calculatorblackscholes.com/calculators.html" },
-          { "@type": "ListItem", "position": 3, "name": "Vanilla Options Calculator", "item": "https://calculatorblackscholes.com/vanilla-calculator.html" }
+          { "@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://calculatorblackscholes.com/theory-calculator.html" },
+          { "@type": "ListItem", "position": 3, "name": "Vanilla Options Calculator", "item": "https://calculatorblackscholes.com/theory-calculator.html" }
         ]
       },
       {
         "@type": "SoftwareApplication",
         "name": "Vanilla Options Calculator",
-        "operatingSystem": "All",
-        "applicationCategory": "FinancialApplication",
+        "operatingSystem": "Web",
+        "applicationCategory": "FinanceApplication",
         "description": "Calculate call and put option prices using the Black-Scholes model. Includes option Greeks and payoff visualization for European vanilla options.",
-        "url": "https://calculatorblackscholes.com/vanilla-calculator.html",
+        "url": "https://calculatorblackscholes.com/theory-calculator.html",
         "author": {
           "@type": "Organization",
           "name": "CalculatorBlackScholes.com"
         }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are vanilla options?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Vanilla options are standard European call and put options with a fixed strike and expiry, priced here with the Black-Scholes model." }
+          },
+          {
+            "@type": "Question",
+            "name": "Which inputs do I need for Black-Scholes?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Spot price, strike, time to maturity, volatility, risk-free rate and (optionally) dividend yield." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does this calculator provide Greeks?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. It computes Delta, Gamma, Vega, Theta and Rho for both calls and puts." }
+          }
+        ]
       }
     ]
   }
@@ -1467,3 +1497,4 @@
 
     </body>
     </html>
+
