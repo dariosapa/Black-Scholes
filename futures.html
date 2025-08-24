@@ -5,9 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Futures and Forwards – Differences, Pricing, and Risk Management</title>
   <meta name="description" content="Understand the key differences between futures and forward contracts, their pricing models, use in hedging, and risk management applications.">
-  <meta name="keywords" content="futures contracts, forward contracts, futures vs forwards, derivative pricing, cost of carry model, hedging with futures, forward risk, futures trading, derivatives theory">
+  <!-- removed meta keywords (deprecated) -->
   <link rel="canonical" href="https://calculatorblackscholes.com/futures.html" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="alternate" href="https://calculatorblackscholes.com/futures.html" hreflang="en" />
+  <link rel="alternate" href="https://calculatorblackscholes.com/futures.html" hreflang="x-default" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Futures and Forwards – Differences, Pricing, and Risk Management">
+  <meta property="og:description" content="Key differences between futures and forwards, pricing via cost of carry, and hedging/risk management examples.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/futures.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/futures-og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Futures and Forwards – Differences, Pricing, and Risk Management">
+  <meta name="twitter:description" content="Learn futures vs forwards, pricing, and hedging applications.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/futures-og.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Rubik:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Theory", "item": "https://calculatorblackscholes.com/theory.html" },
+          { "@type": "ListItem", "position": 3, "name": "Futures & Forwards", "item": "https://calculatorblackscholes.com/futures.html" }
+        ]
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "Futures and Forwards – Differences, Pricing, and Risk Management",
+        "description": "Understand the key differences between futures and forward contracts, their pricing models, and risk management applications.",
+        "inLanguage": "en",
+        "mainEntityOfPage": "https://calculatorblackscholes.com/futures.html",
+        "author": { "@type": "Organization", "name": "CalculatorBlackScholes.com" },
+        "publisher": { "@type": "Organization", "name": "CalculatorBlackScholes.com" },
+        "about": [
+          { "@type": "Thing", "name": "Futures contracts" },
+          { "@type": "Thing", "name": "Forward contracts" },
+          { "@type": "Thing", "name": "Cost of carry" },
+          { "@type": "Thing", "name": "Hedging" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the main difference between a forward and a futures contract?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Forwards are OTC, customizable agreements with counterparty risk; futures are standardized, exchange-traded, marked-to-market, and cleared through a clearinghouse."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How are forwards and futures priced?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Both rely on the cost-of-carry model. The forward price commonly uses F = S · e^(r·T), adjusted for dividends, storage costs or convenience yield where relevant."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "When should I use futures vs forwards for hedging?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use forwards when customization is essential; use futures when you need liquidity, transparency and reduced counterparty risk, accepting margin requirements and daily settlement."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <style>
 
     /* ================================
@@ -457,7 +535,7 @@
           </ul>
           <h3>Futures Contracts</h3>
           <p>
-            Futures are standardized contracts that trade on exchanges such as CME or Euronext. They are marked-to-market daily and require margin deposits. Their characteristics include:
+            Futures are standardized contracts that trade on exchanges. They are marked-to-market daily and require margin deposits. Their characteristics include:
           </p>
           <ul>
             <li><strong>Standardization:</strong> Contract terms (size, expiry, asset type) are fixed by the exchange.</li>
@@ -642,3 +720,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
