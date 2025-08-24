@@ -1,0 +1,30 @@
+{
+  "name": "CalculatorBlackScholes",
+  "short_name": "CBS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#004d00",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192.png",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-256x256.png",
+      "sizes": "256x256.png",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-384x384.png",
+      "sizes": "384x384.png",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512.png",
+      "type": "image/png"
+    }
+  ]
+}
