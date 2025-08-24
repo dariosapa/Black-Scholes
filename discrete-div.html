@@ -1,13 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Charset & Viewport -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Title & Meta Description -->
   <title>Options with Discrete Dividends – Pricing Adjustments and Risk Sensitivity</title>
-    <meta name="description" content="Learn how discrete dividend payments impact option pricing. Understand how to adjust the Black-Scholes model, evaluate risk with Greeks, and apply effective hedging strategies.">
-    <meta name="keywords" content="options with dividends, discrete dividends, dividend-adjusted options, option pricing model, Black-Scholes adjustment, dividend impact, option Greeks, risk management">
-    <link rel="canonical" href="https://calculatorblackscholes.com/discrete-div.html" />
+  <meta name="description" content="Learn how discrete dividend payments impact option pricing. Understand how to adjust the Black-Scholes model, evaluate risk with Greeks, and apply effective hedging strategies.">
+
+  <!-- Canonical & Hreflang -->
+  <link rel="canonical" href="https://calculatorblackscholes.com/discrete-div.html">
+  <link rel="alternate" href="https://calculatorblackscholes.com/discrete-div.html" hreflang="en">
+  <link rel="alternate" href="https://calculatorblackscholes.com/discrete-div.html" hreflang="x-default">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Options with Discrete Dividends – Pricing Adjustments and Risk Sensitivity">
+  <meta property="og:description" content="How discrete dividends affect option pricing, Black‑Scholes adjustments, Greeks, and hedging strategies.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/discrete-div.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/discrete-div-og.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Options with Discrete Dividends – Pricing Adjustments and Risk Sensitivity">
+  <meta name="twitter:description" content="Adjusting Black‑Scholes for discrete dividends, impacts on Greeks, and practical hedging.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/discrete-div-og.png">
+
+  <!-- Fonts (performance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://calculatorblackscholes.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Theory", "item": "https://calculatorblackscholes.com/theory.html" },
+          { "@type": "ListItem", "position": 3, "name": "Options with Discrete Dividends", "item": "https://calculatorblackscholes.com/discrete-div.html" }
+        ]
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "Options with Discrete Dividends – Pricing Adjustments and Risk Sensitivity",
+        "description": "How discrete dividends affect option pricing, how to adjust the Black-Scholes model, and the implications for Greeks and hedging.",
+        "inLanguage": "en",
+        "mainEntityOfPage": "https://calculatorblackscholes.com/discrete-div.html",
+        "author": { "@type": "Organization", "name": "CalculatorBlackScholes.com" },
+        "publisher": { "@type": "Organization", "name": "CalculatorBlackScholes.com" },
+        "about": [
+          { "@type": "Thing", "name": "Discrete dividends" },
+          { "@type": "Thing", "name": "Dividend-adjusted Black-Scholes" },
+          { "@type": "Thing", "name": "Option Greeks" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do discrete dividends affect option pricing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Expected cash dividends reduce the effective underlying price around the ex-dividend date, so pricing models adjust by subtracting the present value of dividends before applying Black‑Scholes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the common adjustment in Black‑Scholes for dividends?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use an adjusted stock price S_adj = S − PV(dividends), then compute d1, d2 and option values with S_adj."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do Greeks change with discrete dividends?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Greeks are evaluated with the adjusted underlying (S_adj); Delta, Theta and others can shift notably around ex-dividend dates."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -441,7 +525,7 @@
         <section>
         <h2>What Are Options with Discrete Dividends?</h2>
         <p>
-            Options on dividend-paying stocks require specific pricing adjustments because dividend payouts reduce the underlying asset’s value. <strong>Options with discrete dividends</strong> explicitly factor in scheduled cash dividends before expiration, affecting both pricing and risk metrics.
+            Options on dividend-paying stocks require specific pricing adjustments because dividend payments lower the value of the underlying asset on the ex-dividend date. In the case of discrete dividends, scheduled cash payouts are explicitly incorporated into the pricing model before expiration, which in turn influences both the option’s fair value and its risk measures.
         </p>
         </section>
         <section>
@@ -469,7 +553,7 @@
         <p style="text-align: center; font-style: italic;">
             <strong>Call Option:</strong><br>
             C = S<sub>adj</sub> · N(d<sub>1</sub>) - K · e<sup>-rT</sup> · N(d<sub>2</sub>)<br>
-            d<sub>1</sub> = [ln(S<sub>adj</sub>/K) + (r + σ²/2)T] / (σ√T)<br>
+            d<sub>1</sub> = [ln(S<sub>adj< /sub>/K) + (r + σ²/2)T] / (σ√T)<br>
             d<sub>2</sub> = d<sub>1</sub> - σ√T
         </p>
         <p style="text-align: center; font-style: italic;">
@@ -657,3 +741,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
