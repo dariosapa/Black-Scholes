@@ -1,14 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Essentials -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Swaptions – Pricing, Black’s Model, Hedging Strategies & Risk Management</title>
-  <meta name="description" content="Explore swaptions: learn how payer and receiver swaptions work, how they're priced using Black’s model, and how they help manage interest rate risk.">
-  <meta name="keywords" content="swaptions, payer swaption, receiver swaption, swaption pricing, Black’s model, interest rate derivatives, forward swap rate, swaption Greeks, swaption hedging, interest rate options, annuity factor, swap volatility">
-  <link rel="canonical" href="https://calculatorblackscholes.com/swaption.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Primary SEO -->
+  <title>Swaptions – Pricing with Black’s Model, Types, Greeks & Hedging</title>
+  <meta name="description" content="Understand swaptions: payer vs receiver, how to price them with Black’s model (forward swap rate, annuity factor, volatility), Greeks, and practical hedging strategies for interest rate risk.">
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+  <link rel="canonical" href="https://calculatorblackscholes.com/swaption.html">
+  <link rel="alternate" href="https://calculatorblackscholes.com/swaption.html" hreflang="en">
+  <link rel="alternate" href="https://calculatorblackscholes.com/swaption.html" hreflang="x-default">
+  <!-- (Meta keywords intentionally omitted) -->
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Swaptions – Pricing with Black’s Model, Types, Greeks & Hedging">
+  <meta property="og:description" content="Learn how payer/receiver swaptions work, Black’s model pricing, annuity factors, swaption Greeks, and risk management use cases.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/swaption.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="CalculatorBlackScholes.com">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/swaption-og.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Swaptions – Pricing with Black’s Model, Types, Greeks & Hedging">
+  <meta name="twitter:description" content="Black’s model, forward swap rate, annuity factor, volatility, Greeks, and hedging applications for swaptions.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/swaption-og.png">
+
+  <!-- Performance: Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://calculatorblackscholes.com/"},
+          {"@type":"ListItem","position":2,"name":"Theory","item":"https://calculatorblackscholes.com/theory.html"},
+          {"@type":"ListItem","position":3,"name":"Swaptions","item":"https://calculatorblackscholes.com/swaption.html"}
+        ]
+      },
+      {
+        "@type":"TechArticle",
+        "headline":"Swaptions – Pricing with Black’s Model, Types, Greeks & Hedging",
+        "description":"Deep-dive on swaptions covering payer vs receiver, Black’s model pricing (forward swap rate, annuity factor, volatility), Greeks, and risk management strategies.",
+        "inLanguage":"en",
+        "mainEntityOfPage":"https://calculatorblackscholes.com/swaption.html",
+        "about":[
+          {"@type":"Thing","name":"Swaption"},
+          {"@type":"Thing","name":"Black’s Model"},
+          {"@type":"Thing","name":"Forward Swap Rate"},
+          {"@type":"Thing","name":"Annuity Factor"},
+          {"@type":"Thing","name":"Interest Rate Options"}
+        ],
+        "author":{"@type":"Organization","name":"CalculatorBlackScholes.com"},
+        "publisher":{"@type":"Organization","name":"CalculatorBlackScholes.com"}
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"What is the difference between a payer and a receiver swaption?",
+            "acceptedAnswer":{
+              "@type":"Answer",
+              "text":"A payer swaption gives the right to pay fixed and receive floating in the underlying swap (hedging rising rates), while a receiver swaption gives the right to receive fixed and pay floating (hedging falling rates)."
+            }
+          },
+          {
+            "@type":"Question",
+            "name":"How are swaptions priced with Black’s model?",
+            "acceptedAnswer":{
+              "@type":"Answer",
+              "text":"Black’s model prices swaptions using the forward swap rate, strike, time to expiry, swaption volatility, and the annuity factor—the present value of the fixed‑leg cash flows."
+            }
+          },
+          {
+            "@type":"Question",
+            "name":"Which Greeks matter most for swaptions?",
+            "acceptedAnswer":{
+              "@type":"Answer",
+              "text":"Delta (sensitivity to the forward swap rate), Vega (to volatility), Theta (time decay), Gamma (Delta’s curvature), and Rho (discount‑rate sensitivity) are commonly monitored."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -442,7 +528,7 @@
         <section>
             <h2>What Is a Swaption?</h2>
             <p>
-            A swaption, or swap option, is a financial derivative that grants the holder the right—but not the obligation—to enter into an interest rate swap agreement at a pre-specified fixed rate on a future date. Swaptions are widely used for hedging interest rate exposure and speculating on future rate movements.
+            A swaption is a financial derivative that grants the holder the right—but not the obligation—to enter into an interest rate swap agreement at a pre-specified fixed rate on a future date. Swaptions are widely used for hedging interest rate exposure and speculating on future rate movements.
             </p>
         </section>
         <section>
@@ -479,6 +565,7 @@
             </p>
             <ul>
             <li><strong>Delta:</strong> Measures sensitivity to changes in the forward swap rate.</li>
+            <li><strong>Gamma:</strong> Measures the rate of change of Delta; shows how Delta evolves as the asset price changes.</li>
             <li><strong>Vega:</strong> Reflects sensitivity to volatility shifts in the swap market.</li>
             <li><strong>Theta:</strong> Time decay as expiration approaches.</li>
             <li><strong>Rho:</strong> Sensitivity to shifts in the discount (risk-free) interest rate.</li>
@@ -657,3 +744,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
