@@ -1,13 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Essentials -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interest Rate Swaps – Definition, Swap Rate Calculation & Hedging Strategies</title>
-  <meta name="description" content="Understand interest rate swaps: definition, pricing using discount factors, DV01, duration, and how to use swaps for hedging interest rate risk.">
-  <meta name="keywords" content="interest rate swaps, swap rate, DV01, interest rate derivatives, fixed vs floating rate, interest rate risk hedging, notional principal, swap pricing, duration convexity, financial derivatives, SOFR, LIBOR, EURIBOR, swap valuation">
-  <link rel="canonical" href="https://calculatorblackscholes.com/swap.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary SEO -->
+  <title>Interest Rate Swaps – Definition, Valuation (Swap Rate, Discount Factors) & Hedging</title>
+  <meta name="description" content="Learn interest rate swaps: what they are, how to value them using discount factors, how the swap rate is set, and how to use swaps (DV01, duration, convexity) to hedge interest rate risk.">
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+  <link rel="canonical" href="https://calculatorblackscholes.com/swap.html">
+  <link rel="alternate" href="https://calculatorblackscholes.com/swap.html" hreflang="en">
+  <link rel="alternate" href="https://calculatorblackscholes.com/swap.html" hreflang="x-default">
+  <!-- (Removed meta keywords as they are not used by modern search engines) -->
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Interest Rate Swaps – Definition, Valuation & Hedging">
+  <meta property="og:description" content="Understand interest rate swaps, swap-rate calculation, discounting, DV01/duration, and practical hedging strategies.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/swap.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="CalculatorBlackScholes.com">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/interest-rate-swaps-og.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Interest Rate Swaps – Definition, Valuation & Hedging">
+  <meta name="twitter:description" content="Swap valuation with discount factors, DV01, duration/convexity, and how to hedge interest rate risk.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/interest-rate-swaps-og.png">
+
+  <!-- Performance: Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://calculatorblackscholes.com/"},
+          {"@type":"ListItem","position":2,"name":"Theory","item":"https://calculatorblackscholes.com/theory.html"},
+          {"@type":"ListItem","position":3,"name":"Interest Rate Swaps","item":"https://calculatorblackscholes.com/swap.html"}
+        ]
+      },
+      {
+        "@type":"TechArticle",
+        "headline":"Interest Rate Swaps – Definition, Valuation (Swap Rate, Discount Factors) & Hedging",
+        "description":"A practical guide to interest rate swaps covering definitions, swap-rate calculation with discount factors, DV01, duration, convexity, and hedging strategies for rate risk.",
+        "inLanguage":"en",
+        "mainEntityOfPage":"https://calculatorblackscholes.com/swap.html",
+        "about":[
+          {"@type":"Thing","name":"Interest Rate Swap"},
+          {"@type":"Thing","name":"DV01"},
+          {"@type":"Thing","name":"Duration"},
+          {"@type":"Thing","name":"Convexity"},
+          {"@type":"Thing","name":"SOFR"},
+          {"@type":"Thing","name":"EURIBOR"}
+        ],
+        "author":{"@type":"Organization","name":"CalculatorBlackScholes.com"},
+        "publisher":{"@type":"Organization","name":"CalculatorBlackScholes.com"}
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"How is the fixed swap rate determined?",
+            "acceptedAnswer":{
+              "@type":"Answer",
+              "text":"At inception, the fixed rate is set so the present value of fixed-leg payments equals the present value of expected floating-leg payments using discount factors from the relevant curve."
+            }
+          },
+          {
+            "@type":"Question",
+            "name":"What do DV01, duration and convexity tell me for a swap?",
+            "acceptedAnswer":{
+              "@type":"Answer",
+              "text":"DV01 shows the value change for a 1 bp move in rates; duration measures first‑order sensitivity to rate shifts; convexity captures the curvature (second‑order) effect on the swap’s value."
+            }
+          },
+          {
+            "@type":"Question",
+            "name":"When would I use a pay‑fixed vs receive‑fixed swap?",
+            "acceptedAnswer":{
+              "@type":"Answer",
+              "text":"Borrowers with floating-rate debt often use pay‑fixed to lock in costs; investors holding fixed‑rate assets may use receive‑fixed to gain floating exposure when they expect rates to rise."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -477,7 +565,7 @@
             <ul>
             <li><strong>Duration:</strong> Indicates how much the swap’s value changes with interest rate shifts.</li>
             <li><strong>Convexity:</strong> Measures how duration changes with interest rate variations, reflecting curvature.</li>
-            <li><strong>DV01:</strong> Shows the dollar value impact of a one basis point change in yield.</li>
+            <li><strong>DV01 (Dollar Value of 1 Basis Point):</strong> Shows the dollar value impact of a one basis point change in yield.</li>
             </ul>
         </section>
         <section>
@@ -657,3 +745,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
