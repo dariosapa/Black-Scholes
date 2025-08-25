@@ -1,13 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Essentials -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Currency Options – FX Hedging, Pricing Models, and Risk Analysis</title>
-  <meta name="description" content="Learn how currency options work, how to price them using the Garman-Kohlhagen model, and how to hedge foreign exchange risk using FX derivatives.">
-  <meta name="keywords" content="currency options, FX options, forex derivatives, Garman-Kohlhagen model, foreign exchange risk, pricing currency options, delta hedging, FX Greeks, forex risk management, call and put currency options, volatility hedging, dual interest rates, options on exchange rates">
-  <link rel="canonical" href="https://calculatorblackscholes.com/currency.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary SEO -->
+  <title>Currency Options – FX Hedging, Pricing & Risk Analysis</title>
+  <meta name="description" content="Understand currency (FX) options: how they work, how to price them with the Garman–Kohlhagen model, key Greeks, and practical hedging strategies for foreign exchange risk.">
+  <link rel="canonical" href="https://calculatorblackscholes.com/currency.html">
+  <link rel="alternate" href="https://calculatorblackscholes.com/currency.html" hreflang="en">
+  <link rel="alternate" href="https://calculatorblackscholes.com/currency.html" hreflang="x-default">
+  <!-- (Removed meta keywords: deprecated for modern SEO) -->
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Currency Options – FX Hedging, Pricing (Garman–Kohlhagen) & Risk Analysis">
+  <meta property="og:description" content="Learn currency options pricing with Garman–Kohlhagen, the Greeks, and effective FX hedging strategies.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/currency.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/currency-options-og.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Currency Options – FX Hedging, Pricing (Garman–Kohlhagen) & Risk Analysis">
+  <meta name="twitter:description" content="Pricing FX options with Garman–Kohlhagen, understanding Greeks, and strategies to hedge foreign exchange risk.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/currency-options-og.png">
+
+  <!-- Fonts (performance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://calculatorblackscholes.com/"},
+          {"@type":"ListItem","position":2,"name":"Theory","item":"https://calculatorblackscholes.com/theory.html"},
+          {"@type":"ListItem","position":3,"name":"Currency Options","item":"https://calculatorblackscholes.com/currency.html"}
+        ]
+      },
+      {
+        "@type":"TechArticle",
+        "headline":"Currency Options – FX Hedging, Pricing (Garman–Kohlhagen) & Risk Analysis",
+        "description":"FX options explained: valuation with the Garman–Kohlhagen model, key Greeks, and hedging techniques for foreign exchange risk.",
+        "inLanguage":"en",
+        "mainEntityOfPage":"https://calculatorblackscholes.com/currency.html",
+        "author":{"@type":"Organization","name":"CalculatorBlackScholes.com"},
+        "publisher":{"@type":"Organization","name":"CalculatorBlackScholes.com"}
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"How are currency options priced?",
+            "acceptedAnswer":{"@type":"Answer","text":"European-style currency options are typically priced with the Garman–Kohlhagen model, which extends Black–Scholes by incorporating both domestic and foreign interest rates."}
+          },
+          {
+            "@type":"Question",
+            "name":"Which Greeks are most relevant for FX options?",
+            "acceptedAnswer":{"@type":"Answer","text":"Delta, Gamma, Theta, Vega and Rho measure sensitivity to the exchange rate, curvature, time decay, volatility and interest rates in both currencies."}
+          },
+          {
+            "@type":"Question",
+            "name":"When should a firm use currency options for hedging?",
+            "acceptedAnswer":{"@type":"Answer","text":"Importers and exporters often use FX options to cap downside currency moves while retaining upside participation, for example via calls to cap rising foreign-currency costs or puts to protect foreign revenues."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -441,7 +510,7 @@
         <section>
             <h2>What Are Currency Options?</h2>
             <p>
-            Currency options are financial derivatives that give the holder the right, but not the obligation, to buy or sell a currency pair at a predetermined exchange rate (strike price) on or before a specified expiration date. These options are widely used in forex trading to hedge currency risk or speculate on foreign exchange (FX) market movements.
+            Currency options are financial derivatives that give the holder the right, but not the obligation, to buy or sell a currency pair at a predetermined exchange rate (strike price) on or before a specified expiration date. These options are widely used in forex trading to hedge currency risk or speculate on foreign exchange market movements.
             </p>
         </section>
         <section>
@@ -485,7 +554,7 @@
             </p>
         </section>
         <section>
-            <h2>Understanding the Greeks in FX Options</h2>
+            <h2>Understanding the Greeks in Currency Options</h2>
             <p>
             The Greeks help measure how sensitive a currency option is to various market factors:
             </p>
@@ -498,7 +567,7 @@
             </ul>
         </section>
         <section>
-            <h2>FX Hedging Strategies Using Currency Options</h2>
+            <h2>Foreign Exchange Hedging Strategies Using Currency Options</h2>
             <p>
             Traders and companies use currency options for <strong>foreign exchange risk management</strong> and speculative strategies. Hedging techniques may include:
             </p>
@@ -669,3 +738,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
