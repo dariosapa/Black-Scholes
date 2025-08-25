@@ -1,13 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Essentials -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary SEO -->
   <title>Index Options – Theory, Pricing Models, Greeks and Hedging Strategies</title>
   <meta name="description" content="Learn how index options work, including Black-Scholes pricing with dividend yield, key Greeks (delta, gamma, theta), and hedging strategies for broad market exposure.">
-  <meta name="keywords" content="index options, European-style options, index options pricing, Black-Scholes with dividend yield, S&P 500 options, hedging strategies, Greeks for index options, options on indices, cash-settled options">
-  <link rel="canonical" href="https://calculatorblackscholes.com/index-options.html" />
+  <link rel="canonical" href="https://calculatorblackscholes.com/index-options.html">
+  <link rel="alternate" href="https://calculatorblackscholes.com/index-options.html" hreflang="en">
+  <link rel="alternate" href="https://calculatorblackscholes.com/index-options.html" hreflang="x-default">
+  <!-- (Removed meta keywords as deprecated for modern SEO) -->
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Index Options – Theory, Pricing Models, Greeks and Hedging Strategies">
+  <meta property="og:description" content="Index options explained: pricing with dividend yield, Greeks, and portfolio hedging strategies.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/index-options.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/index-options-og.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Index Options – Theory, Pricing Models, Greeks and Hedging Strategies">
+  <meta name="twitter:description" content="How index options work: pricing (with dividend yield), Greeks and hedging for market exposure.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/index-options-og.png">
+
+  <!-- Fonts (performance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://calculatorblackscholes.com/"},
+          {"@type":"ListItem","position":2,"name":"Theory","item":"https://calculatorblackscholes.com/theory.html"},
+          {"@type":"ListItem","position":3,"name":"Index Options","item":"https://calculatorblackscholes.com/index-options.html"}
+        ]
+      },
+      {
+        "@type":"TechArticle",
+        "headline":"Index Options – Theory, Pricing Models, Greeks and Hedging Strategies",
+        "description":"Overview of index options: European-style, cash-settled instruments; pricing with dividend yield; Greeks; and portfolio hedging strategies.",
+        "inLanguage":"en",
+        "mainEntityOfPage":"https://calculatorblackscholes.com/index-options.html",
+        "author":{"@type":"Organization","name":"CalculatorBlackScholes.com"},
+        "publisher":{"@type":"Organization","name":"CalculatorBlackScholes.com"}
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"Are index options European-style and cash-settled?",
+            "acceptedAnswer":{"@type":"Answer","text":"Most broad-based index options are European-style and cash-settled at expiration, so there is no delivery of individual stocks."}
+          },
+          {
+            "@type":"Question",
+            "name":"How are index options priced?",
+            "acceptedAnswer":{"@type":"Answer","text":"Pricing typically uses the Black–Scholes framework with a continuous dividend yield to reflect aggregate dividends of the index."}
+          },
+          {
+            "@type":"Question",
+            "name":"Which Greeks matter most for index options?",
+            "acceptedAnswer":{"@type":"Answer","text":"Delta, Gamma, Theta, Vega and Rho capture sensitivity to index level, curvature, time decay, implied volatility and interest rates respectively."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -441,7 +510,7 @@
         <section>
         <h2>What Are Index Options?</h2>
         <p>
-            Index options are financial derivatives that derive their value from a stock market index, such as the S&P 500, NASDAQ 100, or FTSE 100. These options allow investors and traders to gain exposure to the performance of a broad market segment, without having to trade individual stocks. Most index options are <strong>European-style</strong> and are <strong>cash-settled</strong> at expiration.
+            Index options are financial derivatives that derive their value from a stock market index, such as the S&P 500. These options allow investors and traders to gain exposure to the performance of a broad market segment, without having to trade individual stocks. Most index options are <strong>European-style</strong> and are <strong>cash-settled</strong> at expiration.
         </p>
         </section>
 
@@ -451,7 +520,7 @@
             An index option provides the right, but not the obligation, to buy (call option) or sell (put option) a market index at a predetermined strike price on the option’s expiration date. Important characteristics include:
         </p>
         <ul>
-            <li><strong>Underlying Asset:</strong> A broad-based market index composed of multiple stocks (e.g., S&P 500, Euro Stoxx 50).</li>
+            <li><strong>Underlying Asset:</strong> A broad-based market index composed of multiple stocks (e.g., S&P 500).</li>
             <li><strong>Cash Settlement:</strong> Payout is made in cash based on the difference between the strike price and the index value at expiration—there is no delivery of individual stocks.</li>
             <li><strong>European Style:</strong> These options can only be exercised at expiration, simplifying pricing and reducing early exercise concerns.</li>
             <li><strong>Dividend Yield:</strong> A continuous dividend yield is used in pricing models to reflect aggregate dividends from the index components.</li>
@@ -667,3 +736,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
