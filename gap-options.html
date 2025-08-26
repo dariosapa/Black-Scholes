@@ -1,10 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Essentials -->
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Derivatives Theory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Primary SEO -->
+  <title>Gap Options – Pricing, Greeks, Risk Management & Strategies</title>
+  <meta name="description" content="Learn how gap options work: dual-strike exotic options with trigger (K1) and payment (K2). Explore pricing models, Greeks sensitivity, hedging risks, and practical applications.">
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+  <link rel="canonical" href="https://calculatorblackscholes.com/gap-options.html">
+  <link rel="alternate" href="https://calculatorblackscholes.com/gap-options.html" hreflang="en">
+  <link rel="alternate" href="https://calculatorblackscholes.com/gap-options.html" hreflang="x-default">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Gap Options – Pricing, Greeks, Risk Management & Strategies">
+  <meta property="og:description" content="Gap options explained: dual-strike exotic derivatives. Pricing, Greeks, hedging strategies and real-world examples.">
+  <meta property="og:url" content="https://calculatorblackscholes.com/gap-options.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="CalculatorBlackScholes.com">
+  <meta property="og:image" content="https://calculatorblackscholes.com/images/gap-options-og.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gap Options – Pricing, Greeks, Risk Management & Strategies">
+  <meta name="twitter:description" content="Discover gap options: exotic derivatives with trigger and payment strikes, valuation models, risk sensitivities and hedging.">
+  <meta name="twitter:image" content="https://calculatorblackscholes.com/images/gap-options-og.png">
+
+  <!-- Performance: Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://calculatorblackscholes.com/"},
+          {"@type":"ListItem","position":2,"name":"Theory","item":"https://calculatorblackscholes.com/theory.html"},
+          {"@type":"ListItem","position":3,"name":"Gap Options","item":"https://calculatorblackscholes.com/gap-options.html"}
+        ]
+      },
+      {
+        "@type":"TechArticle",
+        "headline":"Gap Options – Pricing, Greeks, Risk Management & Strategies",
+        "description":"Gap options explained: trigger strike (K1), payment strike (K2), pricing models, Greeks sensitivity, hedging and practical applications.",
+        "inLanguage":"en",
+        "mainEntityOfPage":"https://calculatorblackscholes.com/gap-options.html",
+        "author":{"@type":"Organization","name":"CalculatorBlackScholes.com"},
+        "publisher":{"@type":"Organization","name":"CalculatorBlackScholes.com"}
+      },
+      {
+        "@type":"FAQPage",
+        "mainEntity":[
+          {
+            "@type":"Question",
+            "name":"What is a gap option?",
+            "acceptedAnswer":{"@type":"Answer","text":"A gap option is an exotic option with two strikes: a trigger strike (K1) that activates the option and a payment strike (K2) used to calculate payoff."}
+          },
+          {
+            "@type":"Question",
+            "name":"How are gap options priced?",
+            "acceptedAnswer":{"@type":"Answer","text":"Gap options are priced with adapted Black–Scholes models and often require numerical methods such as Monte Carlo or finite differences due to their discontinuous payoff."}
+          },
+          {
+            "@type":"Question",
+            "name":"What risks do gap options carry?",
+            "acceptedAnswer":{"@type":"Answer","text":"They involve non-linear risk around the trigger strike, making hedging complex. Dynamic adjustments are needed to manage sharp changes in Delta and Gamma."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -433,78 +506,96 @@
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
       "gap-options": {
-        title: "Theory on Gap Options",
+        title: "Gap Options – Complete Guide to Pricing, Greeks, and Risk Management",
         content: `
         <section id="gap-options-introduction">
-          <h2>Introduction to Gap Options</h2>
+          <h2>What Are Gap Options?</h2>
           <p>
-            <strong>Gap options</strong> are a form of <strong>exotic option</strong> featuring two separate strike prices for enhanced payoff flexibility. The first strike, known as the <strong>trigger strike</strong> (<em>K<sub>1</sub></em>), determines when the option becomes live. The second strike, the <strong>payment strike</strong> (<em>K<sub>2</sub></em>), defines the basis for calculating the option’s eventual payout. This <strong>dual-strike structure</strong> enables tailored <strong>risk/reward profiles</strong> beyond standard vanilla options.
+            <strong>Gap options</strong> are a type of <strong>exotic option</strong> that feature two distinct strike prices, providing a more flexible payoff design compared to standard vanilla options. 
+            The first strike, called the <strong>trigger strike</strong> (<em>K<sub>1</sub></em>), determines when the option payoff is activated. 
+            The second strike, known as the <strong>payment strike</strong> (<em>K<sub>2</sub></em>), is used to calculate the actual payoff once the option is triggered. 
+            This <strong>dual-strike structure</strong> makes gap options attractive for traders seeking <strong>customized risk/reward profiles</strong>, premium efficiency, and targeted exposure to large price moves.
           </p>
         </section>
         
         <section id="gap-options-definitions-characteristics">
-          <h2>Key Definitions & Characteristics of Gap Options</h2>
+          <h2>Gap Option Types and Features</h2>
           <p>
-            Core components and features of gap options include:
+            Gap options share similarities with vanilla calls and puts but introduce an additional level of customization. Their main characteristics include:
           </p>
           <ul>
-            <li><strong>Trigger Strike (K<sub>1</sub>):</strong> The underlying asset price level that activates the option’s payoff mechanism.</li>
-            <li><strong>Payment Strike (K<sub>2</sub>):</strong> The strike used to compute the payoff once the trigger condition is met.</li>
-            <li><strong>Exotic Option Structure:</strong> Separation of activation and payoff strikes often results in lower premiums and customizable leverage.</li>
-            <li><strong>Premium Efficiency:</strong> By decoupling trigger and payment, traders can manage <em>cost-effective exposure</em> to large price moves.</li>
+            <li><strong>Trigger Strike (K<sub>1</sub>):</strong> The threshold price of the underlying asset that activates the payoff mechanism.</li>
+            <li><strong>Payment Strike (K<sub>2</sub>):</strong> The strike used in the payoff calculation once the option is active.</li>
+            <li><strong>Exotic Structure:</strong> Separating trigger and payment strikes lowers the upfront premium while enabling tailored strategies.</li>
+            <li><strong>Premium Efficiency:</strong> Provides cost-effective leverage by allowing investors to structure exposure around specific market moves.</li>
           </ul>
         </section>
         
         <section id="gap-options-pricing-valuation">
-          <h2>Pricing & Valuation of Gap Options</h2>
+          <h2>How Gap Options Are Priced</h2>
           <p>
-            Valuing gap options typically involves adapting the <strong>Black–Scholes model</strong> to account for the probability of reaching the trigger strike. For a gap call:
+            Valuing gap options requires adapting traditional models because of their discontinuous payoff. The <strong>Black–Scholes framework</strong> can be modified to reflect the probability of hitting the trigger strike.
           </p>
           <p style="text-align:center; font-style:italic;">
             <strong>Gap Call Payoff:</strong> { S − K<sub>2</sub> if S ≥ K<sub>1</sub>; otherwise 0 }
           </p>
           <p>
-            Due to the payoff’s discontinuity, practitioners often employ <strong>numerical methods</strong>—including <em>Monte Carlo simulation</em> and <em>finite difference techniques</em>—to derive market-consistent option values.
+            Because of the complexity, market practitioners often use <strong>numerical methods</strong> such as <em>Monte Carlo simulations</em> or <em>finite difference techniques</em> to obtain accurate valuations.
           </p>
         </section>
         
         <section id="gap-options-greeks-sensitivity">
           <h2>Gap Option Greeks & Sensitivity Analysis</h2>
           <p>
-            The dual-strike design of gap options leads to unique sensitivity profiles, requiring specialized analysis of the following Greeks:
+            The dual-strike structure significantly affects option sensitivities, making the Greeks behave differently than in vanilla options:
           </p>
           <ul>
-            <li><strong>Delta:</strong> Exhibits sharp changes near the trigger strike as activation probability shifts.</li>
-            <li><strong>Gamma:</strong> Can spike around K<sub>1</sub> due to the binary activation behavior.</li>
-            <li><strong>Theta:</strong> Time decay accelerates when the underlying nears the trigger level.</li>
-            <li><strong>Vega:</strong> Highly sensitive to volatility, which influences the chance of crossing K<sub>1</sub>.</li>
+            <li><strong>Delta:</strong> Shifts sharply when the underlying approaches K<sub>1</sub>, reflecting changes in activation probability.</li>
+            <li><strong>Gamma:</strong> Often spikes around the trigger strike due to binary activation behavior.</li>
+            <li><strong>Theta:</strong> Time decay accelerates as the underlying asset moves closer to K<sub>1</sub>.</li>
+            <li><strong>Vega:</strong> Extremely sensitive to volatility, since volatility strongly influences the chance of breaching K<sub>1</sub>.</li>
+            <li><strong>Rho:</strong> Interest rate sensitivity remains relevant but interacts with the dual-strike design.</li>
           </ul>
         </section>
         
         <section id="gap-options-hedging-strategies-risks">
-          <h2>Hedging Strategies & Risks for Gap Options</h2>
+          <h2>Risk Management and Hedging with Gap Options</h2>
           <p>
-            Effective hedging of gap options demands dynamic strategies that adjust for the non-linear payoff profile. Traders must continuously monitor the probability of trigger activation and rebalance hedges—particularly around the trigger threshold—to mitigate sudden shifts in <strong>risk exposure</strong>.
+            Hedging gap options requires <strong>dynamic strategies</strong> due to their non-linear payoff. Traders must closely monitor:
+          </p>
+          <ul>
+            <li>The probability of the underlying asset crossing the trigger strike.</li>
+            <li>Adjustments to hedge ratios as market conditions evolve.</li>
+            <li>Increased risk near the trigger threshold, where sudden activation can shift exposures dramatically.</li>
+          </ul>
+          <p>
+            Active rebalancing is crucial to mitigate sharp changes in Delta and Gamma.
           </p>
         </section>
         
         <section id="gap-options-practical-examples-applications">
-          <h2>Practical Examples & Applications of Gap Options</h2>
+          <h2>Common Use Cases and Real-World Applications</h2>
           <p>
-            <strong>Cost-Effective Leverage:</strong> A trader may buy a gap call with K<sub>1</sub> slightly above the current spot price and a lower K<sub>2</sub>, aiming for leveraged gains only if the asset surges past the trigger level without paying high premiums.
+            Gap options are often employed in speculative or hedging strategies where cost efficiency is key. Examples include:
           </p>
+          <ul>
+            <li><strong>Cost-Effective Leverage:</strong> A trader purchases a gap call with K<sub>1</sub> slightly above spot and a lower K<sub>2</sub>, enabling leveraged upside potential without paying high premiums.</li>
+            <li><strong>Tailored Risk Exposure:</strong> Institutions may use gap options to structure payoffs aligned with specific market events or thresholds.</li>
+          </ul>
         </section>
         
         <section id="gap-options-conclusion">
-          <h2>Conclusion: Advantages of Gap Options</h2>
+          <h2>Summary</h2>
           <p>
-            Gap options offer <strong>innovative payoff structures</strong> by separating activation from payoff calculation. Accurate valuation requires advanced modeling techniques, while prudent risk management hinges on dynamic hedging near trigger points.
+            Gap options provide <strong>innovative payoff flexibility</strong> by separating the trigger strike from the payment strike. 
+            Their valuation requires <strong>advanced modeling</strong> beyond Black–Scholes, and their risk profile demands <strong>dynamic hedging strategies</strong>. 
+            When used effectively, gap options deliver cost-efficient leverage and customizable exposure—making them powerful instruments in the world of exotic derivatives.
           </p>
         </section>
-
         `
       }
     };
+
 
     // Updates the theory content based on the selected derivative
     function updateTheoryContent(selected) {
@@ -648,3 +739,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
