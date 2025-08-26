@@ -1,10 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Derivatives Theory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Charset & viewport -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>Chooser Options – Pricing, Greeks & Risk Management (With Decision Date)</title>
+  <meta name="description" content="Clear guide to chooser options: definition, decision date mechanics, pricing intuition under Black-Scholes, Greeks behavior, and practical hedging strategies with examples." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://calculatorblackscholes.com/chooser-options.html" />
+
+  <!-- (Optional) Legacy keywords for continuity -->
+  <meta name="keywords" content="chooser options, option to choose call or put, decision date option, compound options, exotic options, pricing chooser options, option Greeks, delta gamma theta vega, hedging strategies" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Chooser Options – Pricing, Greeks & Risk Management (With Decision Date)" />
+  <meta property="og:description" content="Understand chooser options: how the decision date works, pricing intuition, Greeks, and effective hedging approaches." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://calculatorblackscholes.com/chooser-options.html" />
+  <meta property="og:site_name" content="Black & Scholes Calculator" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Chooser Options – Pricing, Greeks & Risk Management" />
+  <meta name="twitter:description" content="Decision-date mechanics, pricing intuition, Greeks, and hedging for chooser options." />
+
+  <!-- Hreflang (self) -->
+  <link rel="alternate" href="https://calculatorblackscholes.com/chooser-options.html" hreflang="en" />
+
+  <!-- Performance & fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <!-- Theme color -->
+  <meta name="theme-color" content="#01796F" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Chooser Options – Pricing, Greeks & Risk Management (With Decision Date)",
+    "url":"https://calculatorblackscholes.com/chooser-options.html",
+    "description":"Chooser options explained: decision date, pricing intuition under Black-Scholes, Greeks, and hedging strategies with examples.",
+    "inLanguage":"en",
+    "isPartOf":{
+      "@type":"WebSite",
+      "name":"Black & Scholes Calculator",
+      "url":"https://calculatorblackscholes.com"
+    },
+    "breadcrumb":{
+      "@type":"BreadcrumbList",
+      "itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://calculatorblackscholes.com/"},
+        {"@type":"ListItem","position":2,"name":"Derivatives Theory","item":"https://calculatorblackscholes.com/theory-calculator.html"},
+        {"@type":"ListItem","position":3,"name":"Chooser Options","item":"https://calculatorblackscholes.com/chooser-options.html"}
+      ]
+    }
+  }
+  </script>
   <style>
 
     /* ================================
@@ -433,60 +490,92 @@
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
       "chooser-options": {
-        title: "Theory on Chooser Options",
+        title: "Chooser Options – Complete Guide to Pricing, Greeks, and Risk Management",
         content: `
-          <section>
-            <h2>Introduction</h2>
+          <section id="chooser-options-introduction">
+            <h2>What Are Chooser Options?</h2>
             <p>
-              Chooser options provide the holder with a unique flexibility: at a predetermined decision date before expiration, the holder can choose whether the option will function as a call or a put. This adaptability makes chooser options particularly useful in uncertain market environments.
+              <strong>Chooser options</strong> are <em>exotic options</em> that grant the holder the right to decide, on a specified
+              <strong>decision date</strong>, whether the contract will become a <strong>call</strong> or a <strong>put</strong> with a common expiration (and usually the same strike).
+              This embedded flexibility makes chooser options useful when market direction is uncertain but volatility or timing can be anticipated.
             </p>
           </section>
-          <section>
-            <h2>Definitions and Characteristics</h2>
-            <p>
-              Key features of chooser options include:
-            </p>
+
+          <section id="chooser-options-features">
+            <h2>Chooser Option Types and Features</h2>
+            <p>Core components and variations include:</p>
             <ul>
-              <li><strong>Decision Date:</strong> The specific date on which the holder must decide whether the option becomes a call or a put.</li>
-              <li><strong>Flexibility:</strong> Allows the investor to select the more advantageous option type based on market conditions that prevail at the decision date.</li>
-              <li><strong>Underlying Asset:</strong> Typically similar to that used in standard options, with the same strike and expiration parameters initially set.</li>
-              <li><strong>Valuation Complexity:</strong> The dual nature of the payoff necessitates pricing methods that effectively combine the valuation of both calls and puts.</li>
+              <li><strong>Decision Date (t<sub>d</sub>):</strong> The future date on which the holder chooses call or put.</li>
+              <li><strong>Strike &amp; Expiry:</strong> In a standard chooser, call and put share the same strike <em>K</em> and maturity <em>T</em>;
+                  variants may allow different strikes or maturities.</li>
+              <li><strong>European Exercise:</strong> Most choosers are European-style (exercise only at <em>T</em>), simplifying pricing.</li>
+              <li><strong>Use Cases:</strong> Portfolio protection when direction is unclear, monetizing an expected rise in volatility,
+                  and timing uncertainty around events (earnings, policy decisions).</li>
             </ul>
           </section>
-          <section>
-            <h2>Pricing and Valuation</h2>
+
+          <section id="chooser-options-pricing">
+            <h2>How Chooser Options Are Priced</h2>
             <p>
-              Chooser options are generally priced by decomposing the contract into its call and put components. Under simplified assumptions, analytical formulas can be derived by using put-call parity and risk‑neutral valuation. However, in practice, numerical methods such as binomial trees or Monte Carlo simulations are often employed to accommodate the dynamic decision feature.
-            </p>
-          </section>
-          <section>
-            <h2>The Greeks and Sensitivity Analysis</h2>
-            <p>
-              The sensitivity measures for chooser options are influenced by the timing of the decision:
+              Pricing is based on <strong>risk-neutral valuation</strong> under models such as Black–Scholes.
+              Intuitively, the chooser’s value equals the value of the better of a call or put determined at the decision date.
+              Practitioners commonly use:
             </p>
             <ul>
-              <li><strong>Delta:</strong> Initially low until the decision date; after the decision, it behaves similarly to the chosen option’s Delta.</li>
-              <li><strong>Gamma:</strong> Can exhibit a surge around the decision date, reflecting the rapid change in option sensitivity once the choice is made.</li>
-              <li><strong>Theta:</strong> Time decay is a critical factor, particularly before the decision is finalized.</li>
-              <li><strong>Vega:</strong> Measures the sensitivity to volatility, which significantly impacts both potential call and put values.</li>
+              <li><strong>Analytical decompositions:</strong> Express the chooser as a combination of a call and a put plus/minus
+                  auxiliary European options (via put–call parity) when model assumptions permit.</li>
+              <li><strong>Numerical methods:</strong> <em>Binomial/trinomial trees</em> or <em>Monte Carlo simulation</em> to capture the decision feature and term structures
+                  (rates, dividends) or smile/skew adjustments.</li>
             </ul>
-          </section>
-          <section>
-            <h2>Hedging Strategies and Risks</h2>
             <p>
-              Hedging chooser options is challenging because the optimal hedge depends on the decision made at the predetermined date. Dynamic hedging strategies are typically required to manage exposures, especially as market conditions evolve prior to the decision.
+              Key inputs: spot price <em>S</em>, strike <em>K</em>, maturity <em>T</em>, decision date <em>t<sub>d</sub></em>, risk-free rate <em>r</em>,
+              dividend/foreign yield <em>q</em> (if applicable), and volatility <em>σ</em>.
             </p>
           </section>
-          <section>
+
+          <section id="chooser-options-greeks">
+            <h2>Understanding the Greeks</h2>
+            <p>
+              Sensitivities evolve as the decision date approaches:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Often moderates before the decision date, then converges to that of the chosen call/put afterward.</li>
+              <li><strong>Gamma:</strong> Can increase near the decision date as the option’s identity switches discretely.</li>
+              <li><strong>Theta:</strong> Time decay is meaningful prior to the decision and then mirrors the selected plain-vanilla option.</li>
+              <li><strong>Vega:</strong> Typically elevated—higher volatility increases the value of flexibility at the decision date.</li>
+            </ul>
+          </section>
+
+          <section id="chooser-options-hedging">
+            <h2>Risk Management and Hedging</h2>
+            <p>
+              Hedging choosers requires <strong>dynamic adjustments</strong> because pre-decision exposures differ from post-decision exposures.
+              Common approaches:
+            </p>
+            <ul>
+              <li><strong>Pre-decision hedging:</strong> Manage net delta and vega while keeping flexibility intact.</li>
+              <li><strong>Event-focused rebalancing:</strong> Tighten hedges as <em>t<sub>d</sub></em> nears (similar to hedging digital/chooser-like kinks).</li>
+              <li><strong>Post-decision conversion:</strong> Once the choice is made, hedge like the resulting vanilla call or put.</li>
+            </ul>
+            <p>
+              Additional considerations: model risk (vol surface, rates/dividends), liquidity in related vanillas, and execution around the decision date.
+            </p>
+          </section>
+
+          <section id="chooser-options-examples">
             <h2>Practical Examples and Applications</h2>
             <p>
-              An investor uncertain about market direction might purchase a chooser option to retain the flexibility of choosing between a call or a put at a future date when the market outlook is clearer. This can be particularly effective in volatile markets.
+              An investor uncertain about direction into a macro announcement purchases a chooser with decision date shortly after the release.
+              If the outlook turns bullish, they choose a call; if bearish, a put—retaining protection with a single contract while paying one premium.
             </p>
           </section>
-          <section>
-            <h2>Conclusions</h2>
+
+          <section id="chooser-options-summary">
+            <h2>Summary</h2>
             <p>
-              Chooser options offer significant strategic flexibility by allowing the holder to decide between call and put features based on future market conditions. Their complex valuation and hedging requirements highlight the necessity of advanced numerical techniques and vigilant risk management.
+              Chooser options embed valuable flexibility by deferring the call/put choice to a specified date.
+              Their pricing can be framed via analytical decompositions or robust numerical methods, and their Greeks
+              reflect the approaching decision point. With disciplined hedging, choosers can efficiently handle directional uncertainty.
             </p>
           </section>
         `
@@ -635,3 +724,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
