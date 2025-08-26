@@ -1,10 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Derivatives Theory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- Charset & viewport -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>Binary Options – Pricing (Digital Options), Greeks & Risk Management</title>
+  <meta name="description" content="Clear guide to binary (digital) options. Understand all-or-nothing payoffs, Black-Scholes pricing (e^-rT · N(d2)), key Greeks, and practical hedging & risk management." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://calculatorblackscholes.com/binary.html" />
+
+  <!-- (Optional) Legacy keywords for continuity -->
+  <meta name="keywords" content="binary options, digital options, cash-or-nothing, option pricing, Black-Scholes binary, Nd2, option Greeks, delta gamma theta vega, risk management, hedging strategies" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Binary Options – Pricing (Digital Options), Greeks & Risk Management" />
+  <meta property="og:description" content="Learn how binary (digital) options work: payoffs, pricing via e^-rT · N(d2), Greeks, and real-world hedging strategies." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://calculatorblackscholes.com/binary.html" />
+  <meta property="og:site_name" content="Black & Scholes Calculator" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Binary Options – Pricing (Digital Options), Greeks & Risk Management" />
+  <meta name="twitter:description" content="All-or-nothing payoffs, Black-Scholes pricing (e^-rT · N(d2)), Greeks, hedging & risk." />
+
+  <!-- Hreflang (self) -->
+  <link rel="alternate" href="https://calculatorblackscholes.com/binary.html" hreflang="en" />
+
+  <!-- Performance & fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <!-- Theme color -->
+  <meta name="theme-color" content="#01796F" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "name":"Binary Options – Pricing (Digital Options), Greeks & Risk Management",
+    "url":"https://calculatorblackscholes.com/binary.html",
+    "description":"Guide to binary (digital) options: all-or-nothing payoffs, Black-Scholes pricing using e^-rT · N(d2), Greeks, and hedging strategies.",
+    "inLanguage":"en",
+    "isPartOf":{
+      "@type":"WebSite",
+      "name":"Black & Scholes Calculator",
+      "url":"https://calculatorblackscholes.com"
+    },
+    "breadcrumb":{
+      "@type":"BreadcrumbList",
+      "itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://calculatorblackscholes.com/"},
+        {"@type":"ListItem","position":2,"name":"Derivatives Theory","item":"https://calculatorblackscholes.com/theory-calculator.html"},
+        {"@type":"ListItem","position":3,"name":"Binary Options","item":"https://calculatorblackscholes.com/binary.html"}
+      ]
+    }
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -433,70 +491,92 @@
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
       "binary": {
-        title: "Theory on Binary Options",
+        title: "Binary Options – Complete Guide to Pricing, Greeks, and Risk Management",
         content: `
-          <section>
-            <h2>Introduction</h2>
+          <section id="binary-options-introduction">
+            <h2>What Are Binary Options?</h2>
             <p>
-              Binary options, also known as digital options, offer a fixed payout if a specified condition is met at expiration and nothing otherwise. Their simplified, all‑or‑nothing payoff structure distinguishes them from traditional options and provides a straightforward risk/reward profile.
+              <strong>Binary options</strong>, also called <strong>digital options</strong>, are financial derivatives with a simple <em>all-or-nothing payoff</em>. 
+              If a specified condition is met at expiration, the option pays a fixed amount; otherwise, the payoff is zero. 
+              This straightforward structure makes binary options unique compared to traditional vanilla options.
             </p>
           </section>
-          <section>
-            <h2>Definitions and Characteristics</h2>
+    
+          <section id="binary-options-definitions">
+            <h2>Key Characteristics of Binary Options</h2>
             <p>
-              Key characteristics of binary options include:
+              Binary options differ from standard options due to their discontinuous payoff. 
+              Main features include:
             </p>
             <ul>
-              <li><strong>All‑or‑Nothing Payout:</strong> The option pays a fixed amount if the underlying asset’s price is above (for a call) or below (for a put) the strike at expiration.</li>
-              <li><strong>Fixed Payout:</strong> The payout is predetermined and does not vary with the magnitude of the price move.</li>
-              <li><strong>Discontinuous Payoff:</strong> The abrupt switch in payoff results in unique sensitivity to changes in the underlying asset’s price near the strike.</li>
+              <li><strong>All-or-Nothing Payoff:</strong> The option pays a fixed amount if in-the-money, and nothing otherwise.</li>
+              <li><strong>Fixed Payout:</strong> The payout does not depend on the magnitude of the price move.</li>
+              <li><strong>Discontinuous Payoff:</strong> A small change in the underlying price near the strike can switch the outcome completely.</li>
             </ul>
           </section>
-          <section>
-            <h2>Pricing and Valuation</h2>
+    
+          <section id="binary-options-pricing">
+            <h2>How Binary Options Are Priced</h2>
             <p>
-              Binary options are generally priced by determining the risk‑neutral probability that the option will finish in‑the‑money. For a binary call option, the price is typically given by:
+              Pricing binary options involves calculating the <strong>risk-neutral probability</strong> that the option will finish in-the-money. 
+              Within the Black–Scholes framework, the value of a binary call option is:
             </p>
-            <p style="text-align: center; font-style: italic;">
+            <p style="text-align:center; font-style:italic;">
               Price = e<sup>-rT</sup> · N(d<sub>2</sub>)
             </p>
             <p>
-              where r represents the risk‑free rate, T is the time until expiration, and N(d<sub>2</sub>) is the cumulative standard normal probability of finishing in‑the‑money. The discontinuous nature of the payoff may require numerical methods or refined closed‑form approximations within the Black‑Scholes framework.
+              where:
+              <br>r = risk-free interest rate  
+              <br>T = time to expiration  
+              <br>N(d<sub>2</sub>) = cumulative standard normal probability  
+            </p>
+            <p>
+              Because of their discontinuous payoff, binary options often require refined analytical methods or numerical techniques to ensure accurate valuation.
             </p>
           </section>
-          <section>
-            <h2>The Greeks and Sensitivity Analysis</h2>
+    
+          <section id="binary-options-greeks">
+            <h2>Understanding the Greeks in Binary Options</h2>
             <p>
-              The Greeks for binary options are typically more extreme than for vanilla options:
+              Binary options exhibit extreme sensitivities compared to vanilla options:
             </p>
             <ul>
-              <li><strong>Delta:</strong> Exhibits high sensitivity near the strike since a small change in the underlying’s price can switch the payout from 0 to a fixed amount.</li>
-              <li><strong>Gamma:</strong> Can be very large near the strike, reflecting the sudden jump in Delta.</li>
-              <li><strong>Theta:</strong> Time decay is often rapid as expiration approaches, particularly if the probability of finishing in‑the‑money decreases.</li>
-              <li><strong>Vega:</strong> Even minor changes in volatility can have a pronounced effect on the risk-neutral probability of payout.</li>
+              <li><strong>Delta:</strong> Changes abruptly near the strike, since even a small price shift can determine the outcome.</li>
+              <li><strong>Gamma:</strong> Often very high near the strike, reflecting sharp changes in Delta.</li>
+              <li><strong>Theta:</strong> Time decay accelerates as expiration approaches, especially when probabilities shift rapidly.</li>
+              <li><strong>Vega:</strong> Volatility has a strong impact, as it affects the likelihood of finishing in-the-money.</li>
             </ul>
           </section>
-          <section>
-            <h2>Hedging Strategies and Risks</h2>
+    
+          <section id="binary-options-hedging">
+            <h2>Risk Management and Hedging</h2>
             <p>
-              Hedging binary options poses unique challenges due to their discontinuous payoff profile. Effective hedging typically requires dynamic adjustments, with close monitoring of the underlying asset’s price and volatility, especially near the strike. Model risk and liquidity constraints are also critical considerations.
+              Hedging binary options is challenging due to their discontinuous payoff. 
+              Traders often use <strong>dynamic hedging strategies</strong> that adjust positions frequently, especially when the underlying price is close to the strike. 
+              Additional risks include <strong>model risk</strong> and <strong>liquidity constraints</strong>.
             </p>
           </section>
-          <section>
+    
+          <section id="binary-options-examples">
             <h2>Practical Examples and Applications</h2>
             <p>
-              Binary options are often used for short-term speculative strategies, such as betting on the outcome of an earnings announcement. Their fixed payout structure can create attractive risk/reward profiles when market conditions suggest a high probability of a significant move.
+              Binary options are commonly used for <strong>short-term speculation</strong>. 
+              For example, a trader might buy a binary option ahead of an earnings release or macroeconomic announcement, seeking to profit from the outcome of the event rather than the size of the move.
             </p>
           </section>
-          <section>
-            <h2>Conclusions</h2>
+    
+          <section id="binary-options-conclusion">
+            <h2>Summary</h2>
             <p>
-              In summary, binary options provide a simple, fixed-payout mechanism that can yield high returns under the right conditions. However, due to their all‑or‑nothing nature, their valuation, Greeks, and hedging require specialized techniques and vigilant market monitoring.
+              Binary options provide a clear and simple payoff mechanism that can generate significant returns under the right conditions. 
+              However, their valuation, Greeks, and hedging require specialized techniques and vigilant monitoring. 
+              While binary options can be powerful tools, their risks demand careful risk management and strategy design.
             </p>
           </section>
         `
       }
     };
+
 
     // Updates the theory content based on the selected derivative
     function updateTheoryContent(selected) {
@@ -640,3 +720,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
