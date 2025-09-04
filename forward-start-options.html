@@ -435,65 +435,80 @@
   <script>
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
-      "forward-start-options": {
-        title: "Forward Start Options – Definition, Valuation & Practical Use",
-        content: `
-        <section>
-            <h2>What Are Forward Start Options?</h2>
-            <p>
-            Forward Start Options are exotic derivatives that become effective at a specified future date. Unlike standard options, their strike price is determined at activation, typically pegged to the market price of the underlying asset. These contracts are ideal for long-term hedging and are commonly used in executive compensation schemes.
-            </p>
-        </section>
+  "forward-start-options": {
+    title: "Forward Start Options – Complete Guide to Definition, Valuation, Greeks, and Risk Management",
+    content: `
+      <section id="forward-start-introduction">
+        <h2>What Are Forward Start Options?</h2>
+        <p>
+          <strong>Forward start options</strong> are <em>exotic derivatives</em> that begin at a specified future date. 
+          Unlike standard options, their <strong>strike price</strong> is set on the start date—often as a percentage or multiple of the 
+          prevailing spot price. This design aligns future exposure with anticipated market conditions and is common in 
+          <strong>executive compensation</strong> and long-horizon hedging.
+        </p>
+      </section>
 
-        <section>
-            <h2>Key Features and Characteristics</h2>
-            <ul>
-            <li><strong>Deferred Activation:</strong> The contract begins at a future date rather than on the trade date.</li>
-            <li><strong>Future Strike Price:</strong> The strike is typically calculated as a percentage or multiple of the asset’s spot price on the start date.</li>
-            <li><strong>Strategic Applications:</strong> Used to align compensation with future performance or delay risk exposure until a specific period.</li>
-            </ul>
-        </section>
+      <section id="forward-start-definitions">
+        <h2>Key Features and Characteristics</h2>
+        <ul>
+          <li><strong>Deferred Activation:</strong> The contract is agreed today but becomes live on a future <em>start date</em>.</li>
+          <li><strong>Forward-Set Strike:</strong> Strike is typically defined as <em>k × S<sub>start</sub></em>, where <em>k</em> is fixed at trade and <em>S<sub>start</sub></em> is spot at activation.</li>
+          <li><strong>Two-Phase Lifecycle:</strong> A <em>pre-start</em> accrual phase followed by a standard option phase after activation.</li>
+          <li><strong>Strategic Use:</strong> Aligns incentives and risk with future performance windows or regulatory blackout periods.</li>
+        </ul>
+      </section>
 
-        <section>
-            <h2>How Are Forward Start Options Priced?</h2>
-            <p>
-            Pricing these instruments requires modeling future volatility and asset behavior. The Black–Scholes model is adapted using a forward-start framework, often integrating Monte Carlo simulations or binomial trees for accuracy. The valuation reflects the option's effective life starting from the deferred date.
-            </p>
-        </section>
+      <section id="forward-start-pricing">
+        <h2>How Forward Start Options Are Priced</h2>
+        <p>
+          Valuation applies a <strong>forward-start framework</strong> within models like <strong>Black–Scholes</strong>. 
+          The price reflects today’s value of an option that will be struck as a function of <em>S<sub>start</sub></em> and then run 
+          for its remaining life. Practitioners often use <em>closed-form adaptations</em> where available or 
+          <strong>binomial trees</strong> / <strong>Monte Carlo</strong> to incorporate forward volatility, term structures, and day-count details.
+        </p>
+      </section>
 
-        <section>
-            <h2>Forward Start Option Greeks and Sensitivities</h2>
-            <ul>
-            <li><strong>Delta:</strong> Low before activation; increases as the option becomes live and tracks the underlying asset.</li>
-            <li><strong>Gamma:</strong> Rises once the option is active, showing greater responsiveness to asset movements.</li>
-            <li><strong>Theta:</strong> Minimal in the pre-start phase, then accelerates post-activation.</li>
-            <li><strong>Vega:</strong> Highly relevant early on, as volatility affects future strike determination and valuation.</li>
-            </ul>
-        </section>
+      <section id="forward-start-greeks">
+        <h2>Forward Start Option Greeks and Sensitivities</h2>
+        <ul>
+          <li><strong>Delta:</strong> Typically low before the start date and increases once the option becomes active, tracking the chosen moneyness.</li>
+          <li><strong>Gamma:</strong> Modest pre-start; rises after activation as the payoff becomes sensitive to spot moves.</li>
+          <li><strong>Theta:</strong> Limited time decay before activation; accelerates post-start as the live option approaches expiry.</li>
+          <li><strong>Vega:</strong> Elevated with respect to <em>forward</em> volatility—changes in implied vols around the start window have outsized impact.</li>
+          <li><strong>Rho:</strong> Sensitivity to interest rates evolves across phases—pre-start via discounting and forward levels; post-start via the live option’s rate exposure.</li>
+        </ul>
+      </section>
 
-        <section>
-            <h2>Risk Management and Hedging Considerations</h2>
-            <p>
-            Managing forward start options involves dynamic hedging strategies. The complexity arises from their two-phase structure: the inactive pre-start period and the active trading period. Risk managers must anticipate volatility shifts and adjust positions as the start date approaches.
-            </p>
-        </section>
+      <section id="forward-start-hedging">
+        <h2>Risk Management and Hedging Considerations</h2>
+        <p>
+          Hedging is <strong>phase-dependent</strong>. Ahead of activation, traders manage exposure to forward volatility and rates; as the 
+          start date approaches, hedges are adjusted to anticipated strike formation. After activation, standard delta-gamma-vega 
+          techniques apply. Careful monitoring of <strong>vol term structure</strong> and event risk around the start window is essential.
+        </p>
+      </section>
 
-        <section>
-            <h2>Real-World Use Cases</h2>
-            <p>
-            These derivatives are commonly embedded in long-term incentive plans for executives. They’re also employed by asset managers and hedgers who prefer to delay exposure until a specific market condition or event, improving timing alignment.
-            </p>
-        </section>
+      <section id="forward-start-examples">
+        <h2>Practical Examples and Applications</h2>
+        <p>
+          <strong>Executive awards:</strong> Grants that start next quarter with strike set at a fixed multiple of spot on the start date. 
+          <br><strong>Institutional hedging:</strong> Asset managers delay option engagement until a mandate begins, locking today’s terms while 
+          aligning exposure with future inflows.
+        </p>
+      </section>
 
-        <section>
-            <h2>Conclusion</h2>
-            <p>
-            Forward Start Options offer strategic advantages in aligning financial exposure with future conditions. Their valuation and risk profile demand robust models and dynamic risk management, making them essential tools for sophisticated traders and institutions.
-            </p>
-        </section>
-        `
-      }
-    };
+      <section id="forward-start-conclusion">
+        <h2>Conclusion</h2>
+        <p>
+          Forward start options align <strong>future-dated exposure</strong> with strategic timelines. Their valuation depends on forward 
+          volatility and rate dynamics, and their <strong>two-phase risk profile</strong> calls for dynamic, calendar-aware hedging. 
+          When modeled and managed correctly, they offer flexible and efficient long-term option exposure.
+        </p>
+      </section>
+    `
+  }
+};
+
 
     // Updates the theory content based on the selected derivative
     function updateTheoryContent(selected) {
@@ -637,3 +652,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
