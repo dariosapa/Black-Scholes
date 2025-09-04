@@ -1,10 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Derivatives Theory</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>Straddle Strategy – Pricing, Greeks (Delta to Rho), Hedging & Real-World Examples</title>
+  <meta name="description" content="Learn the straddle options strategy—buying a call and a put with the same strike/expiry. Pricing with Black–Scholes, Greeks (delta–rho), risk, hedging and examples." />
+  <meta name="keywords" content="straddle strategy, long straddle, options straddle, buy call and put same strike, options volatility strategy, implied volatility, Black-Scholes pricing, options Greeks delta gamma theta vega rho, hedging straddle, non-directional options strategy" />
+  <link rel="canonical" href="https://calculatorblackscholes.com/straddle.html" />
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+  <meta name="author" content="Black &amp; Scholes Calculator" />
+  <meta name="theme-color" content="#01796F" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Straddle Strategy – Pricing, Greeks (Delta to Rho), Hedging & Real-World Examples" />
+  <meta property="og:description" content="Complete guide to the straddle options strategy: pricing, Greeks, risk and hedging, with practical examples." />
+  <meta property="og:url" content="https://calculatorblackscholes.com/straddle.html" />
+  <meta property="og:site_name" content="Black &amp; Scholes Calculator" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Straddle Strategy – Pricing, Greeks, Hedging & Examples" />
+  <meta name="twitter:description" content="Non-directional options strategy explained: pricing, Greeks (delta–rho), risks, hedging and examples." />
+
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Straddle Strategy – Pricing, Greeks (Delta to Rho), Hedging & Real-World Examples",
+    "description": "Comprehensive guide to the straddle options strategy: pricing with Black–Scholes, Greeks (delta, gamma, theta, vega, rho), risks, hedging and practical examples.",
+    "author": {
+      "@type": "Organization",
+      "name": "Black & Scholes Calculator",
+      "url": "https://calculatorblackscholes.com/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Black & Scholes Calculator",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://calculatorblackscholes.com/logo.png"
+      }
+    },
+    "mainEntityOfPage": "https://calculatorblackscholes.com/straddle.html"
+  }
+  </script>
+
   <style>
 
     /* ================================
@@ -433,65 +488,80 @@
     // Object mapping derivative types to their detailed theory content.
     const theoryData = {
       "straddle": {
-        title: "Theory on Straddle Strategy",
+        title: "Straddle Strategy – Complete Guide to Pricing, Greeks, and Risk Management",
         content: `
-          <section>
-            <h2>Introduction</h2>
+          <section id="straddle-introduction">
+            <h2>What Is a Straddle Strategy?</h2>
             <p>
-              A straddle is a non‑directional options strategy that involves simultaneously buying a call and a put option on the same underlying asset with the same strike price and expiration date. This approach enables the investor to profit from significant volatility, regardless of the direction of price movement.
+              A <strong>straddle</strong> is a <em>non-directional options strategy</em> that involves simultaneously buying a call and a put option on the same underlying asset, with the same <strong>strike price</strong> and <strong>expiration date</strong>. 
+              This structure allows traders to benefit from <strong>large price movements</strong> in either direction, making it primarily a <strong>volatility-based strategy</strong>.
             </p>
           </section>
-          <section>
-            <h2>Definitions and Characteristics</h2>
+    
+          <section id="straddle-definitions">
+            <h2>Key Characteristics of a Straddle</h2>
             <p>
-              Key characteristics of a straddle include:
-            </p>
-            <ul>
-              <li><strong>Equal Strike and Expiration:</strong> Both the call and put options have identical strike prices and maturities.</li>
-              <li><strong>Volatility Play:</strong> The strategy benefits from substantial moves in the underlying asset’s price, regardless of the direction.</li>
-              <li><strong>Limited Loss:</strong> The maximum loss is confined to the total premiums paid for both options.</li>
-              <li><strong>Sensitivity to Volatility:</strong> High sensitivity is inherent, leading to rapid changes in option value with volatility shifts.</li>
-            </ul>
-          </section>
-          <section>
-            <h2>Pricing and Valuation</h2>
-            <p>
-              The value of a straddle is the sum of the prices of the call and put options. When using models such as Black‑Scholes for each component, the combined position reflects both the intrinsic and time value contributions. Because the strategy is designed to capture large moves, its premium is highly sensitive to implied volatility.
-            </p>
-          </section>
-          <section>
-            <h2>The Greeks and Sensitivity Analysis</h2>
-            <p>
-              Due to the combined effect of both options, the Greeks for a straddle may differ considerably from those of individual options:
+              The essential features of a straddle strategy include:
             </p>
             <ul>
-              <li><strong>Delta:</strong> The net Delta is typically close to zero, as the call’s positive Delta offsets the put’s negative Delta.</li>
-              <li><strong>Gamma:</strong> High Gamma indicates a steep curvature, reflecting significant sensitivity to underlying price movements.</li>
-              <li><strong>Theta:</strong> Time decay can be rapid, particularly if the anticipated volatility does not materialize.</li>
-              <li><strong>Vega:</strong> The straddle’s value is extremely sensitive to changes in volatility; a rise in volatility generally increases the overall position value.</li>
+              <li><strong>Equal Strike and Expiration:</strong> Both call and put options share the same strike and maturity.</li>
+              <li><strong>Volatility Exposure:</strong> Profits increase when the underlying makes significant moves, regardless of direction.</li>
+              <li><strong>Limited Downside:</strong> The maximum loss is capped at the <strong>total premium paid</strong> for both options.</li>
+              <li><strong>High Vega Sensitivity:</strong> The position’s value rises with higher implied volatility, reflecting its reliance on expected large moves.</li>
             </ul>
           </section>
-          <section>
-            <h2>Hedging Strategies and Risks</h2>
+    
+          <section id="straddle-pricing">
+            <h2>How a Straddle Is Priced</h2>
             <p>
-              Hedging a straddle can be complex because the position is highly sensitive to volatility and time decay. Traders must continuously manage Gamma and Vega exposures to avoid significant losses if the underlying asset’s price does not move as expected.
+              The cost of a straddle equals the sum of the <strong>call premium</strong> and the <strong>put premium</strong>. 
+              Using models such as <strong>Black–Scholes</strong>, each leg can be priced separately, then combined to determine the strategy’s overall cost. 
+              Since the strategy is designed to profit from substantial swings, the straddle’s premium is highly sensitive to <strong>implied volatility</strong>.
             </p>
           </section>
-          <section>
+    
+          <section id="straddle-greeks">
+            <h2>Greeks and Sensitivity Analysis</h2>
+            <p>
+              A straddle combines the Greeks of both a long call and a long put, leading to distinctive sensitivities:
+            </p>
+            <ul>
+              <li><strong>Delta:</strong> Initially close to zero, since the call’s positive Delta offsets the put’s negative Delta.</li>
+              <li><strong>Gamma:</strong> High, reflecting strong sensitivity to price changes near the strike.</li>
+              <li><strong>Theta:</strong> Strongly negative, as time decay erodes both option premiums if volatility does not materialize.</li>
+              <li><strong>Vega:</strong> Very high; increases in implied volatility substantially raise the value of the straddle.</li>
+            </ul>
+          </section>
+    
+          <section id="straddle-risks">
+            <h2>Risks and Hedging Considerations</h2>
+            <p>
+              While straddles offer unlimited upside with large price moves, they are highly exposed to <strong>time decay</strong> and <strong>volatility risk</strong>. 
+              If the underlying remains stable, the strategy suffers as both options lose value. 
+              Traders often employ <strong>dynamic hedging</strong> to manage Gamma and Vega exposures, but this requires close monitoring.
+            </p>
+          </section>
+    
+          <section id="straddle-examples">
             <h2>Practical Examples and Applications</h2>
             <p>
-              Straddles are commonly used ahead of events with expected high volatility such as earnings announcements or regulatory decisions. They allow traders to benefit from significant price swings regardless of the direction of the move.
+              Straddles are popular before <strong>major market events</strong> such as earnings reports, central bank announcements, or regulatory decisions. 
+              For example, an investor might open a straddle on a stock ahead of an earnings release, anticipating a sharp move but uncertain about the direction.
             </p>
           </section>
-          <section>
-            <h2>Conclusions</h2>
+    
+          <section id="straddle-conclusion">
+            <h2>Conclusion</h2>
             <p>
-              The straddle strategy is an effective way to profit from volatility, but it requires careful monitoring and dynamic hedging to manage rapid time decay and sensitivity to volatility changes.
+              The straddle strategy is a powerful way to <strong>profit from volatility</strong> in financial markets. 
+              However, its effectiveness depends on significant price swings and sustained volatility. 
+              Without these conditions, the position suffers from rapid <strong>time decay</strong> and premium erosion, making <strong>risk management</strong> essential.
             </p>
           </section>
         `
       }
     };
+
 
     // Updates the theory content based on the selected derivative
     function updateTheoryContent(selected) {
@@ -635,3 +705,4 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
