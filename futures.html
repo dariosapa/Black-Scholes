@@ -519,59 +519,78 @@
         <section>
           <h2>What Are Futures and Forwards?</h2>
           <p>
-            Futures and forward contracts are two essential types of financial derivatives. They allow traders and institutions to hedge risk, speculate on price movements, or exploit arbitrage opportunities. The key difference lies in how they are traded: <strong>forward contracts</strong> are over-the-counter (OTC) agreements, while <strong>futures contracts</strong> are standardized and traded on regulated exchanges.
+            Futures and forward contracts are fundamental financial derivatives used to manage risk, speculate on price movements, and identify arbitrage opportunities. 
+            The key distinction lies in their trading environment: <strong>forward contracts</strong> are negotiated privately in the over-the-counter (OTC) market, 
+            while <strong>futures contracts</strong> are standardized agreements traded on regulated exchanges.
           </p>
         </section>
         <section>
           <h2>Key Features of Forward and Futures Contracts</h2>
           <h3>Forward Contracts</h3>
           <p>
-            A forward contract is a private, customizable agreement between two parties to buy or sell an asset at a specified price on a future date. Features include:
+            A forward contract is a private agreement between two parties to buy or sell an asset at a predetermined price on a specified future date. Key features include:
           </p>
           <ul>
-            <li><strong>Customization:</strong> Terms like quantity, delivery date, and price are negotiated between the counterparties.</li>
-            <li><strong>Counterparty Risk:</strong> Since there's no clearinghouse, there's a risk that one party may default.</li>
-            <li><strong>Flexibility:</strong> Suitable for hedging unique exposures or trading less liquid assets.</li>
+            <li><strong>Customization:</strong> Terms such as contract size, maturity, and settlement can be freely negotiated.</li>
+            <li><strong>Counterparty Risk:</strong> Since no clearinghouse is involved, each party bears the risk of default by the other.</li>
+            <li><strong>Flexibility:</strong> Particularly useful for hedging tailored exposures or trading less liquid assets.</li>
           </ul>
           <h3>Futures Contracts</h3>
           <p>
-            Futures are standardized contracts that trade on exchanges. They are marked-to-market daily and require margin deposits. Their characteristics include:
+            A futures contract is a standardized agreement traded on an exchange, supported by a clearinghouse that guarantees performance. Features include:
           </p>
           <ul>
-            <li><strong>Standardization:</strong> Contract terms (size, expiry, asset type) are fixed by the exchange.</li>
-            <li><strong>Daily Settlement:</strong> Gains and losses are realized each day via mark-to-market.</li>
-            <li><strong>Lower Counterparty Risk:</strong> Clearinghouses guarantee performance, reducing default risk.</li>
-            <li><strong>Liquidity:</strong> High volumes and transparency make futures easier to enter and exit.</li>
+            <li><strong>Standardization:</strong> The exchange defines contract terms such as size, delivery months, and asset type.</li>
+            <li><strong>Daily Settlement:</strong> Profits and losses are settled each day through the mark-to-market process.</li>
+            <li><strong>Lower Counterparty Risk:</strong> The clearinghouse mitigates the risk of default.</li>
+            <li><strong>Liquidity:</strong> High trading volumes make it easier to enter and exit positions.</li>
           </ul>
         </section>
         <section>
           <h2>How Are Futures and Forwards Priced?</h2>
           <p>
-            Both instruments are typically priced using the <strong>cost-of-carry model</strong>, which considers the spot price, interest rates, dividends, and storage or convenience yields. The general formula for forward pricing is:
+            Neither futures nor forwards require an upfront cost to enter (apart from transaction costs and margin requirements for futures). 
+            Instead, their value comes from the <strong>cost-of-carry model</strong>, which links the forward or futures price to the current spot price, 
+            adjusted for factors such as interest rates, dividends, and storage or convenience yields.
           </p>
           <p style="text-align: center; font-style: italic;">
-            Forward Price (F) = S · e<sup>r·T</sup>
+            Forward Price (F) = S · e<sup>(r − q + c)·T</sup>
           </p>
           <p>
-            Where <strong>S</strong> is the current spot price, <strong>r</strong> is the risk-free rate, and <strong>T</strong> is the time to maturity. For futures, factors like margin requirements and daily settlement can cause slight price variations compared to forwards.
+            Where: <br>
+            <strong>S</strong> = current spot price <br>
+            <strong>r</strong> = risk-free interest rate <br>
+            <strong>q</strong> = dividend yield (or foreign risk-free rate in FX contracts) <br>
+            <strong>c</strong> = storage costs minus convenience yield <br>
+            <strong>T</strong> = time to maturity <br>
+          </p>
+          <p>
+            Forwards and futures share the same theoretical pricing. However, due to <strong>daily settlement</strong>, 
+            futures prices may deviate slightly from forwards when interest rates fluctuate.
           </p>
         </section>
         <section>
           <h2>Hedging and Risk Management</h2>
           <p>
-            Futures and forwards are widely used for <strong>hedging price risk</strong>. Forwards allow businesses to lock in future prices with tailored contracts, but involve default risk. Futures, on the other hand, are more liquid and involve less credit risk, but require managing margin calls.
+            Both forwards and futures are widely applied in <strong>hedging price risk</strong>. 
+            Forwards allow companies to lock in customized future prices, though they carry higher counterparty risk. 
+            Futures, in contrast, offer liquidity and reduced credit risk, but require margin management and exposure to daily mark-to-market volatility.
           </p>
         </section>
         <section>
           <h2>Examples and Real-World Applications</h2>
           <p>
-            An exporter might use a forward contract to lock in an exchange rate for future revenue. A commodity trader might use futures to hedge against price swings or to speculate on market movements. These derivatives are essential tools in sectors like agriculture, energy, and foreign exchange.
+            A multinational corporation may use a forward contract to fix an exchange rate for future revenues. 
+            A farmer might use futures to hedge against commodity price swings. 
+            Traders and institutions also use these derivatives to speculate on expected price movements in markets such as agriculture, energy, and foreign exchange.
           </p>
         </section>
         <section>
           <h2>Conclusion</h2>
           <p>
-            Futures and forwards are foundational instruments in modern finance. While forwards offer flexibility and customization for OTC trades, futures provide transparency, liquidity, and lower counterparty risk. Understanding their mechanics, pricing models, and use cases is crucial for effective risk management and trading strategy.
+            Futures and forwards are core instruments in global finance. 
+            Forwards provide flexibility and customization in OTC markets, while futures offer transparency, liquidity, and reduced credit risk through exchange trading. 
+            A solid grasp of their mechanics, pricing models, and practical applications is essential for effective trading and risk management.
           </p>
         </section>
         `
@@ -720,4 +739,5 @@
   <script src="cookie-consent.js"></script>
 </body>
 </html>
+
 
