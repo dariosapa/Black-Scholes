@@ -2,45 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index,follow" />
 
   <!-- ========================
        ON-PAGE SEO ELEMENTS
        ======================== -->
-  <!-- Titolo ottimizzato: più corto per evitare troncamenti -->
-  <title>Black‑Scholes Calculator — Free Option Pricing Tool</title>
-
-  <!-- Meta Description allineata e non “over‑promising” -->
+  <title>Black-Scholes Calculator (Free) — Option Pricing & Greeks</title>
   <meta name="description"
-        content="Free Black‑Scholes calculator to price European options and compute Greeks in seconds. Clean UI, step‑by‑step workflow, no registration." />
+        content="Free Black-Scholes calculator to price European options and compute Greeks in seconds. Clean UI, step-by-step workflow, no registration." />
 
-  <!-- Open Graph tags coerenti -->
-  <meta property="og:title"
-        content="Black‑Scholes Calculator — Free Option Pricing Tool" />
-  <meta property="og:description"
-        content="Price European options and compute Greeks fast with our free Black‑Scholes calculator. Try it now — no signup." />
-  <meta property="og:image"
-        content="https://calculatorblackscholes.com/og-image.png" />
-  <meta property="og:url" content="https://calculatorblackscholes.com/" />
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CalculatorBlackScholes.com" />
+  <meta property="og:title" content="Black-Scholes Calculator — Free Option Pricing Tool" />
+  <meta property="og:description"
+        content="Price European options and compute Greeks fast with our free Black-Scholes calculator. Try it now — no signup." />
+  <meta property="og:url" content="https://calculatorblackscholes.com/" />
+  <meta property="og:image" content="https://calculatorblackscholes.com/og-image.png" />
+  <meta property="og:image:alt" content="Screenshot of the Black-Scholes option pricing calculator" />
+  <meta property="og:locale" content="en_US" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Black‑Scholes Calculator — Free Option Pricing Tool" />
+  <meta name="twitter:title" content="Black-Scholes Calculator — Free Option Pricing Tool" />
   <meta name="twitter:description"
-        content="Free Black‑Scholes calculator to price European options and compute Greeks in seconds. No registration." />
+        content="Free Black-Scholes calculator to price European options and compute Greeks in seconds. No registration." />
   <meta name="twitter:image" content="https://calculatorblackscholes.com/og-image.png" />
 
-  <!-- Favicon -->
+  <!-- Favicon & PWA -->
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" href="/favicon.png">
   <link rel="shortcut icon" href="/favicon.ico">
-  
-  <!-- Apple touch icon (iPhone/iPad) -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  
-  <!-- Manifest (Android/PWA) -->
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#004d00">
 
@@ -48,19 +43,16 @@
   <link rel="alternate" href="https://calculatorblackscholes.com/" hreflang="en" />
   <link rel="alternate" href="https://calculatorblackscholes.com/" hreflang="x-default" />
 
-  <!-- Canonical URL -->
+  <!-- Canonical -->
   <link rel="canonical" href="https://calculatorblackscholes.com/" />
 
   <!-- ========================
        FONT & PERFORMANCE
        ======================== -->
-  <!-- Preconnect per i font (evita doppio preload woff2 + Google Fonts) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Rubik:wght@400;600;800&display=swap"
         rel="stylesheet" />
-
-  <!-- (RIMOSSO) Chart.js: caricalo solo nelle pagine che lo usano realmente -->
 
   <!-- ========================
        JSON-LD STRUCTURED DATA
@@ -70,18 +62,16 @@
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://calculatorblackscholes.com/"
-      }
-    ]
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://calculatorblackscholes.com/"
+    }]
   }
   </script>
 
-  <!-- 2) SoftwareApplication (senza aggregateRating e con descrizione allineata) -->
+  <!-- 2) SoftwareApplication -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -106,7 +96,7 @@
   }
   </script>
 
-  <!-- 3) HowTo — in inglese, allineato a lang="en" -->
+  <!-- 3) HowTo (mantieni solo se presente una sezione visibile How to use in pagina) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -114,98 +104,28 @@
     "name": "How to use the Black-Scholes Calculator",
     "description": "Follow these steps to calculate option prices using our free online Black-Scholes calculator.",
     "step": [
-      {
-        "@type": "HowToStep",
-        "position": 1,
-        "name": "Insert current stock price (Spot)",
-        "text": "Type the current underlying price in the 'Spot Price' field."
-      },
-      {
-        "@type": "HowToStep",
-        "position": 2,
-        "name": "Enter strike price",
-        "text": "Enter the desired strike price."
-      },
-      {
-        "@type": "HowToStep",
-        "position": 3,
-        "name": "Select expiration date or time to maturity",
-        "text": "Pick the expiration date or input time to maturity in years."
-      },
-      {
-        "@type": "HowToStep",
-        "position": 4,
-        "name": "Enter volatility, interest rate, dividend yield",
-        "text": "Specify volatility (implied or historical), risk‑free rate and any dividend yield."
-      },
-      {
-        "@type": "HowToStep",
-        "position": 5,
-        "name": "Click 'Calculate' to get option price and Greeks",
-        "text": "Click 'Calculate' to get the option price and Greeks in real time."
-      }
+      {"@type": "HowToStep","position": 1,"name": "Insert current stock price (Spot)","text": "Type the current underlying price in the 'Spot Price' field."},
+      {"@type": "HowToStep","position": 2,"name": "Enter strike price","text": "Enter the desired strike price."},
+      {"@type": "HowToStep","position": 3,"name": "Select expiration or time to maturity","text": "Pick the expiration date or input time to maturity in years."},
+      {"@type": "HowToStep","position": 4,"name": "Enter volatility, interest rate, dividend yield","text": "Specify volatility, risk-free rate and any dividend yield."},
+      {"@type": "HowToStep","position": 5,"name": "Calculate price and Greeks","text": "Click 'Calculate' to get the option price and Greeks in real time."}
     ]
   }
   </script>
 
-  <!-- 4) FAQPage — in inglese per coerenza -->
+  <!-- 4) FAQPage (mantieni solo se hai una sezione FAQ visibile) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is the Black-Scholes model?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The Black-Scholes model prices European call and put options based on inputs such as underlying price, strike, volatility, risk-free rate and time to maturity."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I use the Black-Scholes Calculator?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Enter the underlying price, strike, volatility, interest rate and expiry, then click 'Calculate' to get the option price and Greeks."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Do I need to register to use the calculator?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No, the tool is completely free and requires no registration or login."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Which options can I evaluate with this tool?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "You can calculate European options and obtain the main Greeks (Delta, Gamma, Vega, Theta, Rho)."
-        }
-      }
+      {"@type": "Question","name": "What is the Black-Scholes model?","acceptedAnswer": {"@type": "Answer","text": "The Black-Scholes model prices European call and put options using inputs such as underlying price, strike, volatility, risk-free rate and time to maturity."}},
+      {"@type": "Question","name": "How do I use the Black-Scholes Calculator?","acceptedAnswer": {"@type": "Answer","text": "Enter underlying price, strike, volatility, interest rate and expiry, then click 'Calculate' to get option price and Greeks."}},
+      {"@type": "Question","name": "Do I need to register?","acceptedAnswer": {"@type": "Answer","text": "No, the tool is completely free and requires no registration or login."}},
+      {"@type": "Question","name": "Which options can I evaluate?","acceptedAnswer": {"@type": "Answer","text": "You can calculate European options and obtain Delta, Gamma, Vega, Theta and Rho."}}
     ]
   }
   </script>
-
-  <!-- 5) WebSite + SearchAction (facoltativo ma utile per sitelinks search box) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "url": "https://calculatorblackscholes.com/",
-    "name": "CalculatorBlackScholes.com",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://calculatorblackscholes.com/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-    
-
   
   <style>
     /* ================================
@@ -846,7 +766,7 @@
       </div>
     </div>
     <div class="hero-image">
-      <img src="Foto11.png" alt="Screenshot of the calculator interface" class="foto-resize">
+      <img src="Foto11.png" alt="Calculator UI" class="foto-resize">
     </div>
   </section>
   
@@ -963,5 +883,6 @@
   
 </body>
 </html>
+
 
 
